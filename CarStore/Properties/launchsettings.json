@@ -1,0 +1,10 @@
+﻿{
+    "profiles": {
+      "CarStore (Package)": {
+        "commandName": "MsixPackage"
+      },
+      "CarStore (Unpackaged)": {
+        "commandName": "Project"
+      }
+    }
+}
