@@ -114,7 +114,7 @@
                 <StackPanel Orientation="Vertical" Height="640" >
                     <TextBlock Text="Cùng phân khúc" Style="{StaticResource TitleTextBlockStyle}" Margin="30 5"/>
                     <Grid Padding="30" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <GridView ItemsSource="{x:Bind ViewModel.CompetitorModels}" IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
+                        <GridView ItemsSource="{x:Bind ViewModel.CompetitorCars}" IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
 
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
