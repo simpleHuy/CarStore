@@ -29,9 +29,15 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         set
         {
             _selectedCar = value;
+            OnPropertyChanged(nameof(SelectedCar));
             LoadPictureOfCar();
             LoadCompetitorCars();
         }
+    }
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public ObservableCollection<string>? SelectedCarPictures
@@ -69,7 +75,10 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         CompetitorCars = new ObservableCollection<Car>();
         foreach (var car in Cars)
         {
-            if((car.Price > minPrice || car.Price < maxPrice) && car.CarId != SelectedCar.CarId)
+            if (CompetitorCars.Count() > 8)
+                break;
+
+            if((car.Price > minPrice || car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
             {
                 CompetitorCars.Add(car);
             }
@@ -81,7 +90,6 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
     {
         IDao dao = new MockDao();
         Cars = new FullObservableCollection<Car>(dao.getAllCars());
-        SelectedCar = Cars.First();
     }
 
 

@@ -16,6 +16,8 @@
 
     <ScrollView x:Name="ContentArea" VerticalScrollBarVisibility="Hidden" Padding="40">
         <StackPanel Orientation="Vertical">
+            
+            <!--Car's Profile-->
             <Grid ColumnSpacing="30" Margin="0 0 0 30" >
                 <!--2 collumns-->
                 <Grid.ColumnDefinitions>
@@ -100,6 +102,7 @@
                 </StackPanel>
             </Grid>
 
+            <!--Description-->
             <Border BorderBrush="Gray" BorderThickness="2" Padding="15">
                 <ScrollView Height="450">
                     <StackPanel Orientation="Vertical">
@@ -110,11 +113,14 @@
 
             </Border>
 
+            <!--CompetitorCars-->
             <Border BorderBrush="Gray" BorderThickness="2" Margin="0 40">
-                <StackPanel Orientation="Vertical" Height="640" >
+                <StackPanel Orientation="Vertical">
                     <TextBlock Text="Cùng phân khúc" Style="{StaticResource TitleTextBlockStyle}" Margin="30 5"/>
                     <Grid Padding="30" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <GridView ItemsSource="{x:Bind ViewModel.CompetitorCars}" IsItemClickEnabled="True" ItemClick="GridView_ItemClick">
+                        
+                        <GridView ItemsSource="{x:Bind ViewModel.CompetitorCars}" IsItemClickEnabled="True" ItemClick="SeeThisCar"
+                                  Name="ListCompettorCars">
 
                             <GridView.ItemContainerStyle>
                                 <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
@@ -134,12 +140,42 @@
 
                             <GridView.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <ItemsWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="5" />
+                                    <ItemsWrapGrid Orientation="Horizontal"/>
                                 </ItemsPanelTemplate>
                             </GridView.ItemsPanel>
 
                         </GridView>
                     </Grid>
+                    
+                    <Canvas Name="SeeMoreCompitetorText" Visibility="Visible" HorizontalAlignment="Center">
+                        
+                        <Button Click="SeeMoreCompetitor" Canvas.Top="-40">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <TextBlock x:Name="TextBlockElement" Text="Xem thêm >" TextDecorations="Underline"
+                                                    Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TextBlockElement.Foreground" Value="Blue"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TextBlockElement.Foreground" Value="DarkBlue"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                    </Canvas>
                 </StackPanel>
             </Border>
 
