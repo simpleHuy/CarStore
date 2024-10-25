@@ -5,11 +5,12 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
 
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
+            <RowDefinition Height="200" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -21,6 +22,14 @@
         <Grid Grid.Row="1">
             
         </Grid>
-        
+
+        <StackPanel VerticalAlignment="Center" Height="100">
+            <TextBlock HorizontalAlignment="Center" Text="Enter your name"/>
+            <TextBox HorizontalAlignment="Center" Width="200" x:Name="name"/>
+            <HyperlinkButton Content="Click to go to page 2"
+                              Click="HyperlinkButton_Click"
+                              HorizontalAlignment="Center"/>
+        </StackPanel>
+
     </Grid>
 </Page>

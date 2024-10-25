@@ -10,6 +10,8 @@ using CarStore.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace CarStore;
 
@@ -64,8 +66,13 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
+            services.AddTransient<RegisterViewModel>();
+            services.AddTransient<RegisterPage>();
+
 
             // Configuration
         }).
@@ -83,7 +90,6 @@ public partial class App : Application
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }
