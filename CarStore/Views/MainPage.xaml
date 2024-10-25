@@ -19,7 +19,7 @@
             Style="{StaticResource PageTitleStyle}" />
 
         <Grid Grid.Row="1">
-            
+            <Button Name="CarDetailButton" Content="Car Detail" Width="150" Click="GotoCarDetailPage"/>
         </Grid>
         
     </Grid>

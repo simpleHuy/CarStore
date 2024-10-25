@@ -16,4 +16,9 @@ public sealed partial class MainPage : Page
         ViewModel = App.GetService<MainViewModel>();
         InitializeComponent();
     }
+
+    private void GotoCarDetailPage(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(CarDetailPage));
+    }
 }
