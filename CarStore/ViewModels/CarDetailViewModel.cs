@@ -14,13 +14,15 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : INotifyPropertyChanged
 {
+
+    private Car? _selectedCar;
+    //private FullObservableCollection<Car>? _competitorModels;
+
+
     public FullObservableCollection<Car>? Cars
     {
         get; set;
     }
-
-    private Car? _selectedCar;
-
     public Car? SelectedCar
     {
         get => _selectedCar;
@@ -28,6 +30,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         {
             _selectedCar = value;
             LoadPictureOfCar();
+            LoadCompetitorCars();
         }
     }
 
@@ -35,8 +38,6 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
     {
         get; set;
     }
-
-
     private void LoadPictureOfCar()
     {
         var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Picture);
@@ -56,6 +57,25 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         }
     }
 
+    public ObservableCollection<Car>? CompetitorCars
+    {
+        get; set;
+    }
+    private void LoadCompetitorCars()
+    {
+        var delta = 0.2;
+        var minPrice = SelectedCar.Price * (1.0 - delta);
+        var maxPrice = SelectedCar.Price * (1.0 + delta);
+        CompetitorCars = new ObservableCollection<Car>();
+        foreach (var car in Cars)
+        {
+            if((car.Price > minPrice || car.Price < maxPrice) && car.CarId != SelectedCar.CarId)
+            {
+                CompetitorCars.Add(car);
+            }
+        }
+    }
+
 
     public CarDetailViewModel()
     {
@@ -63,6 +83,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         Cars = new FullObservableCollection<Car>(dao.getAllCars());
         SelectedCar = Cars.First();
     }
+
 
     public event PropertyChangedEventHandler? PropertyChanged;
 }
