@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,30 +36,35 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         }
     }
 
-    protected void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
+    private ObservableCollection<string> _selectedCarPictures;
     public ObservableCollection<string>? SelectedCarPictures
     {
-        get; set;
+        get => _selectedCarPictures;
+        set
+        {
+            _selectedCarPictures = value;
+            OnPropertyChanged(nameof(SelectedCarPictures));
+        }
     }
     private void LoadPictureOfCar()
     {
-        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Picture);
-        if (SelectedCar != null && Directory.Exists(path))
-        {
-            // Lấy tất cả các file ảnh (jpg, png, jpeg) trong thư mục
-            var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
-                                      .Where(f => f.EndsWith(".jpg") || f.EndsWith(".png") || f.EndsWith(".jpeg"));
+        if (SelectedCar == null) return;
 
-            // Gán danh sách ảnh vào SelectedCarPictures để bind với FlipView
-            SelectedCarPictures = new ObservableCollection<string>(imageFiles);
+        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Picture);
+
+        if (Directory.Exists(path))
+        {
+            // Get all jpg files in the directory
+            var imageFiles = Directory.GetFiles(path, "*.jpg", SearchOption.TopDirectoryOnly);
+
+            // Convert file paths to proper URI format for WinUI
+            var imageUris = imageFiles.Select((file, index) =>
+                new Uri($"ms-appx:///{SelectedCar.Picture}/{index + 1}.jpg").ToString());
+
+            SelectedCarPictures = new ObservableCollection<string>(imageUris);
         }
         else
         {
-            // Nếu không tìm thấy thư mục, hoặc không có ảnh, thì clear danh sách ảnh
             SelectedCarPictures = new ObservableCollection<string>();
         }
     }
@@ -78,13 +84,23 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
             if (CompetitorCars.Count() > 8)
                 break;
 
-            if((car.Price > minPrice || car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
+            if((car.Price > minPrice || /*&&*/ car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
             {
                 CompetitorCars.Add(car);
             }
         }
     }
 
+    private int _selectedImageIndex;
+    public int SelectedImageIndex
+    {
+        get => _selectedImageIndex;
+        set
+        {
+            _selectedImageIndex = value;
+            OnPropertyChanged(nameof(SelectedImageIndex));
+        }
+    }
 
     public CarDetailViewModel()
     {
@@ -92,6 +108,10 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         Cars = new FullObservableCollection<Car>(dao.getAllCars());
     }
 
-
     public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
 }

@@ -34,7 +34,7 @@ public class MockDao : IDao
                               "✴️ Tình trạng xe:\r\n♻️ Xe gia đình, Ko chạy dịch vụ.\r\n" +
                               "♻️ Bảo dưỡng định kì đầy đủ.\r\n" +
                               "♻️ Động cơ - hộp số - keo chỉ - gầm bệ nguyên bản chưa qua sửa chữa.\r\n♻️ Ngoại thất màu BẠC. Nước Sơn còn rất mới và liền lạc.\r\n♻️ Nội thất ghế da zin sạch đẹp, các chi tiết hao mòn không đang kể.\r\n♻️ 4 Lốp còn đẹp, đủ 2 chìa zin, phụ kiện theo xe còn đầy đủ.\r\n\r\n✳️ Trang bị nổi bật của xe:\r\n🔅 Màn hình cảm ứng + đàm thoại rảnh tay.\r\n🔅 Ghế chỉnh điện - Cửa Sổ Trời - Đề nổ Star Stop - Cảm biến áp suất lốp.\r\n🔅 Điều hòa Auto - Đèn Auto - Ga Tự Động.\r\n🔅 Có sẵn thảm sàn - Film cách nhiệt - Bọc Trần 5D.\r\n🔅 Đăng kiểm mới đến 04/ 2026.\r\n\r\nCam kết của Chợ Tốt Xe Official Mall:\r\n✅Pháp Lý Đảm Bảo, Không đâm đụng, Không ngập nước, Không cháy nổ.\r\n✅Hỗ trợ cho vay trả góp lên đến 70%\r\n✅Đội ngũ nhân viên chuyên nghiệp nhiệt tình và chu đáo.\r\n✅Cam kết chất lượng theo tiêu chuẩn 207 điểm kiểm định của Chợ Tốt Xe.\r\n✅Lái thử xe ngay, không cần đặt cọc.\r\n✅Bao kiểm tra tại các xưởng và hãng trên toàn quốc.",
-                Picture = "Assets/images/KiaCerato20181.6AT",
+                Picture = "Assets\\images\\KiaCerato20181.6AT",
                 Avatar = "..\\..\\Assets\\images\\KiaCerato20181.6AT\\1.jpg"
             },
 
@@ -48,7 +48,7 @@ public class MockDao : IDao
                 Price = 325000000,
                 UsageStatus = "Xe mới",
                 Description = "",
-                Picture = "Assets/images/VinFastFadil1.4AT2022",
+                Picture = "Assets\\images\\VinFastFadil1.4AT2022",
                 Avatar = "..\\..\\Assets\\images\\VinFastFadil1.4AT2022\\1.jpg"
             },
 
@@ -62,7 +62,7 @@ public class MockDao : IDao
                 Price = 565000000,
                 UsageStatus = "Xe cũ",
                 Description = "",
-                Picture = "Assets/images/XpanderATEco2023",
+                Picture = "Assets\\images\\XpanderATEco2023",
                 Avatar = "..\\..\\Assets\\images\\XpanderATEco2023\\1.jpg"
             },
 
@@ -76,7 +76,7 @@ public class MockDao : IDao
                 Price = 828000000,
                 UsageStatus = "xe Cũ",
                 Description = "",
-                Picture = "Assets/images/VinfastLuxSA2.02021",
+                Picture = "Assets\\images\\VinfastLuxSA2.02021",
                 Avatar = "..\\..\\Assets\\images\\VinfastLuxSA2.02021\\1.jpg"
             },
         };

@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using CarStore.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using CarStore.Models;
+using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -37,6 +38,7 @@ public sealed partial class CarDetailPage : Page
         this.InitializeComponent();
         ViewModel = new CarDetailViewModel();
         ViewModel.SelectedCar = ViewModel.Cars.FirstOrDefault();
+        this.DataContext = ViewModel;
         UpdateGridViewHeight();
     }
 
@@ -52,12 +54,6 @@ public sealed partial class CarDetailPage : Page
         //    SeeMoreCompitetorText.Visibility = Visibility.Collapsed;
         //}
     }
-
-    private void ChoosePicture(object sender, TappedRoutedEventArgs e)
-    {
-
-    }
-
     private void SeeThisCar(object sender, ItemClickEventArgs e)
     {
         var selectedCar = e.ClickedItem as Car;
@@ -80,5 +76,30 @@ public sealed partial class CarDetailPage : Page
     private void SeeMoreCompetitor(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void ChooseThisPicture(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is string imagePath)
+        {
+            // Find the index of the clicked item in the collection
+            var index = ViewModel.SelectedCarPictures?.IndexOf(imagePath) ?? -1;
+            if (index != -1)
+            {
+                ViewModel.SelectedImageIndex = index; // This will update the FlipView
+            }
+        }
+    }
+
+    private async void ClickHomePageButton(object sender, RoutedEventArgs e)
+    {
+        var uri = new Uri("https://anycar.vn/");
+        await Launcher.LaunchUriAsync(uri);
+    }
+
+    private async void ClickFacebookButton(object sender, RoutedEventArgs e)
+    {
+        var uri = new Uri("https://www.facebook.com/anycar.vn/");
+        await Launcher.LaunchUriAsync(uri);
     }
 }
