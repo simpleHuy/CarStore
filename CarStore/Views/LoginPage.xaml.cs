@@ -46,14 +46,14 @@ public sealed partial class LoginPage : Page
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-        if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
-        {
-            greeting.Text = $"Hello, {e.Parameter.ToString()}";
-        }
-        else
-        {
-            greeting.Text = "Hello!";
-        }
-        base.OnNavigatedTo(e);
+        //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
+        //{
+        //    greeting.Text = $"Hello, {e.Parameter.ToString()}";
+        //}
+        //else
+        //{
+        //    greeting.Text = "Hello!";
+        //}
+        //base.OnNavigatedTo(e);
     }
 }

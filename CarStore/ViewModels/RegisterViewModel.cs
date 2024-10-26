@@ -89,13 +89,13 @@ public partial class RegisterViewModel : ObservableObject
             string.IsNullOrEmpty(Password) ||
             string.IsNullOrEmpty(ConfirmPassword))
         {
-            ErrorMessage = "All fields are required.";
+            ErrorMessage = "Tất cả các ô không để trống.";
             return;
         }
 
         if (Password != ConfirmPassword)
         {
-            ErrorMessage = "Passwords do not match.";
+            ErrorMessage = "Mật khẩu không trùng khớp.";
             return;
         }
 

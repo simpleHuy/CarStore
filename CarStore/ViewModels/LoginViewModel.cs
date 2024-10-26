@@ -49,7 +49,7 @@ public partial class LoginViewModel : ObservableObject
     private void ExecuteLogin()
     {
         // Add your authentication logic here
-        if (Username == "admin" && Password == "password") // Replace with real auth
+        if (Username == "admin" && Password == "1234") // Replace with real auth
         {
             // Navigate to main page (Main)
             _navigationService.NavigateTo(typeof(MainViewModel).FullName!);
@@ -57,7 +57,7 @@ public partial class LoginViewModel : ObservableObject
         }
         else
         {
-            ErrorMessage = "Invalid username or password";
+            ErrorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác";
         }
     }
 }

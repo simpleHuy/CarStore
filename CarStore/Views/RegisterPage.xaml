@@ -8,48 +8,62 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Grid Padding="40">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Spacing="20">
-
-            <!-- User Information -->
-            <TextBlock Text="First Name" FontWeight="Bold"/>
-            <TextBox x:Name="FirstNameTextBox" PlaceholderText="Enter first name"
-                     Text="{x:Bind ViewModel.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Last Name" FontWeight="Bold"/>
-            <TextBox x:Name="LastNameTextBox" PlaceholderText="Enter last name"
-                     Text="{x:Bind ViewModel.LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Email" FontWeight="Bold"/>
-            <TextBox x:Name="EmailTextBox" PlaceholderText="Enter email" InputScope="EmailSmtpAddress"
-                     Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Phone Number" FontWeight="Bold"/>
-            <TextBox x:Name="PhoneTextBox" PlaceholderText="Enter phone number" InputScope="TelephoneNumber"
-                     Text="{x:Bind ViewModel.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!-- Account Information -->
-            <TextBlock Text="Username" FontWeight="Bold"/>
-            <TextBox x:Name="UsernameTextBox" PlaceholderText="Enter username"
-                     Text="{x:Bind ViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Password" FontWeight="Bold"/>
-            <PasswordBox x:Name="PasswordBox" PlaceholderText="Enter password"
-                         Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <TextBlock Text="Confirm Password" FontWeight="Bold"/>
-            <PasswordBox x:Name="ConfirmPasswordBox" PlaceholderText="Confirm password"
-                         Password="{x:Bind ViewModel.ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <!-- Register Button -->
-            <Button Content="Register" HorizontalAlignment="Center" Click="RegisterButton_Click" Command="{x:Bind ViewModel.RegisterCommand}"/>
-            <TextBlock Grid.Row="3"
-                   Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                   Foreground="Red"
-                   TextWrapping="Wrap"
+            <TextBlock Grid.Row="1" 
+                   Text="ĐĂNG KÝ" 
+                   Style="{StaticResource TitleTextBlockStyle}"
                    HorizontalAlignment="Center"
-                   Margin="0,12,0,0"/>
+                   Margin="0,0,0,10"/>
+            
+            <!-- User Information -->
+            <TextBlock Text="Thông tin cá nhân" FontWeight="Bold"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="12"/>
+                    <!-- Spacing between textboxes -->
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" 
+                        x:Name="FirstNameTextBox" 
+                        PlaceholderText="Họ"
+                        Text="{x:Bind ViewModel.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Grid.Column="2" 
+                        x:Name="LastNameTextBox" 
+                        PlaceholderText="Tên"
+                        Text="{x:Bind ViewModel.LastName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+            <TextBox x:Name="EmailTextBox" 
+                     PlaceholderText="Email" 
+                     InputScope="EmailSmtpAddress"
+                     Text="{x:Bind ViewModel.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="PhoneTextBox" 
+                     PlaceholderText="Số điện thoại" 
+                     InputScope="TelephoneNumber"
+                     Text="{x:Bind ViewModel.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- Account Information -->
+            <TextBlock Text="Thông tin tài khoản" FontWeight="Bold"/>
+            <TextBox x:Name="UsernameTextBox" 
+                     PlaceholderText="Tên đăng nhập"
+                     Text="{x:Bind ViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox x:Name="PasswordBox" 
+                        PlaceholderText="Mật khẩu"
+                        Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox x:Name="ConfirmPasswordBox" 
+                        PlaceholderText="Xác nhập mật khẩu"
+                        Password="{x:Bind ViewModel.ConfirmPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- Register Button -->
+            <Button Content="Đăng ký" 
+                    HorizontalAlignment="Center" 
+                    Click="RegisterButton_Click" 
+                    Command="{x:Bind ViewModel.RegisterCommand}"
+                    Background="#D3D3D3"/>
+            <TextBlock Grid.Row="3"
+                      Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                      Foreground="Red"
+                      TextWrapping="Wrap"
+                      HorizontalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Page>

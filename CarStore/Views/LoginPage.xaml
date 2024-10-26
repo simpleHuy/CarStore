@@ -9,36 +9,36 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid RowDefinitions="*, Auto, Auto, Auto, *" 
-          MaxWidth="400" 
+    <Grid RowDefinitions="*, Auto, Auto, Auto, *"
+           MaxWidth="300" 
           Padding="20" x:Name="ContentArea">
 
         <TextBlock Grid.Row="1" 
-                   Text="Login" 
+                   Text="ĐĂNG NHẬP" 
                    Style="{StaticResource TitleTextBlockStyle}"
                    HorizontalAlignment="Center"
                    Margin="0,0,0,20"/>
 
         <StackPanel Grid.Row="2" Spacing="12">
             <TextBox x:Name="UsernameBox"
-                     PlaceholderText="Username"
+                     PlaceholderText="Tên đăng nhập"
                      Text="{x:Bind ViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <PasswordBox x:Name="PasswordBox"
-                        PlaceholderText="Password"
+                        PlaceholderText="Mật khẩu"
                         Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <StackPanel VerticalAlignment="Center">
-                <TextBlock HorizontalAlignment="Center" x:Name="greeting"/>
+                <!--<TextBlock HorizontalAlignment="Center" x:Name="greeting"/>-->
 
                 <!-- Login Button -->
-                <HyperlinkButton Content="Login"
+                <HyperlinkButton Content="Đăng nhập" Background="#4CBB17" FontWeight="Bold" Foreground="Black"
                  Click="HyperlinkButton_Click"
                  HorizontalAlignment="Center"
                  Command="{x:Bind ViewModel.LoginCommand}"/>
 
                 <!-- Register Now Button -->
-                <HyperlinkButton Content="Register Now"
+                <HyperlinkButton Content="Đăng ký ngay" Margin="0 10 0 0"
                  Click="RegisterNowButton_Click"
                  HorizontalAlignment="Center"/>
             </StackPanel>
@@ -49,7 +49,7 @@
                    Foreground="Red"
                    TextWrapping="Wrap"
                    HorizontalAlignment="Center"
-                   Margin="0,12,0,0"/>
+                   Margin="0,7,0,0" FontSize="12"/>
     </Grid>
 </Page>
     
