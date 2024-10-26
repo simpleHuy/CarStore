@@ -32,7 +32,7 @@
                     <FlipView x:Name="Gallery" ItemsSource="{x:Bind ViewModel.SelectedCarPictures}" Height="400">
                         <FlipView.ItemTemplate>
                             <DataTemplate x:DataType="x:String">
-                                <Image x:Name="BigImage" Source="{x:Bind Mode=OneTime}" />
+                                <Image x:Name="BigImage" Source="{x:Bind Mode=OneWay}" />
                             </DataTemplate>
                         </FlipView.ItemTemplate>
                     </FlipView>

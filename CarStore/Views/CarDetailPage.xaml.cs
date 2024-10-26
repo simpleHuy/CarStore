@@ -80,13 +80,14 @@ public sealed partial class CarDetailPage : Page
 
     private void ChooseThisPicture(object sender, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is string imagePath)
+        if (e.ClickedItem is string clickedImagePath)
         {
-            // Find the index of the clicked item in the collection
-            var index = ViewModel.SelectedCarPictures?.IndexOf(imagePath) ?? -1;
-            if (index != -1)
+            // Find the index of clicked item
+            int index = ViewModel.SelectedCarPictures.IndexOf(clickedImagePath);
+            if (index >= 0)
             {
-                ViewModel.SelectedImageIndex = index; // This will update the FlipView
+                // Update the FlipView's selected index directly
+                Gallery.SelectedIndex = index;
             }
         }
     }
