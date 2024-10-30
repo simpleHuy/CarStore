@@ -50,7 +50,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
     {
         if (SelectedCar == null) return;
 
-        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Picture);
+        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Images);
 
         if (Directory.Exists(path))
         {
@@ -59,7 +59,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
 
             // Convert file paths to proper URI format for WinUI
             var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///{SelectedCar.Picture}/{index + 1}.jpg").ToString());
+                new Uri($"ms-appx:///{SelectedCar.Images}/{index + 1}.jpg").ToString());
 
             SelectedCarPictures = new ObservableCollection<string>(imageUris);
         }
