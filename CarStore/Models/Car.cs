@@ -18,15 +18,15 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-    public string? Manufacturer
+    public int? Manufacturer
     {
         get; set;
     }
-    public string? EngineType
+    public int? EngineType
     {
         get; set;
     }
-    public string? TypeOfCar
+    public int? TypeOfCar
     {
         get; set;
     }
@@ -43,12 +43,12 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
-    public string? Picture
+    public string? Variant
     {
         get; set;
     }
 
-    public string? Avatar
+    public string? Images
     {
         get; set;
     }
