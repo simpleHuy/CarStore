@@ -61,7 +61,7 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
@@ -72,7 +72,10 @@ public partial class App : Application
             services.AddTransient<MainPage>();
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<RegisterPage>();
-
+            services.AddTransient<FilterViewModel>();
+            services.AddTransient<FilterPage>();
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<ShellPage>();
 
             // Configuration
         }).

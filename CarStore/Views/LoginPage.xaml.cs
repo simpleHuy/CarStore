@@ -32,28 +32,7 @@ public sealed partial class LoginPage : Page
     {
         ViewModel = App.GetService<LoginViewModel>();
         InitializeComponent();
+        
     }
 
-    private void RegisterNowButton_Click(object sender, RoutedEventArgs e)
-    {
-        Frame.Navigate(typeof(RegisterPage));
-    }
-    // HyperlinkButton_Click method
-    private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
-    {
-        //Frame.Navigate(typeof(MainPage), name.Text);
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        //if (e.Parameter is string && !string.IsNullOrWhiteSpace((string)e.Parameter))
-        //{
-        //    greeting.Text = $"Hello, {e.Parameter.ToString()}";
-        //}
-        //else
-        //{
-        //    greeting.Text = "Hello!";
-        //}
-        //base.OnNavigatedTo(e);
-    }
 }

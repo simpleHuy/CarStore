@@ -9,47 +9,57 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid RowDefinitions="*, Auto, Auto, Auto, *"
-           MaxWidth="300" 
-          Padding="20" x:Name="ContentArea">
+    <Grid 
+          MaxWidth="1920" MaxHeight="1080"
+          HorizontalAlignment="Center" VerticalAlignment="Center">
+        <!-- Center Content -->
+        <Grid 
+            RowDefinitions="*, Auto, Auto, Auto, *"
+            MaxWidth="600" 
+            Width="500" Height="600" Padding="20" 
+            x:Name="ContentArea" 
+            Background= "White"
+            HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
 
-        <TextBlock Grid.Row="1" 
-                   Text="ĐĂNG NHẬP" 
-                   Style="{StaticResource TitleTextBlockStyle}"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,20"/>
+            <TextBlock Grid.Row="1" 
+                       Text="ĐĂNG NHẬP" 
+                       FontSize="35"
+                       Style="{StaticResource TitleTextBlockStyle}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,40" FontWeight="Bold"/>
 
-        <StackPanel Grid.Row="2" Spacing="12">
-            <TextBox x:Name="UsernameBox"
-                     PlaceholderText="Tên đăng nhập"
-                     Text="{x:Bind ViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Grid.Row="2" Spacing="12" MaxWidth="300">
+                <TextBox x:Name="UsernameBox"
+                         PlaceholderText="Tên đăng nhập"
+                         Text="{x:Bind ViewModel.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <PasswordBox x:Name="PasswordBox"
-                        PlaceholderText="Mật khẩu"
-                        Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <PasswordBox x:Name="PasswordBox"
+                            PlaceholderText="Mật khẩu"
+                            Password="{x:Bind ViewModel.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <StackPanel VerticalAlignment="Center">
-                <!--<TextBlock HorizontalAlignment="Center" x:Name="greeting"/>-->
+                <CheckBox Content="Ghi nhớ đăng nhập" 
+                    IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}" />
 
-                <!-- Login Button -->
-                <HyperlinkButton Content="Đăng nhập" Background="#4CBB17" FontWeight="Bold" Foreground="Black"
-                 Click="HyperlinkButton_Click"
-                 HorizontalAlignment="Center"
-                 Command="{x:Bind ViewModel.LoginCommand}"/>
+                <StackPanel VerticalAlignment="Center">
+                    <!-- Login Button -->
+                    <HyperlinkButton Content="Đăng nhập" Background="{ThemeResource SystemAccentColorLight2}" FontWeight="Bold" Foreground="Black"
+                     HorizontalAlignment="Center"
+                     Command="{x:Bind ViewModel.LoginCommand}"/>
 
-                <!-- Register Now Button -->
-                <HyperlinkButton Content="Đăng ký ngay" Margin="0 10 0 0"
-                 Click="RegisterNowButton_Click"
-                 HorizontalAlignment="Center"/>
+                    <!-- Register Now Button -->
+                    <HyperlinkButton Content="Đăng ký ngay" Margin="0 10 0 0"
+                                        HorizontalAlignment="Center" 
+                                     Command="{x:Bind ViewModel.NavigateToRegisterCommand}"/>
+                </StackPanel>
+                
             </StackPanel>
-        </StackPanel>
 
-        <TextBlock Grid.Row="3"
-                   Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
-                   Foreground="Red"
-                   TextWrapping="Wrap"
-                   HorizontalAlignment="Center"
-                   Margin="0,7,0,0" FontSize="12"/>
+            <TextBlock Grid.Row="3"
+                       Text="{x:Bind ViewModel.ErrorMessage, Mode=OneWay}"
+                       Foreground="Red"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       Margin="0,7,0,0" FontSize="12"/>
+        </Grid>
     </Grid>
 </Page>
-    

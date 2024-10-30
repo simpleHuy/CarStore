@@ -1,32 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CarStore.Contracts.Services;
-using CarStore.Views;
+﻿using CarStore.Contracts.Services;
+using CarStore.ViewModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Xaml.Controls;
 
-namespace CarStore.ViewModels;
-public partial class LoginViewModel : ObservableObject
+public class LoginViewModel : ObservableObject
 {
     private readonly INavigationService _navigationService;
-    private string _username = "";
-    private string _password = "";
-    private string _errorMessage = "";
+    private readonly IAuthenticationService _authService;
+
+    private string _username = string.Empty;
+    private string _password = string.Empty;
+    private string _errorMessage = string.Empty;
+    private bool _isLoading;
+    private bool _rememberMe;
 
     public string Username
     {
         get => _username;
-        set => SetProperty(ref _username, value);
+        set
+        {
+            if (SetProperty(ref _username, value))
+            {
+                LoginCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
 
     public string Password
     {
         get => _password;
-        set => SetProperty(ref _password, value);
+        set
+        {
+            if (SetProperty(ref _password, value))
+            {
+                LoginCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
 
     public string ErrorMessage
@@ -35,29 +44,115 @@ public partial class LoginViewModel : ObservableObject
         set => SetProperty(ref _errorMessage, value);
     }
 
-    public IRelayCommand LoginCommand
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => SetProperty(ref _isLoading, value);
+    }
+
+    public bool RememberMe
+    {
+        get => _rememberMe;
+        set => SetProperty(ref _rememberMe, value);
+    }
+
+    public IAsyncRelayCommand LoginCommand
     {
         get;
     }
+    public IRelayCommand NavigateToRegisterCommand
+    {
+        get;
+    }
+    //public IRelayCommand ForgotPasswordCommand
+    //{
+    //    get;
+    //}
 
-    public LoginViewModel(INavigationService navigationService)
+    public LoginViewModel(INavigationService navigationService, IAuthenticationService authService)
     {
         _navigationService = navigationService;
-        LoginCommand = new RelayCommand(ExecuteLogin);
+        _authService = authService;
+        NavigateToRegisterCommand = new RelayCommand(ExecuteNavigateToRegister);
+        LoginCommand = new AsyncRelayCommand(ExecuteLoginAsync, CanExecuteLogin);
+      
+        //ForgotPasswordCommand = new RelayCommand(ExecuteForgotPassword);
+
+        // Load saved credentials if they exist
+        LoadSavedCredentialsAsync();
     }
 
-    private void ExecuteLogin()
+    private async void LoadSavedCredentialsAsync()
     {
-        // Add your authentication logic here
-        if (Username == "admin" && Password == "1234") // Replace with real auth
+        var savedCredentials = await _authService.GetSavedCredentialsAsync();
+        if (savedCredentials.HasValue)
         {
-            // Navigate to main page (Main)
-            _navigationService.NavigateTo(typeof(MainViewModel).FullName!);
-            //Frame.Navigate(typeof(MainPage));
-        }
-        else
-        {
-            ErrorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác";
+            Username = savedCredentials.Value.username;
+            Password = savedCredentials.Value.password;
+            RememberMe = true;
         }
     }
+
+    private bool CanExecuteLogin()
+    {
+        return !string.IsNullOrWhiteSpace(Username) &&
+               !string.IsNullOrWhiteSpace(Password) &&
+               !IsLoading;
+    }
+
+    private async Task ExecuteLoginAsync()
+    {
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+
+            var loginSuccess = await _authService.LoginAsync(Username, Password);
+
+            if (loginSuccess)
+            {
+                if (RememberMe)
+                {
+                    await _authService.SaveCredentialsAsync(Username, Password);
+                }
+                else
+                {
+                    await _authService.ClearSavedCredentialsAsync();
+                }
+
+                _navigationService.NavigateTo(typeof(MainViewModel).FullName!);
+            }
+            else
+            {
+                ErrorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác";
+            }
+        }
+        catch (Exception)
+        {
+            ErrorMessage = "Đã xảy ra lỗi khi đăng nhập. Vui lòng thử lại sau.";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    private void ExecuteNavigateToRegister()
+    {
+        try
+        {
+            System.Diagnostics.Debug.WriteLine("NavigateToRegisterCommand executed.");
+            _navigationService.NavigateTo(typeof(FilterViewModel).FullName!);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Navigation error: {ex.Message}");
+        }
+    }
+
+
+    //private void ExecuteForgotPassword()
+    //{
+    //    _navigationService.NavigateTo(typeof(ForgotPasswordViewModel).FullName!);
+    //}
+    // ... rest of the ViewModel implementation remains the same
 }
