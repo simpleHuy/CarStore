@@ -84,6 +84,10 @@ public class NavigationService : INavigationService
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
+        if (pageType == null)
+        {
+            throw new ArgumentException($"No page found for key {pageKey}", nameof(pageKey));
+        }
 
         if (_frame != null && (_frame.Content?.GetType() != pageType || (parameter != null && !parameter.Equals(_lastParameterUsed))))
         {

@@ -2,14 +2,16 @@
 using CarStore.Contracts.Services;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Services;
-using CarStore.Helpers;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
+using CarStore.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace CarStore;
 
@@ -39,7 +41,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -59,15 +64,26 @@ public partial class App : Application
             services.AddSingleton<IActivationService, ActivationService>();
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
-
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<LoginPage>();
             services.AddTransient<MainViewModel>();
             services.AddTransient<MainPage>();
+            services.AddTransient<RegisterViewModel>();
+            services.AddTransient<RegisterPage>();
+            services.AddTransient<FilterViewModel>();
+            services.AddTransient<FilterPage>();
+            services.AddTransient<ShellPage>();
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<ForgotPasswordViewModel>();
+            services.AddTransient<ForgotPasswordPage>();
 
             // Configuration
+            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
         Build();
 
@@ -83,7 +99,6 @@ public partial class App : Application
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
-
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
 }

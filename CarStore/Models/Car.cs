@@ -43,12 +43,28 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
-    public string? Variant
+    public List<Color>? Variant
     {
         get; set;
     }
 
     public string? Images
+    {
+        get; set;
+    }
+
+    public string? Thumbnail
+    {
+        get
+        {
+            //var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefautlImageLocation);
+            //var directories = Directory.GetDirectories(path);
+            //return directories[0] + "\\1.jpg";
+            return DefautlImageLocation;
+        }
+    }
+
+    public string? DefautlImageLocation
     {
         get; set;
     }

@@ -1,4 +1,5 @@
-﻿using CarStore.Contracts.Services;
+﻿using System.Reflection.PortableExecutable;
+using CarStore.Contracts.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
 
@@ -15,6 +16,11 @@ public class PageService : IPageService
     public PageService()
     {
         Configure<MainViewModel, MainPage>();
+        Configure<LoginViewModel, LoginPage>();
+        Configure<RegisterViewModel, RegisterPage>();
+        Configure<FilterViewModel, FilterPage>();
+        Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
+        Configure<CarDetailViewModel, CarDetailPage>();
     }
 
     public Type GetPageType(string key)

@@ -10,6 +10,14 @@
                 <ResourceDictionary Source="/Styles/Thickness.xaml" />
                 <ResourceDictionary Source="/Styles/TextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Color x:Key="SystemAccentColor">#3379d9</Color>
+            <Color x:Key="SystemAccentColorLight1">#5e9ce6</Color>
+            <Color x:Key="SystemAccentColorLight2">#8ab5f3</Color>
+            <Color x:Key="SystemAccentColorLight3">#b7d2f9</Color>
+            <Color x:Key="SystemAccentColorDark1">#235a9f</Color>
+            <Color x:Key="SystemAccentColorDark2">#1a4c8f</Color>
+            <Color x:Key="SystemAccentColorDark3">#113e7f</Color>
+            <Color x:Key="ApplicationPageBackgroundThemeBrush">#3379d9</Color>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

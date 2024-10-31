@@ -2,7 +2,7 @@
 
 namespace CarStore.ViewModels;
 
-public partial class MainViewModel : ObservableRecipient
+public partial class MainViewModel : ObservableObject
 {
     public MainViewModel()
     {
