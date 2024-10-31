@@ -6,6 +6,7 @@ using CarStore.Helpers;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
+using CarStore.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -74,10 +75,13 @@ public partial class App : Application
             services.AddTransient<RegisterPage>();
             services.AddTransient<FilterViewModel>();
             services.AddTransient<FilterPage>();
-            services.AddTransient<ShellViewModel>();
             services.AddTransient<ShellPage>();
+            services.AddTransient<ShellViewModel>();
+            services.AddTransient<ForgotPasswordViewModel>();
+            services.AddTransient<ForgotPasswordPage>();
 
             // Configuration
+            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
         }).
         Build();
 

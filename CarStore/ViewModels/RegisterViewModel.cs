@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CarStore.Contracts.Services;
+using CarStore.Services;
 using CarStore.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -20,6 +21,7 @@ public partial class RegisterViewModel : ObservableObject
     private string _confirmPassword = string.Empty;
     private string _errorMessage = string.Empty;
 
+    // Properties remain the same
     public string FirstName
     {
         get => _firstName;
@@ -28,7 +30,7 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _firstName, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
 
@@ -40,7 +42,7 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _lastName, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
 
@@ -52,7 +54,7 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _email, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
 
@@ -64,7 +66,7 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _phoneNumber, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
 
@@ -76,8 +78,8 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _username, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
-        }  
+            }
+        }
     }
 
     public string Password
@@ -88,9 +90,10 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _password, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
+
     public string ConfirmPassword
     {
         get => _confirmPassword;
@@ -99,7 +102,7 @@ public partial class RegisterViewModel : ObservableObject
             if (SetProperty(ref _confirmPassword, value))
             {
                 RegisterCommand.NotifyCanExecuteChanged();
-            };
+            }
         }
     }
 
@@ -113,7 +116,6 @@ public partial class RegisterViewModel : ObservableObject
     {
         get;
     }
-
     public IRelayCommand NavigateToLoginCommand
     {
         get;
@@ -127,38 +129,27 @@ public partial class RegisterViewModel : ObservableObject
         NavigateToLoginCommand = new RelayCommand(() => _navigationService.NavigateTo(typeof(LoginViewModel).FullName!));
     }
 
-
-
     private async Task ExecuteRegister()
     {
-        // Validate fields
-        if (string.IsNullOrEmpty(FirstName) ||
-            string.IsNullOrEmpty(LastName) ||
-            string.IsNullOrEmpty(Email) ||
-            string.IsNullOrEmpty(PhoneNumber) ||
-            string.IsNullOrEmpty(Username) ||
-            string.IsNullOrEmpty(Password) ||
-            string.IsNullOrEmpty(ConfirmPassword))
-        {
-            ErrorMessage = "Tất cả các ô không để trống.";
-            return;
-        }
-
-        if (Password != ConfirmPassword)
-        {
-            ErrorMessage = "Mật khẩu không trùng khớp.";
-            return;
-        }
-
         try
         {
+            // Validate using AuthenticationService
+            var validationResult = (_authService as AuthenticationService)?.ValidateRegistrationData(
+                FirstName, LastName, Email, PhoneNumber, Username, Password, ConfirmPassword);
+
+            if (validationResult != null && !validationResult.IsValid)
+            {
+                ErrorMessage = validationResult.ErrorMessage;
+                return;
+            }
+
             // Clear any previous error message
             ErrorMessage = string.Empty;
 
-            // Save user data using the authentication service
-            var registrationResult = await _authService.RegisterAsync(FirstName, LastName, Email, PhoneNumber, Username, Password);
+            // Attempt registration
+            var registrationResult = await _authService.RegisterAsync(
+                FirstName, LastName, Email, PhoneNumber, Username, Password);
 
-            // Check if registration succeeded
             if (registrationResult)
             {
                 // Navigate to LoginPage on successful registration
@@ -174,5 +165,4 @@ public partial class RegisterViewModel : ObservableObject
             ErrorMessage = $"Đã xảy ra lỗi: {ex.Message}";
         }
     }
-
 }

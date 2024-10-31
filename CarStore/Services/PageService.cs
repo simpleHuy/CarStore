@@ -19,7 +19,7 @@ public class PageService : IPageService
         Configure<LoginViewModel, LoginPage>();
         Configure<RegisterViewModel, RegisterPage>();
         Configure<FilterViewModel, FilterPage>();
-        Configure<ShellViewModel, ShellPage>();
+        Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
     }
 
     public Type GetPageType(string key)

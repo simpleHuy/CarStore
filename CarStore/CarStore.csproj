@@ -17,9 +17,11 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Views\FilterPage.xaml" />
+    <None Remove="Views\ForgotPasswordPage.xaml" />
     <None Remove="Views\LoginPage.xaml" />
     <None Remove="Views\RegisterPage.xaml" />
     <None Remove="Views\ShellPage.xaml" />
+    <None Remove="Views\VerifyPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +50,18 @@
     <Content Update="Assets\car1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\VerifyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\ForgotPasswordPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Grid 
       MaxWidth="600" 
-      Width="500" Height="600" Padding="20" 
+      Width="500" Height="700" Padding="20" 
       x:Name="ContentArea" 
       Background= "White"
       HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">

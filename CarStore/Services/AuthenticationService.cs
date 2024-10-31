@@ -7,6 +7,7 @@ using System.IO;
 using System.Collections.Generic;
 using Windows.Storage;
 using CarStore.Contracts.Services;
+using System.Text.RegularExpressions;
 
 namespace CarStore.Services;
 
@@ -16,12 +17,18 @@ public class AuthenticationService : IAuthenticationService
     private readonly string _userDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "userData.json");
     private Dictionary<string, UserData> _users;
 
+    private const int MIN_PASSWORD_LENGTH = 8;
+    private const int MAX_NAME_LENGTH = 50;
+    private const string EMAIL_PATTERN = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+    private const string PHONE_PATTERN = @"^(0|\+84)[0-9]{9}$";
+    private const string PASSWORD_PATTERN = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
     public AuthenticationService()
     {
         _users = new Dictionary<string, UserData>();
         LoadUsers();
     }
 
+  
     private class UserData
     {
         public string Username { get; set; } = string.Empty;
@@ -142,6 +149,10 @@ public class AuthenticationService : IAuthenticationService
         localSettings.Values.Remove("entropy");
         await Task.CompletedTask;
     }
+    public bool VerifyEmail(string email)
+    {
+        return _users.Values.Any(user => user.Email == email);
+    }
 
     public async Task<bool> LoginAsync(string username, string password)
     {
@@ -166,24 +177,131 @@ public class AuthenticationService : IAuthenticationService
             return false;
         });
     }
+    public ValidationResult ValidateRegistrationData(
+    string firstName,
+    string lastName,
+    string email,
+    string phoneNumber,
+    string username,
+    string password,
+    string confirmPassword)
+    {
+        // Check for empty fields
+        if (string.IsNullOrWhiteSpace(firstName) ||
+            string.IsNullOrWhiteSpace(lastName) ||
+            string.IsNullOrWhiteSpace(email) ||
+            string.IsNullOrWhiteSpace(phoneNumber) ||
+            string.IsNullOrWhiteSpace(username) ||
+            string.IsNullOrWhiteSpace(password) ||
+            string.IsNullOrWhiteSpace(confirmPassword))
+        {
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tất cả các trường là bắt buộc."
+            };
+        }
 
+        // Validate names
+        if (!ValidateName(firstName))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tên không hợp lệ. Tên không được chứa số và không quá 50 ký tự."
+            };
+
+        if (!ValidateName(lastName))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Họ không hợp lệ. Họ không được chứa số và không quá 50 ký tự."
+            };
+
+        // Validate email
+        if (!ValidateEmail(email))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Email không hợp lệ."
+            };
+
+        // Validate phone number
+        if (!ValidatePhoneNumber(phoneNumber))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Số điện thoại không hợp lệ. Vui lòng sử dụng định dạng: 0xxxxxxxxx hoặc +84xxxxxxxxx"
+            };
+
+        // Validate username
+        if (username.Length < 3 || username.Length > 20)
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tên đăng nhập phải từ 3 đến 20 ký tự."
+            };
+
+        if (_users.ContainsKey(username))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tên đăng nhập đã tồn tại."
+            };
+
+        // Validate password
+        if (!ValidatePassword(password))
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+            };
+
+        // Check password match
+        if (password != confirmPassword)
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Mật khẩu không trùng khớp."
+            };
+
+        return new ValidationResult { IsValid = true, ErrorMessage = string.Empty };
+    }
+
+    private bool ValidateEmail(string email)
+    {
+        return !string.IsNullOrWhiteSpace(email) && Regex.IsMatch(email, EMAIL_PATTERN);
+    }
+
+    private bool ValidatePhoneNumber(string phoneNumber)
+    {
+        return !string.IsNullOrWhiteSpace(phoneNumber) && Regex.IsMatch(phoneNumber, PHONE_PATTERN);
+    }
+
+    private bool ValidatePassword(string password)
+    {
+        return !string.IsNullOrWhiteSpace(password) && Regex.IsMatch(password, PASSWORD_PATTERN);
+    }
+
+    private bool ValidateName(string name)
+    {
+        return !string.IsNullOrWhiteSpace(name) &&
+               name.Length <= MAX_NAME_LENGTH &&
+               !name.Any(char.IsDigit);
+    }
+
+    // Modified Register method
     public async Task<bool> RegisterAsync(string firstName, string lastName, string email, string phoneNumber, string username, string password)
     {
-        if (_users.ContainsKey(username))
+        var validationResult = ValidateRegistrationData(firstName, lastName, email, phoneNumber, username, password, password);
+        if (!validationResult.IsValid)
             return await Task.FromResult(false);
 
-        if (!ValidatePassword(password))
-            return await Task.FromResult(false);
-        if (string.IsNullOrEmpty(email))
-            return await Task.FromResult(false);
-        if (string.IsNullOrEmpty(phoneNumber))
-            return await Task.FromResult(false);
-        if (string.IsNullOrEmpty(firstName))
-            return await Task.FromResult(false);
-        if (string.IsNullOrEmpty(lastName))
-            return await Task.FromResult(false);
-
-
+        // Sanitize inputs
+        firstName = firstName.Trim();
+        lastName = lastName.Trim();
+        email = email.Trim().ToLower();
+        phoneNumber = phoneNumber.Trim();
+        username = username.Trim();
 
         var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
         var hashedPassword = HashPassword(password, salt);
@@ -238,9 +356,140 @@ public class AuthenticationService : IAuthenticationService
         var hash = pbkdf2.GetBytes(32);
         return Convert.ToBase64String(hash);
     }
-
-    public bool ValidatePassword(string password)
+    //----------------------------------------------------------------------------
+    public async Task<bool> ValidateUsernameExistsAsync(string username)
     {
-        return password.Length >= 4; // Simplified for demo - enhance as needed
+        return await Task.FromResult(_users.ContainsKey(username));
     }
+
+    // New method to validate password reset data
+   
+
+    // New method to reset password
+    public async Task<bool> ResetPasswordAsync(string username, string newPassword)
+    {
+        try
+        {
+            // Validate inputs
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(newPassword))
+            {
+                return false;
+            }
+
+            return await Task.Run(() =>
+            {
+                if (!_users.ContainsKey(username))
+                    return false;
+
+                var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+                var hashedPassword = HashPassword(newPassword, salt);
+
+                _users[username].PasswordHash = hashedPassword;
+                _users[username].Salt = salt;
+
+                SaveUsers();
+                return true;
+            });
+        }
+        catch (Exception)
+        {
+            // Log error in production
+            return false;
+        }
+    }
+
+    // Modified method to properly implement async operations
+    public async Task<bool> ConfirmPasswordResetAsync(string username, string newPassword, string confirmPassword)
+    {
+        try
+        {
+            // Run validation on a background thread since it involves CPU-bound operations
+            var validationResult = await Task.Run(() =>
+                ValidatePasswordReset(username, newPassword, confirmPassword));
+
+            if (!validationResult.IsValid)
+                return false;
+
+            // Call the async reset method
+            return await ResetPasswordAsync(username, newPassword);
+        }
+        catch (Exception)
+        {
+            // Log error in production
+            return false;
+        }
+    }
+
+    // Helper method for password validation
+    public PasswordResetValidationResult ValidatePasswordReset(string username,string newPassword,string confirmPassword)
+    {
+        // Check for empty fields
+        if (string.IsNullOrWhiteSpace(username) ||
+            string.IsNullOrWhiteSpace(newPassword) ||
+            string.IsNullOrWhiteSpace(confirmPassword))
+        {
+            return new PasswordResetValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tất cả các trường là bắt buộc.",
+                UserExists = false
+            };
+        }
+
+        // Check if user exists
+        if (!_users.ContainsKey(username))
+        {
+            return new PasswordResetValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Tên đăng nhập không tồn tại.",
+                UserExists = false
+            };
+        }
+
+        // Validate new password
+        if (!ValidatePassword(newPassword))
+        {
+            return new PasswordResetValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Mật khẩu mới phải có ít nhất 12 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.",
+                UserExists = true
+            };
+        }
+
+        // Check if passwords match
+        if (newPassword != confirmPassword)
+        {
+            return new PasswordResetValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Mật khẩu mới không trùng khớp.",
+                UserExists = true
+            };
+        }
+
+        return new PasswordResetValidationResult
+        {
+            IsValid = true,
+            ErrorMessage = string.Empty,
+            UserExists = true
+        };
+    }
+
+    // Add to existing ValidatePassword method or create a new one for validation only
+    public bool ValidatePasswordStrength(string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            return false;
+
+        var hasNumber = password.Any(char.IsDigit);
+        var hasUpperCase = password.Any(char.IsUpper);
+        var hasLowerCase = password.Any(char.IsLower);
+        var hasSpecialChar = password.Any(ch => !char.IsLetterOrDigit(ch));
+        var isLengthValid = password.Length >= MIN_PASSWORD_LENGTH;
+
+        return hasNumber && hasUpperCase && hasLowerCase && hasSpecialChar && isLengthValid;
+    }
+
 }

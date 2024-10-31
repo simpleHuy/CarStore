@@ -64,10 +64,10 @@ public class LoginViewModel : ObservableObject
     {
         get;
     }
-    //public IRelayCommand ForgotPasswordCommand
-    //{
-    //    get;
-    //}
+    public IRelayCommand NavigateToForgotPassword
+    {
+        get;
+    }
 
     public LoginViewModel(INavigationService navigationService, IAuthenticationService authService)
     {
@@ -75,8 +75,8 @@ public class LoginViewModel : ObservableObject
         _authService = authService;
         NavigateToRegisterCommand = new RelayCommand(ExecuteNavigateToRegister);
         LoginCommand = new AsyncRelayCommand(ExecuteLoginAsync, CanExecuteLogin);
-      
-        //ForgotPasswordCommand = new RelayCommand(ExecuteForgotPassword);
+
+        NavigateToForgotPassword = new RelayCommand(ExecuteNavigateToForgotPassword);
 
         // Load saved credentials if they exist
         LoadSavedCredentialsAsync();
@@ -141,7 +141,7 @@ public class LoginViewModel : ObservableObject
         try
         {
             System.Diagnostics.Debug.WriteLine("NavigateToRegisterCommand executed.");
-            _navigationService.NavigateTo(typeof(FilterViewModel).FullName!);
+            _navigationService.NavigateTo(typeof(RegisterViewModel).FullName!);
         }
         catch (Exception ex)
         {
@@ -150,9 +150,8 @@ public class LoginViewModel : ObservableObject
     }
 
 
-    //private void ExecuteForgotPassword()
-    //{
-    //    _navigationService.NavigateTo(typeof(ForgotPasswordViewModel).FullName!);
-    //}
-    // ... rest of the ViewModel implementation remains the same
+    private void ExecuteNavigateToForgotPassword()
+    {
+        _navigationService.NavigateTo(typeof(ForgotPasswordViewModel).FullName!);
+    }
 }
