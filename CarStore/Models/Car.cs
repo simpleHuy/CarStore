@@ -53,5 +53,15 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
+    public string? Thumbnail
+    {
+        get
+        {
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Images);
+            var directories = Directory.GetDirectories(path);
+            return directories[0] + "\\1.jpg";
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 }

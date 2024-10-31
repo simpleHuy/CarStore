@@ -16,10 +16,10 @@ namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : INotifyPropertyChanged
 {
 
-    private Car? _selectedCar;
     //private FullObservableCollection<Car>? _competitorModels;
 
-
+    // Car will be binded
+    private Car? _selectedCar;
     public FullObservableCollection<Car>? Cars
     {
         get; set;
@@ -36,6 +36,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         }
     }
 
+    // all images of Selected_car
     private ObservableCollection<string> _selectedCarPictures;
     public ObservableCollection<string>? SelectedCarPictures
     {
@@ -46,11 +47,47 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(SelectedCarPictures));
         }
     }
+
+    public string[] Colors
+    {
+        get
+        {
+            string color = SelectedCar.Variant;
+            var result = color.Split(" ");
+
+            return result;
+        }
+    }
+
+    private string _selectedCarColor;
+    public string SelectedCarColor
+    {
+        get => _selectedCarColor;
+
+        set
+        {
+            _selectedCarColor = value;
+            OnPropertyChanged(nameof(_selectedCarColor));
+            LoadPictureOfCar();
+        }
+    }
+
+    // load all images of the car
     private void LoadPictureOfCar()
     {
         if (SelectedCar == null) return;
 
         var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Images);
+
+        if (SelectedCarColor == null)
+        {
+            var directories = Directory.GetDirectories(path);
+            path = directories[0];
+        }
+        else
+        {
+            path += "\\" + SelectedCarColor;
+        }
 
         if (Directory.Exists(path))
         {
@@ -69,6 +106,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         }
     }
 
+    // get all competitor Cars
     public ObservableCollection<Car>? CompetitorCars
     {
         get; set;
@@ -91,6 +129,7 @@ public partial class CarDetailViewModel : INotifyPropertyChanged
         }
     }
 
+    // get selected image index to display on grid view
     private int _selectedImageIndex;
     public int SelectedImageIndex
     {

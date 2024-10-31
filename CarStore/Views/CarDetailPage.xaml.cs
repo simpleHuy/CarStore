@@ -103,4 +103,26 @@ public sealed partial class CarDetailPage : Page
         var uri = new Uri("https://www.facebook.com/anycar.vn/");
         await Launcher.LaunchUriAsync(uri);
     }
+
+    private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+
+        // Lấy giá trị màu sắc đang chọn
+        if (comboBox != null && comboBox.SelectedItem != null)
+        {
+            string selectedColor = comboBox.SelectedItem.ToString();
+
+            ViewModel.SelectedCarColor = selectedColor;
+        }
+    }
+
+    private void Color_Loaded(object sender, RoutedEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+        if (comboBox != null && comboBox.Items.Count > 0)
+        {
+            comboBox.SelectedIndex = 0;
+        }
+    }
 }
