@@ -2,7 +2,6 @@
 using CarStore.Contracts.Services;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Services;
-using CarStore.Helpers;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
@@ -42,7 +41,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitlebar { get; set; }
+    public static UIElement? AppTitlebar
+    {
+        get; set;
+    }
 
     public App()
     {

@@ -1,6 +1,5 @@
 ﻿using CarStore.Activation;
 using CarStore.Contracts.Services;
-using CarStore.Views;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

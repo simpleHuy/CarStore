@@ -16,6 +16,32 @@
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\Cars\Car5\Black\1.jpg" />
+    <None Remove="Assets\Cars\Car5\Blue\1.jpg" />
+    <None Remove="Assets\Cars\Car5\Orange\1.jpg" />
+    <None Remove="Assets\Cars\Car5\White\1.jpg" />
+    <None Remove="Assets\Cars\Car4\Black\1.jpg" />
+    <None Remove="Assets\Cars\Car4\Blue\1.jpg" />
+    <None Remove="Assets\Cars\Car4\Orange\1.jpg" />
+    <None Remove="Assets\Cars\Car4\White\1.jpg" />
+    <None Remove="Assets\Cars\Car3\Black\1.jpg" />
+    <None Remove="Assets\Cars\Car3\Blue\1.jpg" />
+    <None Remove="Assets\Cars\Car3\Orange\1.jpg" />
+    <None Remove="Assets\Cars\Car3\White\1.jpg" />
+    <None Remove="Assets\Cars\Car2\Black\1.jpg" />
+    <None Remove="Assets\Cars\Car2\Blue\1.jpg" />
+    <None Remove="Assets\Cars\Car2\Orange\1.jpg" />
+    <None Remove="Assets\Cars\Car2\White\1.jpg" />
+    <None Remove="Assets\Cars\Car1\Blue.jpg" />
+    <None Remove="Assets\Cars\Car1\Orange.jpg" />
+    <None Remove="Assets\Cars\Car1\White.jpg" />
+    <None Remove="Assets\Cars\Car1\Black.jpg" />
+    <None Remove="Assets\CategoryBackground\Car1.jpg" />
+    <None Remove="Assets\CategoryBackground\Car2.jpg" />
+    <None Remove="Assets\CategoryBackground\Car3.jpg" />
+    <None Remove="Assets\CategoryBackground\Car4.jpg" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Views\FilterPage.xaml" />
     <None Remove="Views\ForgotPasswordPage.xaml" />
     <None Remove="Views\LoginPage.xaml" />
@@ -38,6 +64,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="WinUIEx" Version="2.3.2" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
     <PackageReference Include="WinUIEx" Version="2.4.2" />
   </ItemGroup>
@@ -45,6 +73,82 @@
   <ItemGroup>
     <ProjectReference Include="..\CarStore.Core\CarStore.Core.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Assets\Banner\big-banner-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car5\Black\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car5\Blue\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car5\Orange\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car5\White\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car4\Black\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car4\Blue\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car4\Orange\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car4\White\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car3\Black\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car3\Blue\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car3\Orange\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car3\White\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car2\Black\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car2\Blue\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car2\Orange\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car2\White\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car1\Black\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car1\Blue\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car1\Orange\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Cars\Car1\White\1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Logo\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Banner\sub-banner-1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\Banner\sub-banner-2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
 
   <ItemGroup>
     <Content Update="Assets\car1.png">

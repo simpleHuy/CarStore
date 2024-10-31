@@ -43,12 +43,17 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
-    public string? Variant
+    public List<Color>? Variant
     {
         get; set;
     }
 
     public string? Images
+    {
+        get; set;
+    }
+
+    public string? DefautlImageLocation
     {
         get; set;
     }

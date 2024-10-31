@@ -4,32 +4,244 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Background="{ThemeResource SolidBackgroundFillColorBaseBrush}"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled">
+    xmlns:vm="using:CarStore.ViewModels"
+    xmlns:local="using:CarStore.Models"
+    xmlns:helpers="using:CarStore.Helpers"
+    Background="Transparent"
+    mc:Ignorable="d">
+    
+    <Page.Resources>
+        <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
+        <DataTemplate x:Name="VariantTemplate" x:DataType="local:Color">
+            <StackPanel Orientation="Horizontal">
+                <Border Background="{Binding Code}" Width="10" Height="10"></Border>
+                <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>
+            </StackPanel>
+        </DataTemplate>
+    
+        <DataTemplate x:Name="CategoryTemplate" x:DataType="local:TypeOfCar">
+            <Button Margin="5" Background="{Binding ImageLocation}"> 
+                <Grid VerticalAlignment="Bottom">
+                    <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="None"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Opacity="0.5"/>
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                               Style="{ThemeResource SubtitleTextBlockStyle}"
+                               HorizontalAlignment="Center">
+                    </TextBlock>
+                </Grid>
+            </Button>
+        </DataTemplate>
+        
+        <DataTemplate x:Name="ItemTemplate"  x:DataType="local:Car">
+            <StackPanel x:Name="Card" Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
+                        Margin="5"
+                        CornerRadius="{ThemeResource OverlayCornerRadius}">
+                <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
+                        CornerRadius="2">
+                    <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="200" Height="200" Stretch="Fill"/>
+                </Border>
 
-    <Grid x:Name="ContentArea">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="200" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Margin="10 5 5 5">
+                        <TextBlock Text="{Binding Path=Manufacturer, Converter={StaticResource ManufactureConverter}}" Foreground="Wheat" Margin="4 2 4 2"
+                                   Style="{ThemeResource BodyStrongTextBlockStyle}">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}"/>
 
-        <TextBlock
-            Grid.Row="0"
-            x:Uid="Main_Title"
-            Style="{StaticResource PageTitleStyle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="OldPrice" Text="{Binding OldPrice}" Style="{ThemeResource BodyTextBlockStyle}"
+                        Margin="10 5 10 2" TextDecorations="Strikethrough"/>
+                    <Border Background="OrangeRed" CornerRadius="8">
+                        <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="White" FontWeight="SemiBold"></TextBlock>
+                    </Border>
+                </StackPanel>
+                
+                <TextBlock x:Name="Price" Text="{x:Bind Price}" Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Margin="10 2 10 10"/>
+                <ComboBox PlaceholderText="Màu sắc"
+                          Margin="10 0 0 0" 
+                          ItemTemplate="{StaticResource VariantTemplate}"
+                          ItemsSource="{x:Bind Variant}"
+                          SelectionChanged="ComboBox_SelectionChanged">
+                    
+                </ComboBox>
+                <StackPanel Orientation="Horizontal">
+                    <Button x:Name="InfoBtn" Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
+                        Content="Xem chi tiết" Margin="10 0 0 5" Width="100"
+                            Click="InfoBtn_Click"/>
+                    <Button x:Name="BuyBtn" Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                        Content="Mua ngay" Margin="10 0 10 5" Width="100"
+                            Click="BuyBtn_Click"/>
+                </StackPanel>
 
-        <Grid Grid.Row="1">
-            
-        </Grid>
 
-        <StackPanel VerticalAlignment="Center" Height="100">
-            <TextBlock HorizontalAlignment="Center" Text="Enter your name"/>
-            <TextBox HorizontalAlignment="Center" Width="200" x:Name="name"/>
-            <HyperlinkButton Content="Click to go to page 2"
-                              Click="HyperlinkButton_Click"
-                              HorizontalAlignment="Center"/>
+            </StackPanel>
+
+        </DataTemplate>
+    </Page.Resources>
+    <ScrollViewer>
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" x:Name="Header" Background="Purple"
+              
+              HorizontalAlignment="Stretch"
+              >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="80"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Name="Header_LeftSection" Grid.Row="0" Grid.Column="0" 
+                  Margin="20 5 20 5"
+                  HorizontalAlignment="Left"
+                  >
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Image 
+                    Grid.Column="0" Grid.Row="0"
+                    Source="../Assets/Logo/logo.png"
+                    Height="40"
+                />
+
+                    </Grid>
+                    <AutoSuggestBox x:Name="Header_SearchSection"
+                HorizontalContentAlignment="Left"
+                VerticalContentAlignment="Center"
+                Grid.Column="1" Grid.Row="0" 
+                PlaceholderText="Tìm kiếm trên eCar"
+                Height="40" Width="500"
+                            
+            />
+                    <Grid x:Name="Header_AccountSection" 
+                Grid.Column="2" Grid.Row="0"
+                  HorizontalAlignment="Center"
+                  >
+                        <StackPanel  Orientation="Horizontal">
+                            <Button x:Name="BtnLogin"
+                            Margin="5"
+                            Background="White"
+                            Click="BtnLogin_Click"
+                            Width="100"
+                            >
+                                Đăng nhập
+                            </Button>
+                            <Button x:Name="BtnSignup"
+                            Margin="5"
+                            Background="White"
+                            Click="BtnSignup_Click"
+                            Width="100"
+                            >
+                                Đăng ký
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+
+                </Grid>
+
+                <StackPanel Grid.Row="1">
+                    <Grid x:Name="TopCarousel" Margin="0 10 0 0" MaxHeight="300"
+                            VerticalAlignment="Bottom"
+              >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <FlipView Grid.Column="0" Grid.ColumnSpan="2"
+                      Grid.Row="0" Grid.RowSpan="2"
+                      Margin="20 0 0 0"
+                      MaxHeight="270"
+                      Height="270">
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-1"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-2"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-3"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-4"/>
+                        </FlipView>
+                        <Image x:Name="TopCarousel_SubBanner_1"
+                   Grid.Row="0" Grid.Column="2"
+                   Margin="5 5 20 0 "
+                   Source="../Assets/Banner/sub-banner-1.jpg"
+                   VerticalAlignment="Bottom"
+             />
+                        <Image x:Name="TopCarousel_SubBanner_2"
+                    Grid.Row="1" Grid.Column="2"
+                   Margin="5 5 20 0"
+                    Source="../Assets/Banner/sub-banner-2.jpg"
+                   VerticalAlignment="Top"
+            />
+
+
+                    </Grid>
+                    <GridView x:Name="CategoriesSection" HorizontalAlignment="Center"
+                        ItemTemplate="{StaticResource CategoryTemplate}"
+                        ItemsSource="{x:Bind ViewModel.Categories}"
+                        SelectionMode="None"
+                              Margin="20 10 20 0"/>
+                    <Border x:Name="Popular" Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
+                            Margin="20 10 20 0"
+                            CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <StackPanel Orientation="Vertical"
+                                    >
+                            <TextBlock Text="Thịnh hành" Style="{ThemeResource SubtitleTextBlockStyle}"
+                                       Margin="20">
+
+                            </TextBlock>
+                            <GridView x:Name="PopularItems" HorizontalAlignment="Center"
+                                ItemTemplate="{StaticResource ItemTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Items}"
+                                SelectionMode="None"
+/>
+                        </StackPanel>
+
+
+                    </Border>
+                    <Grid x:Name="LongBanner" Margin="20 10 20 10">
+                        <Image Source="../Assets/Banner/long-banner.jpg"></Image>
+                    </Grid>
+                    <Border x:Name="Suggest" Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
+                            Margin="20 10 20 0"
+                            CornerRadius="{ThemeResource OverlayCornerRadius}">
+                        <StackPanel Orientation="Vertical"
+                                    >
+                            <TextBlock Text="Đề xuất" Style="{ThemeResource SubtitleTextBlockStyle}"
+                                       Margin="20">
+
+                            </TextBlock>
+                            <GridView x:Name="SuggestItems" HorizontalAlignment="Center"
+                                ItemTemplate="{StaticResource ItemTemplate}"
+                                ItemsSource="{x:Bind ViewModel.Items}"
+                                SelectionMode="None"
+/>
+                        </StackPanel>
+
+
+                    </Border>
+                </StackPanel>
+
+            </Grid>
         </StackPanel>
-
-    </Grid>
+    </ScrollViewer>
 </Page>
