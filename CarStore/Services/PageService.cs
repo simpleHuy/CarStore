@@ -20,6 +20,7 @@ public class PageService : IPageService
         Configure<RegisterViewModel, RegisterPage>();
         Configure<FilterViewModel, FilterPage>();
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
+        Configure<CarDetailViewModel, CarDetailPage>();
     }
 
     public Type GetPageType(string key)

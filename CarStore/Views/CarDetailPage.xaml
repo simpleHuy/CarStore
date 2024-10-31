@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CarStore.Views.CarDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CarStore.Views"
+    xmlns:local1="using:CarStore.Services"
+    xmlns:local2="using:CarStore.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <local1:LongToVNCurrencyConverter x:Key="currency"/>
+    </Page.Resources>
+
+    <ScrollView x:Name="ContentArea" VerticalScrollBarVisibility="Hidden" Padding="40" Margin="30">
+        <StackPanel Orientation="Vertical">
+            
+            <!--Car's Profile-->
+            <Grid ColumnSpacing="30" Margin="0 0 0 30" >
+                <!--2 collumns-->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--Collumn 1-->
+                <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock Text="Text>text>text" Margin="15" Style="{StaticResource TitleTextBlockStyle}"/>
+
+                    <FlipView x:Name="Gallery" ItemsSource="{x:Bind ViewModel.SelectedCarPictures}" Height="400">
+                        <FlipView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Image x:Name="BigImage" Source="{x:Bind Mode=OneWay}" />
+                            </DataTemplate>
+                        </FlipView.ItemTemplate>
+                    </FlipView>
+                </StackPanel>
+
+                <!--Collumn 2-->
+                <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                        Orientation="Vertical" Spacing="20">
+                    <TextBlock Text="" Margin="6" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.SelectedCar.Name}"/>
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}">
+                           <Run Text="Loại xe:"/> <Run Text="{x:Bind ViewModel.SelectedCar.TypeOfCar}"/>, 
+                            <Run Text="Động cơ: "/><Run Text="{x:Bind ViewModel.SelectedCar.EngineType}"/>, <Run Text="Tình trạng: "/>
+                            <Run Text="{x:Bind ViewModel.SelectedCar.UsageStatus}"/>
+                        </TextBlock>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Foreground="Red">
+                        <Run Text="Giá: "/><Run Text="{x:Bind ViewModel.SelectedCar.Price,Converter={StaticResource currency}}"/>
+                    </TextBlock>
+
+                    <ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" 
+                              ItemsSource="{x:Bind ViewModel.Colors}" Loaded="Color_Loaded">
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ComboBox>
+                    
+                    <GridView x:Name="BasicGridView" ItemsSource="{x:Bind ViewModel.SelectedCarPictures, Mode=OneWay}"
+                                IsItemClickEnabled="True"
+                                ItemClick="ChooseThisPicture"
+                                SelectionMode="Single">
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Image Width="100" Margin="5">
+                                    <Image.Source>
+                                        <BitmapImage UriSource="{Binding}" />
+                                    </Image.Source>
+                                </Image>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="100" Spacing="10" Margin="0 40 0 0">
+                        <Button Style="{StaticResource AccentButtonStyle}">
+                            <TextBlock Text="Đặt lịch xem xe" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        </Button>
+                        <Button Style="{StaticResource AccentButtonStyle}">
+                            <TextBlock Text="Liên hệ với chủ" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        </Button>
+                        <Button CornerRadius="10">
+                            <FontIcon Glyph="&#xE929;" />
+                        </Button>
+                        <Button CornerRadius="10">
+                            <FontIcon Glyph="&#xE72D;"/>
+                        </Button>
+                    </StackPanel>
+
+                </StackPanel>
+            </Grid>
+
+            <!--Description-->
+            <Border BorderBrush="Gray" BorderThickness="2" Padding="15">
+                <ScrollView Height="450">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Thông tin chi tiết: " Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 20"/>
+                        <TextBlock Text="{x:Bind ViewModel.SelectedCar.Description}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    </StackPanel>
+                </ScrollView>
+
+            </Border>
+
+            <!--CompetitorCars-->
+            <Border BorderBrush="Gray" BorderThickness="2" Margin="0 40">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Cùng phân khúc" Style="{StaticResource TitleTextBlockStyle}" Margin="30 5"/>
+                    <Grid Padding="30" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        
+                        <GridView ItemsSource="{x:Bind ViewModel.CompetitorCars}" IsItemClickEnabled="True" ItemClick="SeeThisCar"
+                                  Name="ListCompettorCars">
+
+                            <GridView.ItemContainerStyle>
+                                <Style TargetType="GridViewItem" BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                                    <Setter Property="Margin" Value="20, 5, 20, 5"/>
+                                </Style>
+                            </GridView.ItemContainerStyle>
+
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="local2:Car">
+                                    <StackPanel Width="300" Margin="20">
+                                        <Image Source="{x:Bind Thumbnail}" Width="300" Height="200" Stretch="UniformToFill"/>
+
+                                        <TextBlock Text="{x:Bind Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+
+                        </GridView>
+                    </Grid>
+                    
+                    <Canvas Name="SeeMoreCompitetorText" Visibility="Visible" HorizontalAlignment="Center">
+                        
+                        <Button Click="SeeMoreCompetitor" Canvas.Top="-40">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <TextBlock x:Name="TextBlockElement" Text="Xem thêm >" TextDecorations="Underline"
+                                                    Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TextBlockElement.Foreground" Value="Blue"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <VisualState.Setters>
+                                                        <Setter Target="TextBlockElement.Foreground" Value="DarkBlue"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                    </Canvas>
+                </StackPanel>
+            </Border>
+
+            <Grid ColumnSpacing="30" Margin="0 20 0 50">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="7*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                    <Image Source="../Assets/ShowRoomAvatar.jpg" Height="230"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Spacing="20" Margin="0 10">
+                        <Button Background="Transparent" BorderBrush="Transparent" Width="30" Height="30" Padding="0"
+                                Click="ClickFacebookButton">
+                            <Grid Margin="0">
+                                <Ellipse Fill="Transparent" Stroke="Black" StrokeThickness="2"/>
+                                <Image Source="ms-appx:///Assets/Facebook_icon.png" Width="30" Height="30" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </Button>
+
+                        <Button Background="Transparent" BorderBrush="Transparent" Width="40" Height="40" Padding="0"
+                                Click="ClickHomePageButton">
+                            <Grid Margin="0">
+                                <FontIcon Glyph="&#xE80F;" />
+                            </Grid>
+                        </Button>
+                        <Button Style="{StaticResource AccentButtonStyle}">
+                            <TextBlock Text="Xem thêm sản phẩm" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                
+                <Border BorderBrush="Black" BorderThickness="2" Grid.Column="1"  Height="270">
+                    <StackPanel>
+                        <TextBlock Text="Thông tin showroom:" Style="{StaticResource TitleTextBlockStyle}"/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="     - Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="     - Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"/>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}">
+                            <Run Text="     Hotline: " FontWeight="Bold"/> 18006216 - <Run Text="Email:" FontWeight="Bold"/> info@anycar.vn
+                        </TextBlock>
+
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+    </ScrollView>
+</Page>
