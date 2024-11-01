@@ -37,23 +37,38 @@ public sealed partial class CarDetailPage : Page
     {
         this.InitializeComponent();
         ViewModel = new CarDetailViewModel();
-        ViewModel.SelectedCar = ViewModel.Cars.FirstOrDefault();
+        //this.SizeChanged += CarDetailPage_SizeChanged;
         this.DataContext = ViewModel;
-        UpdateGridViewHeight();
+        //UpdateGridViewHeight();
     }
 
-    private void UpdateGridViewHeight()
-    {
-        //if (ListCompettorCars.Height > 600)
-        //{
-        //    ListCompettorCars.Height = 600;
-        //    SeeMoreCompitetorText.Visibility = Visibility.Visible;
-        //}
-        //else
-        //{
-        //    SeeMoreCompitetorText.Visibility = Visibility.Collapsed;
-        //}
-    }
+    //private void CarDetailPage_SizeChanged(object sender, SizeChangedEventArgs e)
+    //{
+    //    var width = e.NewSize.Width;
+
+    //    if (width >= 1920) // Màn hình 24 inch
+    //    {
+    //        ViewModel.Max_Item=8;
+    //    }
+    //    else // Màn hình nhỏ hơn, ví dụ 16 inch
+    //    {
+    //        ViewModel.Max_Item = 6;
+    //    }
+    //}
+
+    //private void UpdateGridViewHeight()
+    //{
+    //    if (ListCompettorCars.Height > 600)
+    //    {
+    //        ListCompettorCars.Height = 600;
+    //        SeeMoreCompitetorText.Visibility = Visibility.Visible;
+    //    }
+    //    else
+    //    {
+    //        SeeMoreCompitetorText.Visibility = Visibility.Collapsed;
+    //    }
+    //}
+
     private void SeeThisCar(object sender, ItemClickEventArgs e)
     {
         var selectedCar = e.ClickedItem as Car;
@@ -111,7 +126,7 @@ public sealed partial class CarDetailPage : Page
         // Lấy giá trị màu sắc đang chọn
         if (comboBox != null && comboBox.SelectedItem != null)
         {
-            string selectedColor = comboBox.SelectedItem.ToString();
+            string selectedColor = comboBox.SelectedValue.ToString();
 
             ViewModel.SelectedCarColor = selectedColor;
         }
@@ -124,5 +139,10 @@ public sealed partial class CarDetailPage : Page
         {
             comboBox.SelectedIndex = 0;
         }
+    }
+
+    private void BackToMainPageButton_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MainPage));
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CarStore.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace CarStore.ViewModels;
 
-public class MainPageViewModel : INotifyPropertyChanged
+public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 

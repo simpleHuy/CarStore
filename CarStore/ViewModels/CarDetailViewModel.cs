@@ -32,7 +32,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             _selectedCar = value;
             OnPropertyChanged(nameof(SelectedCar));
             LoadPictureOfCar();
-            LoadCompetitorCars();
+            GetTopCompetitorCars();
         }
     }
 
@@ -48,10 +48,10 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    public List<Models.Color> Colors
-    {
-        get; set;
-    }
+    //public int Max_Item
+    //{
+    //    get; set;
+    //}
 
     private string _selectedCarColor;
     public string SelectedCarColor
@@ -71,12 +71,13 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         if (SelectedCar == null) return;
 
-        var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SelectedCar.Images);
+        var path = AppDomain.CurrentDomain.BaseDirectory;
+        path += "Assets\\Cars\\" + SelectedCar.Images;
 
         if (SelectedCarColor == null)
         {
-            //var directories = Directory.GetDirectories(path);
-            //path = directories[0];
+            path += "\\" + SelectedCar.DefaultColor;
+            SelectedCarColor = SelectedCar.DefaultColor;
         }
         else
         {
@@ -90,7 +91,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
             // Convert file paths to proper URI format for WinUI
             var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///{SelectedCar.Images}/{index + 1}.jpg").ToString());
+                new Uri($"ms-appx:///../Assets/Cars/{SelectedCar.Images}/{SelectedCarColor}/{index + 1}.jpg").ToString());
 
             SelectedCarPictures = new ObservableCollection<string>(imageUris);
         }
@@ -105,7 +106,22 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         get; set;
     }
-    private void LoadCompetitorCars()
+    //private void LoadCompetitorCars()
+    //{
+    //    var delta = 0.2;
+    //    var minPrice = SelectedCar.Price * (1.0 - delta);
+    //    var maxPrice = SelectedCar.Price * (1.0 + delta);
+    //    CompetitorCars = new ObservableCollection<Car>();
+    //    foreach (var car in Cars)
+    //    {
+    //        if((car.Price > minPrice || /*&&*/ car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
+    //        {
+    //            CompetitorCars.Add(car);
+    //        }
+    //    }
+    //}
+
+    private void GetTopCompetitorCars()
     {
         var delta = 0.2;
         var minPrice = SelectedCar.Price * (1.0 - delta);
@@ -113,10 +129,10 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         CompetitorCars = new ObservableCollection<Car>();
         foreach (var car in Cars)
         {
-            if (CompetitorCars.Count() > 8)
+            if (CompetitorCars.Count > 5)
                 break;
 
-            if((car.Price > minPrice || /*&&*/ car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
+            if (/*(car.Price > minPrice || car.Price < maxPrice) && car.CarId != SelectedCar.CarId*/ true)
             {
                 CompetitorCars.Add(car);
             }
