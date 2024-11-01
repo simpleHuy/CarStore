@@ -69,5 +69,13 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
+    public string DefaultColor
+    {
+        get
+        {
+            return Variant[0].Code;
+        }
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 }

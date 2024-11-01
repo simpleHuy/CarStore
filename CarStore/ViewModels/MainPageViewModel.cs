@@ -5,6 +5,7 @@ using CarStore.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+
 namespace CarStore.ViewModels;
 
 public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
