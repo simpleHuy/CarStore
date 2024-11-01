@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CarStore.Views.ScheduleForm"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CarStore.Views"
+    xmlns:vm="using:CarStore.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:helpers="using:CarStore.Helpers" d:DataContext="{d:DesignInstance Type=vm:ScheduleFormViewModel}"
+    mc:Ignorable="d"
+    Background="Transparent">
+
+    <Page.Resources>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" x:Name="Header" Background="Transparent"
+  
+  HorizontalAlignment="Stretch"
+  >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Name="Header_LeftSection" Grid.Row="0" Grid.Column="0" 
+                  Margin="10 5 20 5"
+                  HorizontalAlignment="Left"> 
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Back_Btn" Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
+                    <FontIcon Glyph="&#xE72B;" FontSize="20" Margin="3 0 5 0"/>
+                </Button>
+                <Image 
+                    Grid.Column="1" Grid.Row="0"
+                    Source="../Assets/Logo/logo.png"
+                    Height="40"/>
+            </Grid>
+            <AutoSuggestBox x:Name="Header_SearchSection"
+    HorizontalContentAlignment="Left"
+    VerticalContentAlignment="Center"
+    Grid.Column="1" Grid.Row="0" 
+    PlaceholderText="Tìm kiếm trên eCar"
+    Height="40" Width="500"
+                
+/>
+            <Grid x:Name="Header_AccountSection" 
+    Grid.Column="2" Grid.Row="0"
+      HorizontalAlignment="Right"
+      >
+                <StackPanel x:Name="Header_Buttons"  Orientation="Horizontal" 
+                            Visibility="{x:Bind ViewModel.isLogin , Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                    <Button x:Name="BtnLogin"
+                Margin="5"
+                Background="White"
+                
+                Command="{x:Bind ViewModel.NavigateToLoginCommand}"
+                Width="100"
+                >
+                        Đăng nhập
+                    </Button>
+                    <Button x:Name="BtnSignup"
+                Margin="5"
+                Background="White"
+                Command="{x:Bind ViewModel.NavigateToSignupCommand}"
+                Width="100"
+                >
+                        Đăng ký
+                    </Button>
+                </StackPanel>
+                <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
+                            Visibility="{x:Bind ViewModel.isLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical" Margin="10">
+                                <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                <TextBlock x:Name="UserType" Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                            <Image Source="../Assets/Avatars/1.png" Height="50"/>
+                            
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+    </Grid>
+</Page>

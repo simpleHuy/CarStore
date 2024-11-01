@@ -92,7 +92,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" x:Name="Header" Background="Purple"
+                <Grid Grid.Row="0" x:Name="Header" Background="Transparent"
               
               HorizontalAlignment="Stretch"
               >
@@ -147,7 +147,7 @@
                             <Button x:Name="BtnSignup"
                             Margin="5"
                             Background="White"
-                            Click="BtnSignup_Click"
+                            Command="{x:Bind ViewModel.NavigateToSignupCommand}"
                             Width="100"
                             >
                                 Đăng ký
@@ -212,7 +212,7 @@
                             </TextBlock>
                             <GridView x:Name="PopularItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
-                                ItemsSource="{x:Bind ViewModel.Items}"
+                                ItemsSource="{x:Bind ViewModel.PopularCars}"
                                 SelectionMode="None"
 />
                         </StackPanel>
@@ -233,7 +233,7 @@
                             </TextBlock>
                             <GridView x:Name="SuggestItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
-                                ItemsSource="{x:Bind ViewModel.Items}"
+                                ItemsSource="{x:Bind ViewModel.SuggestCars}"
                                 SelectionMode="None"
 />
                         </StackPanel>

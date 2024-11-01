@@ -9,4 +9,8 @@ namespace CarStore.Services.DataAccess;
 public interface IDao
 {
     List<Car> getAllCars();
+    List<Car> getPopularCars();
+    List<Car> getSuggestCars();
+    List<TypeOfCar> GetTypeOfCar();
+    User getCurrentUser();
 }
