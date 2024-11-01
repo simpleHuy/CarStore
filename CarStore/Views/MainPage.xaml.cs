@@ -15,7 +15,7 @@ public sealed partial class MainPage : Page
 
     public MainPage()
     {
-        ViewModel = new MainPageViewModel();
+        ViewModel = App.GetService<MainPageViewModel>();
         InitializeComponent();
     }
     private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
