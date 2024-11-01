@@ -1,12 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using CarStore.Contracts.Services;
 using CarStore.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace CarStore.ViewModels;
 
-public class MainPageViewModel : INotifyPropertyChanged
+public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
+    public readonly INavigationService _navigateService;
 
     public ObservableCollection<Models.Car>? Items
     {
@@ -17,9 +21,13 @@ public class MainPageViewModel : INotifyPropertyChanged
     {
         get; set;
     }
-
-    public MainPageViewModel()
+    public IRelayCommand NavigateToLoginCommand { get;} // define functionc command
+    public MainPageViewModel(INavigationService navigationService)
     {
+        _navigateService = navigationService;
+
+        NavigateToLoginCommand = new RelayCommand(()=> _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
+
         Items = new ObservableCollection<Models.Car>
         {
             new(){

@@ -138,7 +138,8 @@
                             <Button x:Name="BtnLogin"
                             Margin="5"
                             Background="White"
-                            Click="BtnLogin_Click"
+                            
+                            Command="{x:Bind ViewModel.NavigateToLoginCommand}"
                             Width="100"
                             >
                                 Đăng nhập

@@ -15,12 +15,13 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<MainViewModel, MainPage>();
+        //Configure<MainViewModel, MainPage>();
         Configure<LoginViewModel, LoginPage>();
         Configure<RegisterViewModel, RegisterPage>();
         Configure<FilterViewModel, FilterPage>();
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
         Configure<CarDetailViewModel, CarDetailPage>();
+        Configure<MainPageViewModel, MainPage>();
     }
 
     public Type GetPageType(string key)
