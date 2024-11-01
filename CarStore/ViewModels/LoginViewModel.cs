@@ -120,7 +120,7 @@ public class LoginViewModel : ObservableObject
                     await _authService.ClearSavedCredentialsAsync();
                 }
 
-                _navigationService.NavigateTo(typeof(MainViewModel).FullName!);
+                _navigationService.NavigateTo(typeof(MainPageViewModel).FullName!);
             }
             else
             {

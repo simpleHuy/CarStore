@@ -23,5 +23,9 @@ public class Color : INotifyPropertyChanged
         get; set;
     }
 
+    public override string ToString() {
+        return Code;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 }

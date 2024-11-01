@@ -71,7 +71,7 @@ public partial class App : Application
             // Views and ViewModels
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
-            services.AddTransient<MainViewModel>();
+            services.AddTransient<MainPageViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<RegisterViewModel>();
             services.AddTransient<RegisterPage>();
