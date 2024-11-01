@@ -23,7 +23,6 @@ public class DefaultActivationHandler : ActivationHandler<LaunchActivatedEventAr
     protected async override Task HandleInternalAsync(LaunchActivatedEventArgs args)
     {
         _navigationService.NavigateTo(typeof(MainPageViewModel).FullName!, args.Arguments);
-
         await Task.CompletedTask;
     }
 }
