@@ -66,6 +66,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
+    
     // load all images of the car
     private void LoadPictureOfCar()
     {

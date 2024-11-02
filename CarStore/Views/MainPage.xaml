@@ -56,7 +56,7 @@
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="OldPrice" Text="{Binding OldPrice, Converter={StaticResource currency}}" Style="{ThemeResource BodyTextBlockStyle}"
+                    <TextBlock x:Name="OldPrice" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource BodyTextBlockStyle}"
                         Margin="10 5 10 2" TextDecorations="Strikethrough"/>
                     <Border Background="OrangeRed" CornerRadius="8">
                         <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="White" FontWeight="SemiBold"></TextBlock>

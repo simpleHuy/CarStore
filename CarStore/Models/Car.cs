@@ -77,5 +77,10 @@ public class Car : INotifyPropertyChanged
         }
     }
 
+    public float getOldPrice()
+    {
+        return (float)(Price /0.8);
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 }
