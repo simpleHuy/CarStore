@@ -6,11 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:CarStore.ViewModels"
     xmlns:local="using:CarStore.Models"
+    xmlns:local1="using:CarStore.Services"
     xmlns:helpers="using:CarStore.Helpers"
     Background="Transparent"
     mc:Ignorable="d">
     
     <Page.Resources>
+        <local1:LongToVNCurrencyConverter x:Key="currency"/>
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
         <DataTemplate x:Name="VariantTemplate" x:DataType="local:Color">
             <StackPanel Orientation="Horizontal">
@@ -54,14 +56,14 @@
 
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="OldPrice" Text="{Binding OldPrice}" Style="{ThemeResource BodyTextBlockStyle}"
+                    <TextBlock x:Name="OldPrice" Text="{Binding OldPrice, Converter={StaticResource currency}}" Style="{ThemeResource BodyTextBlockStyle}"
                         Margin="10 5 10 2" TextDecorations="Strikethrough"/>
                     <Border Background="OrangeRed" CornerRadius="8">
                         <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="White" FontWeight="SemiBold"></TextBlock>
                     </Border>
                 </StackPanel>
-                
-                <TextBlock x:Name="Price" Text="{x:Bind Price}" Style="{ThemeResource SubtitleTextBlockStyle}"
+
+                <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
                            Margin="10 2 10 10"/>
                 <ComboBox PlaceholderText="Màu sắc"
                           Margin="10 0 0 0" 
@@ -236,12 +238,15 @@
                                 SelectionMode="None"
 />
                         </StackPanel>
-
-
                     </Border>
                 </StackPanel>
 
             </Grid>
+            <Button x:Name="BackButton" Click="BackButton_Click"
+                Style="{StaticResource NavigationBackButtonNormalStyle}"
+                IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
+                ToolTipService.ToolTip="Back" Width="100" 
+                Visibility="Collapsed"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

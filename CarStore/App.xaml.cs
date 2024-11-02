@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using Windows.System;
+using Windows.UI.Core;
 
 namespace CarStore;
 
@@ -101,4 +103,5 @@ public partial class App : Application
         base.OnLaunched(args);
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
+
 }

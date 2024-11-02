@@ -18,6 +18,7 @@ using CarStore.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using CarStore.Models;
 using Windows.System;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -141,8 +142,21 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void BackToMainPageButton_Click(object sender, RoutedEventArgs e)
+    private void BackButton_Click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(MainPage));
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+    }
+
+    private void BtnLogin_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void BtnSignup_Click(object sender, RoutedEventArgs e)
+    {
+
     }
 }

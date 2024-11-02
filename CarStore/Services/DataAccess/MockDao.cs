@@ -210,7 +210,7 @@ public class MockDao : IDao
 
         return result;
     }
-    public List<Manufacturer> getAllManufacturer()
+    public List<Manufacturer> getAllManufacturers()
     {
         var result = new List<Manufacturer>()
         {
