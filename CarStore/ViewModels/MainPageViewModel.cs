@@ -27,6 +27,8 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     public IRelayCommand NavigateToSignupCommand{ get;}
     public ObservableCollection<Models.Car>? PopularCars{get; set;}
     public ObservableCollection<Models.Car>? SuggestCars{get; set;}
+    public User CurrentUser{get; set;}
+    public bool isLogin{get;set;}
     public MainPageViewModel(INavigationService navigationService)
     {
         IDao dao = new MockDao();
@@ -39,7 +41,8 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         PopularCars = new ObservableCollection<Car>(dao.getPopularCars());
         SuggestCars = new ObservableCollection<Car>(dao.getSuggestCars());
         Categories = new ObservableCollection<TypeOfCar>(dao.GetTypeOfCar());
-
+        CurrentUser = dao.getCurrentUser();
+        isLogin = false;
     }
 
 
