@@ -21,6 +21,7 @@ public class PageService : IPageService
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
         Configure<CarDetailViewModel, CarDetailPage>();
         Configure<MainPageViewModel, MainPage>();
+        Configure<ScheduleFormViewModel, ScheduleForm>();   
     }
 
     public Type GetPageType(string key)

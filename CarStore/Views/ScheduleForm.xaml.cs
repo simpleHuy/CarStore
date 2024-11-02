@@ -21,17 +21,15 @@ namespace CarStore.Views;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class LoginPage : Page
+public sealed partial class ScheduleForm : Page
 {
-    public LoginViewModel ViewModel
+    public ScheduleFormViewModel ViewModel
     {
-        get;
+        get; set;
     }
-
-    public LoginPage()
+    public ScheduleForm()
     {
-        ViewModel = App.GetService<LoginViewModel>();
-        InitializeComponent();
+        this.InitializeComponent();
+        ViewModel = App.GetService<ScheduleFormViewModel>();
     }
-
 }

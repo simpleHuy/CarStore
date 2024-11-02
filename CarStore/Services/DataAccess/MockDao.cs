@@ -319,4 +319,24 @@ public class MockDao : IDao
 
         return list;
     }
+    public List<Car> getPopularCars()
+    {
+        return getAllCars().Take(10).ToList();
+    }
+    public List<Car> getSuggestCars()
+    {
+        return getAllCars().Take(10).ToList();
+    }
+
+    public User getCurrentUser()
+    {
+        return new User()
+        {
+            Id = "1",
+            Name = "Minh Trực",
+            Email = "minhtruc1234@gmail.com",
+            Phone = "0333601234",
+            AccountType = "Hội viên tiềm năng",
+        };
+    }
 }
