@@ -17,25 +17,25 @@
         <local1:IdToManufaturerConverter x:Key="Manufacturer"/>
         <local1:IdToTypeOfCarConverter x:Key="TypeOfCar"/>
     </Page.Resources>
-
+    
     <Grid>
-        <Grid Margin="0 0 0 10">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
                 <Button x:Name="BackButton" Click="BackButton_Click"
                     Style="{StaticResource NavigationBackButtonNormalStyle}"
                     IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
                     ToolTipService.ToolTip="Back" Width="100"/>
                 <Image Source="../Assets/Logo/Logo.png"/>
             </StackPanel>
-            <Border BorderBrush="LightGray" BorderThickness="2" Margin="0 10" 
+            <Border BorderBrush="LightGray" BorderThickness="2" Margin="0 0" 
                     HorizontalAlignment="Stretch" Height="2" Grid.Row="1"/>
         </Grid>
 
-        <ScrollView x:Name="ContentArea" VerticalScrollBarVisibility="Hidden" Padding="60 20" Margin="30">
+        <ScrollView x:Name="ContentArea" VerticalScrollBarVisibility="Hidden" Padding="60 20" Margin="30 35 30 20">
             <StackPanel Orientation="Vertical">
                
                 <!--Car's Profile-->
