@@ -42,7 +42,7 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         SuggestCars = new ObservableCollection<Car>(dao.getSuggestCars());
         Categories = new ObservableCollection<TypeOfCar>(dao.GetTypeOfCar());
         CurrentUser = dao.getCurrentUser();
-        isLogin = false;
+        isLogin = true;
     }
 
 

@@ -15,196 +15,100 @@ public class MockDao : IDao
         var result = new List<Car>()
         {
             new(){
-                Name = "Car1",
+                Name = "Honda Accord",
                 Manufacturer = 1,
                 EngineType = 1,
                 TypeOfCar = 1,
                 Price = 100000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Trắng ngọc trai", Code = "White" }, new() { Name = "Xanh đại dương", Code = "Blue" } },
-                Images = "Car1",
-                DefautlImageLocation = "../Assets/Cars/Car1/White/1.jpg"
+                Variant = new List<Models.Color> { new() { Name = "Trắng ngọc trai", Code = "White" }, new() { Name = "Xám khói", Code = "Grey" }, new() { Name="Đen huyền bí", Code="Black"} },
+                Images = "Honda Accord",
+                DefautlImageLocation = "../Assets/Cars/Honda Accord/White/1.png"
             },
             new(){
-                Name = "Car2",
-                Manufacturer = 2,
-                EngineType = 2,
-                TypeOfCar = 2,
-                Price = 200000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Cam lè", Code = "Orange" } },
-                Images = "Car2",
-                DefautlImageLocation = "../Assets/Cars/Car2/Black/1.jpg"
-            },
-            new(){
-                Name = "Car3",
-                Manufacturer = 3,
-                EngineType = 3,
-                TypeOfCar = 3,
-                Price = 300000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đỏ lửa", Code = "Red" }, new() { Name = "Xanh lá", Code = "Green" } },
-                Images = "Car3",
-                DefautlImageLocation = "../Assets/Cars/Car3/Orange/1.jpg"
-            },
-            new(){
-                Name = "Car4",
-                Manufacturer = 2,
-                EngineType = 4,
-                TypeOfCar = 4,
-                Price = 400000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Vàng nắng", Code = "Yellow" }, new() { Name = "Tím than", Code = "Purple" } },
-                Images = "Car4",
-                DefautlImageLocation = "../Assets/Cars/Car4/Blue/1.jpg"
-            },
-            new(){
-                Name = "Car1",
+                Name = "Honda Civic City Rs",
                 Manufacturer = 1,
-                EngineType = 1,
-                TypeOfCar = 1,
-                Price = 100000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Trắng ngọc trai", Code = "White" }, new() { Name = "Xanh đại dương", Code = "Blue" } },
-                Images = "Car1",
-                DefautlImageLocation = "../Assets/Cars/Car1/White/1.jpg"
-            },
-            new(){
-                Name = "Car2",
-                Manufacturer = 2,
                 EngineType = 2,
                 TypeOfCar = 2,
                 Price = 200000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Cam lè", Code = "Orange" } },
-                Images = "Car2",
-                DefautlImageLocation = "../Assets/Cars/Car2/Black/1.jpg"
+                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Đỏ hoàng hôn", Code = "Red" }, new() { Name="Trắng tuyết", Code="White"} },
+                Images = "Honda Civic City Rs",
+                DefautlImageLocation = "../Assets/Cars/Honda Civic City Rs/Black/1.png"
             },
             new(){
-                Name = "Car3",
-                Manufacturer = 3,
-                EngineType = 3,
-                TypeOfCar = 3,
-                Price = 300000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đỏ lửa", Code = "Red" }, new() { Name = "Xanh lá", Code = "Green" } },
-                Images = "Car3",
-                DefautlImageLocation = "../Assets/Cars/Car3/Orange/1.jpg"
-            },
-            new(){
-                Name = "Car4",
-                Manufacturer = 2,
-                EngineType = 4,
-                TypeOfCar = 4,
-                Price = 400000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Vàng nắng", Code = "Yellow" }, new() { Name = "Tím than", Code = "Purple" } },
-                Images = "Car4",
-                DefautlImageLocation = "../Assets/Cars/Car4/Blue/1.jpg"
-            },
-             new(){
-                Name = "Car1",
+                Name = "Honda Type R",
                 Manufacturer = 1,
-                EngineType = 1,
-                TypeOfCar = 1,
-                Price = 100000000,
+                EngineType = 2,
+                TypeOfCar = 2,
+                Price = 200000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Trắng ngọc trai", Code = "White" }, new() { Name = "Xanh đại dương", Code = "Blue" } },
-                Images = "Car1",
-                DefautlImageLocation = "../Assets/Cars/Car1/White/1.jpg"
+                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Đỏ hoàng hôn", Code = "Red" }, new() { Name="Trắng tuyết", Code="White"}, new() { Name="Xanh thẳm", Code="Blue"} },
+                Images = "Honda Type R",
+                DefautlImageLocation = "../Assets/Cars/Honda Type R/Black/2.png"
             },
             new(){
-                Name = "Car2",
+                Name = "Porche 992 Carrera Cabriolet",
                 Manufacturer = 2,
                 EngineType = 2,
                 TypeOfCar = 2,
                 Price = 200000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Cam lè", Code = "Orange" } },
-                Images = "Car2",
-                DefautlImageLocation = "../Assets/Cars/Car2/Black/1.jpg"
+                Variant = new List<Models.Color> {new() { Name = "Đỏ hoàng hôn", Code = "Red" },},
+                Images = "Porche 992 Carrera Cabriolet",
+                DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera Cabriolet/Red/1.jpg"
             },
             new(){
-                Name = "Car3",
-                Manufacturer = 3,
+                Name = "Porche 718 Cayman S",
+                Manufacturer = 2,
                 EngineType = 3,
                 TypeOfCar = 3,
                 Price = 300000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đỏ lửa", Code = "Red" }, new() { Name = "Xanh lá", Code = "Green" } },
+                Variant = new List<Models.Color> { new() { Name = "Đại dương xanh", Code = "Blue" }, },
                 Images = "Car3",
-                DefautlImageLocation = "../Assets/Cars/Car3/Orange/1.jpg"
+                DefautlImageLocation = "../Assets/Cars/Porche 718 Cayman S/Blue/1.jpg"
             },
             new(){
-                Name = "Car4",
-                Manufacturer = 2,
-                EngineType = 4,
-                TypeOfCar = 4,
-                Price = 400000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Vàng nắng", Code = "Yellow" }, new() { Name = "Tím than", Code = "Purple" } },
-                Images = "Car4",
-                DefautlImageLocation = "../Assets/Cars/Car4/Blue/1.jpg"
-            },
-            new(){
-                Name = "Car1",
-                Manufacturer = 1,
-                EngineType = 1,
-                TypeOfCar = 1,
-                Price = 100000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Trắng ngọc trai", Code = "White" }, new() { Name = "Xanh đại dương", Code = "Blue" } },
-                Images = "Car1",
-                DefautlImageLocation = "../Assets/Cars/Car1/White/1.jpg"
-            },
-            new(){
-                Name = "Car2",
+                Name = "Porche 992 Carrera GTS",
                 Manufacturer = 2,
                 EngineType = 2,
                 TypeOfCar = 2,
                 Price = 200000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đen huyền bí", Code = "Black" }, new() { Name = "Cam lè", Code = "Orange" } },
-                Images = "Car2",
-                DefautlImageLocation = "../Assets/Cars/Car2/Black/1.jpg"
+                Variant = new List<Models.Color> {new() { Name = "Đỏ hoàng hôn", Code = "Red" },},
+                Images = "Porche 992 Carrera GTS",
+                DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera GTS/Red/1.jpg"
             },
             new(){
-                Name = "Car3",
-                Manufacturer = 3,
-                EngineType = 3,
-                TypeOfCar = 3,
-                Price = 300000000,
-                UsageStatus = "New",
-                Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Đỏ lửa", Code = "Red" }, new() { Name = "Xanh lá", Code = "Green" } },
-                Images = "Car3",
-                DefautlImageLocation = "../Assets/Cars/Car3/Orange/1.jpg"
-            },
-            new(){
-                Name = "Car4",
+                Name = "Porche 992 Carrera T",
                 Manufacturer = 2,
-                EngineType = 4,
-                TypeOfCar = 4,
-                Price = 400000000,
+                EngineType = 2,
+                TypeOfCar = 2,
+                Price = 200000000,
                 UsageStatus = "New",
                 Description = "Description",
-                Variant = new List<Models.Color> { new() { Name = "Vàng nắng", Code = "Yellow" }, new() { Name = "Tím than", Code = "Purple" } },
-                Images = "Car4",
-                DefautlImageLocation = "../Assets/Cars/Car4/Blue/1.jpg"
+                Variant = new List<Models.Color> {new() { Name = "Xanh đọt chuối", Code = "Green" },},
+                Images = "Porche 992 Carrera T",
+                DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera T/Green/1.jpg"
+            },
+            new(){
+                Name = "Porche Taycan J1II",
+                Manufacturer = 2,
+                EngineType = 2,
+                TypeOfCar = 2,
+                Price = 200000000,
+                UsageStatus = "New",
+                Description = "Description",
+                Variant = new List<Models.Color> {new() { Name = "Xanh hy vọng", Code = "Blue" },},
+                Images = "Porche Taycan J1II",
+                DefautlImageLocation = "../Assets/Cars/Porche Taycan J1II/Blue/1.jpg"
             },
         };
 
@@ -217,13 +121,13 @@ public class MockDao : IDao
             new()
             {
                 Id = 1,
-                Name = "Vinfast",
+                Name = "Honda",
             },
 
             new()
             {
                 Id = 2,
-                Name = "Kia",
+                Name = "Porche",
             },
 
             new()
@@ -234,7 +138,7 @@ public class MockDao : IDao
             new()
             {
                 Id = 4,
-                Name = "Porsche",
+                Name = "Vinfast",
             },
 
         };
