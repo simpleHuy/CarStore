@@ -22,6 +22,7 @@ public class PageService : IPageService
         Configure<CarDetailViewModel, CarDetailPage>();
         Configure<MainPageViewModel, MainPage>();
         Configure<ScheduleFormViewModel, ScheduleForm>();   
+        Configure<VerifyViewModel, VerifyPage>();
     }
 
     public Type GetPageType(string key)

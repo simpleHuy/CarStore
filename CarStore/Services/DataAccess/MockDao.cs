@@ -232,15 +232,17 @@ public class MockDao : IDao
         return getAllCars().Take(10).ToList();
     }
 
-    public User getCurrentUser()
+    public User GetUser()
     {
         return new User()
         {
             Id = "1",
-            Name = "Minh Trực",
             Email = "minhtruc1234@gmail.com",
-            Phone = "0333601234",
+            Telephone = "0333601234",
             AccountType = "Hội viên tiềm năng",
+            firstName = "Minh Trực",
+            lastName = "Nguyễn",
         };
     }
+
 }

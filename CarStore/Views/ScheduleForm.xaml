@@ -153,7 +153,7 @@
                 <TextBlock Text="Thông tin khách hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <TextBox Header="Họ và tên" Text="{x:Bind ViewModel.CurrentUser.Name}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBox Header="Email" Text="{x:Bind ViewModel.CurrentUser.Email}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
-                <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.CurrentUser.Phone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.CurrentUser.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBlock Text="Thông tin cửa hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
                     <TextBlock Text="Cửa hàng" Style="{ThemeResource BodyStrongTextBlockStyle}"/>

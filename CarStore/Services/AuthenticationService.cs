@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Windows.Storage;
 using CarStore.Contracts.Services;
 using System.Text.RegularExpressions;
+using CarStore.Models;
+using CarStore.Services.DataAccess;
 
 namespace CarStore.Services;
 
@@ -15,7 +17,9 @@ namespace CarStore.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly string _userDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "userData.json");
-    private Dictionary<string, UserData> _users;
+    private Dictionary<string, User> _users;
+    private User? _currentUser;
+    private readonly IDao dao;
 
     private const int MIN_PASSWORD_LENGTH = 8;
     private const int MAX_NAME_LENGTH = 50;
@@ -24,23 +28,40 @@ public class AuthenticationService : IAuthenticationService
     private const string PASSWORD_PATTERN = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
     public AuthenticationService()
     {
-        _users = new Dictionary<string, UserData>();
+        _users = new Dictionary<string, User>();
+        _currentUser = null;
+        dao = new MockDao();
         LoadUsers();
+        
     }
 
-  
-    private class UserData
+    private readonly User _userDefault = new()
     {
-        public string Username { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
-        public string Salt { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        Username = "admin",
+        Password = "1234",
+        Email = "hashdawsd",
+        firstName = "hashdawsd",
+        lastName = "hashdawsd",
+        Telephone = "hashdawsd"
+    };
 
-        public string firstName { get; set; } = string.Empty;
-        public string lastName { get; set; } = string.Empty;
-        public string phoneNumber { get; set; } = string.Empty;
+    event EventHandler<AuthStateChangedEventArgs> IAuthenticationService.AuthStateChanged
+    {
+        add => throw new NotImplementedException();
 
+        remove => throw new NotImplementedException();
+    }
+    public void Logout()
+    {
+        // Clear the current user
+        _users.Clear();
+        _currentUser = null;
+        SaveUsers();
+    }
+
+    public User? GetCurrentUser()
+    {
+        return _currentUser;
     }
 
     private void LoadUsers()
@@ -48,11 +69,11 @@ public class AuthenticationService : IAuthenticationService
         if (File.Exists(_userDataPath))
         {
             var json = File.ReadAllText(_userDataPath);
-            _users = JsonSerializer.Deserialize<Dictionary<string, UserData>>(json) ?? new Dictionary<string, UserData>();
+            _users = JsonSerializer.Deserialize<Dictionary<string, User>>(json) ?? new Dictionary<string, User>();
         }
         else
         {
-            _users = new Dictionary<string, UserData>();
+            _users = new Dictionary<string, User>();
         }
     }
 
@@ -159,22 +180,22 @@ public class AuthenticationService : IAuthenticationService
         return await Task.Run(() =>
         {
             // For demo purposes - replace with your actual authentication logic
-            if (username == "admin" && password == "1234")
-            {
-                return true;
-            }
+            //if (username == "admin" && password == "1234")
+            //{
+            //    return true;
+            //}
+           
 
             // Or use the existing user storage system:
-            /*
+            
             if (!_users.ContainsKey(username))
                 return false;
 
             var userData = _users[username];
             var hashedPassword = HashPassword(password, userData.Salt);
+            _currentUser = dao.GetUser();
             return hashedPassword == userData.PasswordHash;
-            */
 
-            return false;
         });
     }
     public ValidationResult ValidateRegistrationData(
@@ -306,7 +327,7 @@ public class AuthenticationService : IAuthenticationService
         var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
         var hashedPassword = HashPassword(password, salt);
 
-        _users[username] = new UserData
+        _users[username] = new User
         {
             Username = username,
             PasswordHash = hashedPassword,
@@ -314,7 +335,7 @@ public class AuthenticationService : IAuthenticationService
             Email = email,
             firstName = firstName,
             lastName = lastName,
-            phoneNumber = phoneNumber
+            Telephone = phoneNumber
         };
 
         SaveUsers();
@@ -363,7 +384,7 @@ public class AuthenticationService : IAuthenticationService
     }
 
     // New method to validate password reset data
-   
+
 
     // New method to reset password
     public async Task<bool> ResetPasswordAsync(string username, string newPassword)
@@ -421,7 +442,7 @@ public class AuthenticationService : IAuthenticationService
     }
 
     // Helper method for password validation
-    public PasswordResetValidationResult ValidatePasswordReset(string username,string newPassword,string confirmPassword)
+    public PasswordResetValidationResult ValidatePasswordReset(string username, string newPassword, string confirmPassword)
     {
         // Check for empty fields
         if (string.IsNullOrWhiteSpace(username) ||
@@ -491,5 +512,11 @@ public class AuthenticationService : IAuthenticationService
 
         return hasNumber && hasUpperCase && hasLowerCase && hasSpecialChar && isLengthValid;
     }
-
+    public void ResetUserDataFile()
+    {
+        if (File.Exists(_userDataPath))
+        {
+            File.Delete(_userDataPath);
+        }
+    }
 }

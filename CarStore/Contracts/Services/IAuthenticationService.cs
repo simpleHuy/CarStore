@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.IO;
 using System.Collections.Generic;
+using CarStore.Models;
+using CarStore.Services;
 
 namespace CarStore.Contracts.Services;
 
@@ -48,4 +50,8 @@ public interface IAuthenticationService
     Task<bool> ResetPasswordAsync(string username, string newPassword);
 
     bool VerifyEmail(string email);
+    void Logout();
+
+    User GetCurrentUser();
+    event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
 }

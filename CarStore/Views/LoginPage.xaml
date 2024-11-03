@@ -41,7 +41,7 @@
                     <CheckBox Content="Ghi nhớ đăng nhập" 
                         IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}" />
                     <!--forgot password button-->
-                    <HyperlinkButton Content="Quên mật khẩu" Command="{x:Bind ViewModel.NavigateToForgotPassword}" Margin="20 0 0 0"/>
+                    <HyperlinkButton Content="Quên mật khẩu" Command="{x:Bind ViewModel.NavigateToVerifyCommand}" Margin="20 0 0 0"/>
                 </StackPanel>
             
                 
