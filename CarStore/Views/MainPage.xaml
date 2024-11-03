@@ -77,12 +77,12 @@
                           SelectionChanged="ComboBox_SelectionChanged">
 
                 </ComboBox>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="InfoBtn" Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
-                        Content="Xem chi tiết" Margin="10 0 0 5" Width="100"
+                        Content="Xem chi tiết" Margin="10 0 0 5" Width="140"
                             Click="InfoBtn_Click"/>
                     <Button x:Name="BuyBtn" Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
-                        Content="Mua ngay" Margin="10 0 10 5" Width="100"
+                        Content="Mua ngay" Margin="10 0 10 5" Width="140"
                             Click="BuyBtn_Click"/>
                 </StackPanel>
 
