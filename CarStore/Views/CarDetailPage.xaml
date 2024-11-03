@@ -151,14 +151,14 @@
                                                     CornerRadius="{ThemeResource OverlayCornerRadius}">
                                             <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
                                                     CornerRadius="2">
-                                                <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="200" Height="200" Stretch="Fill"/>
+                                                <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="300" Height="250" Stretch="Uniform"/>
                                             </Border>
 
                                             <StackPanel Orientation="Horizontal">
                                                 <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                                                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                                         Margin="10 5 5 5">
-                                                    <TextBlock Text="{x:Bind Path=Manufacturer, Converter={StaticResource ManufactureConverter}}" Foreground="Wheat" Margin="4 2 4 2"
+                                                    <TextBlock Text="{x:Bind Path=Manufacturer, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
                                                                Style="{ThemeResource BodyStrongTextBlockStyle}">
                                                     </TextBlock>
                                                 </Border>
