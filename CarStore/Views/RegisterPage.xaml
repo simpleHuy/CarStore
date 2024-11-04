@@ -17,14 +17,22 @@
         
     
         <Grid Padding="20">
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button x:Name="BackButton" Click="BackButton_Click"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                    IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
+                    ToolTipService.ToolTip="Back" Width="100"/>
+            </StackPanel>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" CornerRadius="10" Spacing="20"
                         Background="White">
+
                 <TextBlock Grid.Row="1" 
                        Text="ĐĂNG KÝ" 
                        Style="{StaticResource TitleTextBlockStyle}"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,10"/>
-            
+
                 <!-- User Information -->
                 <TextBlock Text="Thông tin cá nhân" FontWeight="Bold"/>
                 <Grid>

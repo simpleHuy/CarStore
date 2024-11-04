@@ -33,5 +33,11 @@ public sealed partial class LoginPage : Page
         ViewModel = App.GetService<LoginViewModel>();
         InitializeComponent();
     }
-
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+    }
 }

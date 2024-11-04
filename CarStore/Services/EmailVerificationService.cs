@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 
 namespace CarStore.Services;
-
+  
 public class EmailVerificationService
 {
     private readonly SmtpClient _smtpClient;
