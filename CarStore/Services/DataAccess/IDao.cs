@@ -12,5 +12,6 @@ public interface IDao
     List<Car> getPopularCars();
     List<Car> getSuggestCars();
     List<TypeOfCar> GetTypeOfCar();
-    User getCurrentUser();
+
+    User GetUser();
 }

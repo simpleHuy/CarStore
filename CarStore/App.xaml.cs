@@ -85,6 +85,8 @@ public partial class App : Application
             services.AddTransient<ForgotPasswordPage>();
             services.AddTransient<MainPageViewModel>();
             services.AddTransient<ScheduleFormViewModel>();
+            services.AddTransient<VerifyViewModel>();
+            services.AddTransient<VerifyPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

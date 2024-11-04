@@ -15,6 +15,7 @@ public class MockDao : IDao
         var result = new List<Car>()
         {
             new(){
+                CarId = 1,
                 Name = "Honda Accord",
                 Manufacturer = 1,
                 EngineType = 4,
@@ -27,6 +28,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Honda Accord/White/1.png"
             },
             new(){
+                CarId = 2,
                 Name = "Honda Civic City Rs",
                 Manufacturer = 1,
                 EngineType = 1,
@@ -39,6 +41,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Honda Civic City Rs/Black/1.png"
             },
             new(){
+                CarId= 3,
                 Name = "Honda Type R",
                 Manufacturer = 1,
                 EngineType = 1,
@@ -51,6 +54,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Honda Type R/Black/2.png"
             },
             new(){
+                CarId= 4,
                 Name = "Porche 992 Carrera Cabriolet",
                 Manufacturer = 2,
                 EngineType = 1,
@@ -63,6 +67,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera Cabriolet/Red/1.jpg"
             },
             new(){
+                CarId= 5,
                 Name = "Porche 718 Cayman S",
                 Manufacturer = 2,
                 EngineType = 1,
@@ -71,10 +76,11 @@ public class MockDao : IDao
                 UsageStatus = "New",
                 Description = "Engine and Performance:\r\nEngine: 2.5-liter turbocharged flat-four\r\n\r\nPower: 350 horsepower @ 6,500 rpm\r\n\r\nTorque: 309 lb-ft @ 1,900-4,500 rpm\r\n\r\nTransmission: 6-speed manual or 7-speed PDK automatic\r\n\r\n0-60 mph: Approximately 4.6 seconds\r\n\r\nTop Speed: Around 177 mph\r\n\r\nFuel Efficiency:\r\n\r\nCity: 22 mpg\r\n\r\nHighway: 36 mpg\r\n\r\nCombined: 29 mpg\r\n\r\nDimensions:\r\nLength: 172.4 inches\r\n\r\nWidth: 70.9 inches\r\n\r\nHeight: 50.9 inches\r\n\r\nWheelbase: 97.4 inches\r\n\r\nCurb Weight: Approximately 3,153 lbs\r\n\r\nExterior Features:\r\nDesign: Sporty and aerodynamic with a distinctive Porsche look\r\n\r\nLighting: Full LED headlights and taillights\r\n\r\nWheels: 19-inch alloy wheels with performance tires\r\n\r\nSpoiler: Rear spoiler for improved downforce\r\n\r\nInterior Features:\r\nSeating: Comfortable sports seats with adjustable settings\r\n\r\nDashboard: Digital and analog instrument cluster\r\n\r\nInfotainment System:\r\n\r\nTouchscreen Display: 7-inch touchscreen with Porsche Communication Management (PCM)\r\n\r\nConnectivity: Apple CarPlay and Android Auto compatibility\r\n\r\nAudio: High-quality sound system\r\n\r\nComfort: Dual-zone automatic climate control, heated and ventilated seats, leather-wrapped steering wheel\r\n\r\nSafety and Driver-Assistance:\r\nPorsche Stability Management (PSM): Helps maintain stability and control\r\n\r\nAdaptive Cruise Control (ACC): Maintains a set speed and distance from the vehicle ahead\r\n\r\nLane Keeping Assist: Helps keep the vehicle centered in its lane\r\n\r\nSurround View Camera System: Provides a 360-degree view around the vehicle\r\n\r\nAdditional Features:\r\nKeyless Entry and Start: Proximity key entry with push-button start\r\n\r\nDrive Modes: Includes Normal, Sport, and Sport Plus settings\r\n\r\nPorsche Active Suspension Management (PASM): Electronically adjusts the damping force on each wheel\r\n\r\nPorsche Dynamic Chassis Control (PDCC): Enhances stability and reduces body roll during dynamic cornering",
                 Variant = new List<Models.Color> { new() { Name = "Đại dương xanh", Code = "Blue" }, },
-                Images = "Car3",
+                Images = "Porche 718 Cayman S",
                 DefautlImageLocation = "../Assets/Cars/Porche 718 Cayman S/Blue/1.jpg"
             },
             new(){
+                CarId= 6,
                 Name = "Porche 992 Carrera GTS",
                 Manufacturer = 2,
                 EngineType = 1,
@@ -87,6 +93,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera GTS/Red/1.jpg"
             },
             new(){
+                CarId= 7,
                 Name = "Porche 992 Carrera T",
                 Manufacturer = 2,
                 EngineType = 1,
@@ -99,6 +106,7 @@ public class MockDao : IDao
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera T/Green/1.jpg"
             },
             new(){
+                CarId= 8,
                 Name = "Porche Taycan J1II",
                 Manufacturer = 2,
                 EngineType = 2,
@@ -258,15 +266,17 @@ public class MockDao : IDao
         return getAllCars().Take(10).ToList();
     }
 
-    public User getCurrentUser()
+    public User GetUser()
     {
         return new User()
         {
             Id = "1",
-            Name = "Minh Trực",
             Email = "minhtruc1234@gmail.com",
-            Phone = "0333601234",
+            Telephone = "0333601234",
             AccountType = "Hội viên tiềm năng",
+            firstName = "Minh Trực",
+            lastName = "Nguyễn",
         };
     }
+
 }

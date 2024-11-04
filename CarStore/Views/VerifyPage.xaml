@@ -7,11 +7,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="White">
 
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
-            <RowDefinition Height="200" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -20,12 +20,13 @@
         x:Uid="XÁC NHẬN TÀI KHOẢN"
         Style="{StaticResource PageTitleStyle}" />
 
-        <StackPanel Grid.Row="1" VerticalAlignment="Center" Height="100">
-            <TextBlock HorizontalAlignment="Center" Text="Tên đăng nhập"/>
-            <TextBox HorizontalAlignment="Center" Width="200" x:Name="name"/>
-            <HyperlinkButton Content="Click to go to page 2"
+        <StackPanel BorderBrush="Black" BorderThickness="1" CornerRadius="10" Width="600" Grid.Row="1" VerticalAlignment="Center" Height="200">
+            <TextBlock HorizontalAlignment="Center" Text="Xác thực email" 
+                       FontWeight="Bold" FontSize="30" Margin="20"/>
+            <TextBox HorizontalAlignment="Center" Width="200" x:Name="name" Text="{x:Bind ViewModel.Email}"/>
+            <HyperlinkButton Content="gửi code"
                           Command="{x:Bind ViewModel.VerifyCommand}"
-                          HorizontalAlignment="Center"/>
+                          HorizontalAlignment="Center" Margin="20" FontWeight="Bold" FontSize="18"/>
         </StackPanel>
 
     </Grid>

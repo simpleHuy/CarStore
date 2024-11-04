@@ -33,14 +33,44 @@ public sealed partial class ScheduleForm : Page
         ViewModel = App.GetService<ScheduleFormViewModel>();
     }
 
-    private async void Button_Click(object sender, RoutedEventArgs e)
+    private void BackButton_Click(object sender, RoutedEventArgs e)
     {
-        /*ContentDialog dialog = new ContentDialog
+        if (Frame.CanGoBack)
         {
-            Title = "Thông báo",
-            Content = "Thông tin đặt lịch hẹn đã được gửi đến cửa hàng. Cửa hàng sẽ sớm liên hệ để xác nhận!",
-            CloseButtonText = "Ok"
-        };
-        await dialog.ShowAsync();*/
+            Frame.GoBack();
+        }
+    }
+
+    private async void Summit_btn_click(object sender, RoutedEventArgs e)
+    {
+        /*temporary control*/
+
+        if (BranchPicker.SelectedItem == null || TimePicker.SelectedTime == null || DatePicker.Date == null)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Đặt lịch hẹn",
+                Content = "Vui lòng chọn hết tất cả các trường",
+                CloseButtonText = "Quay lại",
+            }.ShowAsync();
+
+        }
+        else
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Đặt lịch hẹn",
+                Content = "Đã đặt lịch hẹn thành công",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
     }
 }

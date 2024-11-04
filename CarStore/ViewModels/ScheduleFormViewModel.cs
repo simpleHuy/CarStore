@@ -17,7 +17,7 @@ public class ScheduleFormViewModel:ObservableObject, INotifyPropertyChanged
     public ScheduleFormViewModel(INavigationService navigationService)
     {
         isLogin = true;
-        CurrentUser = dao.getCurrentUser();
+        CurrentUser = dao.GetUser();
         _navigateService = navigationService;
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));

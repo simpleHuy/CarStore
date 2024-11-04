@@ -58,9 +58,10 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="Back_Btn" Grid.Row="0" Grid.Column="0" Background="Transparent" BorderThickness="0">
-                    <FontIcon Glyph="&#xE72B;" FontSize="20" Margin="3 0 5 0"/>
-                </Button>
+                <Button x:Name="BackButton" Click="BackButton_Click"
+                        Style="{StaticResource NavigationBackButtonNormalStyle}"
+                        IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
+                        ToolTipService.ToolTip="Back" Width="100"/>
                 <Image 
                     Grid.Column="1" Grid.Row="0"
                     Source="../Assets/Logo/logo.png"
@@ -153,7 +154,7 @@
                 <TextBlock Text="Thông tin khách hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <TextBox Header="Họ và tên" Text="{x:Bind ViewModel.CurrentUser.Name}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBox Header="Email" Text="{x:Bind ViewModel.CurrentUser.Email}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
-                <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.CurrentUser.Phone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.CurrentUser.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBlock Text="Thông tin cửa hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
                     <TextBlock Text="Cửa hàng:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
@@ -168,7 +169,7 @@
                     <TextBlock Text="371 Cộng Hòa, phường Tân Mỹ, quận 4, thành phố Hồ Chí Minh" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <TextBlock Text="Thông tin lịch hẹn" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <ComboBox PlaceholderText="Chi nhánh" Margin="20 10 0 0" Header="Showroom">
+                <ComboBox x:Name="BranchPicker" PlaceholderText="Chi nhánh" Margin="20 10 0 0" Header="Showroom">
                     <TextBlock Text="Cơ sở 1: 371 Cộng Hòa, phường Tân Mỹ, quận 4, thành phố Hồ Chí Minh"/>
                     <TextBlock Text="Cơ sở 2: 127 Nguyễn Văn Cừ, phường 4, quận 5, thành phố Hồ Chí Minh"/>
                 </ComboBox>
@@ -177,7 +178,7 @@
                     <TimePicker x:Name="TimePicker" Header="Chọn thời gian" ClockIdentifier="24HourClock" HorizontalAlignment="Center"/>
                 </StackPanel>
                 <Border HorizontalAlignment="Center" Margin="20 10 20 10">
-                    <Button Style="{StaticResource AccentButtonStyle}" Content="Xác nhận" Click="Button_Click"/>
+                    <Button Style="{StaticResource AccentButtonStyle}" Content="Xác nhận" Click="Summit_btn_click"/>
                 </Border>
             </StackPanel>
         </Border>

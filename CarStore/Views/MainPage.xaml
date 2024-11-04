@@ -10,7 +10,7 @@
     xmlns:helpers="using:CarStore.Helpers"
     Background="Transparent"
     mc:Ignorable="d">
-    
+
     <Page.Resources>
         <local1:LongToVNCurrencyConverter x:Key="currency"/>
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
@@ -24,9 +24,9 @@
                 <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>
             </StackPanel>
         </DataTemplate>
-    
+
         <DataTemplate x:Name="CategoryTemplate" x:DataType="local:TypeOfCar">
-            <Button Margin="5" Background="{Binding ImageLocation}"> 
+            <Button Margin="5" Background="{Binding ImageLocation}">
                 <Grid VerticalAlignment="Bottom">
                     <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="None"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
@@ -38,7 +38,7 @@
                 </Grid>
             </Button>
         </DataTemplate>
-        
+
         <DataTemplate x:Name="ItemTemplate"  x:DataType="local:Car">
             <StackPanel x:Name="Card" Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
                         Margin="5"
@@ -75,7 +75,7 @@
                           ItemTemplate="{StaticResource VariantTemplate}"
                           ItemsSource="{x:Bind Variant}"
                           SelectionChanged="ComboBox_SelectionChanged">
-                    
+
                 </ComboBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="InfoBtn" Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
@@ -136,31 +136,33 @@
                             
             />
                     <Grid x:Name="Header_AccountSection" 
-    Grid.Column="2" Grid.Row="0"
-    HorizontalAlignment="Right">
+                        Grid.Column="2" Grid.Row="0"
+                        HorizontalAlignment="Right">
                         <StackPanel x:Name="Header_Buttons"  Orientation="Horizontal" 
-                Visibility="{x:Bind ViewModel.isLogin , Converter={StaticResource InvertBooleanToVisibilityConverter}}">
+                                Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource InvertBooleanToVisibilityConverter}}">
                             <Button x:Name="BtnLogin"
-            Margin="5"
-            Background="White"
-            Command="{x:Bind ViewModel.NavigateToLoginCommand}"
-            Width="100">
+                                    Margin="5"
+                                    Background="White"
+                                    Command="{x:Bind ViewModel.NavigateToLoginCommand}"
+                                    Width="100">
                                 Đăng nhập
                             </Button>
+
                             <Button x:Name="BtnSignup"
-            Margin="5"
-            Background="White"
-            Command="{x:Bind ViewModel.NavigateToSignupCommand}"
-            Width="100">
+                                Margin="5 5 25 5"
+                                Background="White"
+                                Command="{x:Bind ViewModel.NavigateToSignupCommand}"
+                                Width="100">
                                 Đăng ký
                             </Button>
                         </StackPanel>
+
                         <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
-                Visibility="{x:Bind ViewModel.isLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
+                            Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical" Margin="0 0 10 0">
-                                        <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                        <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.firstName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
                                         <TextBlock x:Name="UserType" Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
                                     </StackPanel>
                                     <Image Source="../Assets/Avatars/1.png" Height="50"/>

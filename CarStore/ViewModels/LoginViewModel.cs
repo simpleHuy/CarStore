@@ -64,10 +64,11 @@ public class LoginViewModel : ObservableObject
     {
         get;
     }
-    public IRelayCommand NavigateToForgotPassword
+    public IRelayCommand NavigateToVerifyCommand
     {
         get;
     }
+
 
     public LoginViewModel(INavigationService navigationService, IAuthenticationService authService)
     {
@@ -76,7 +77,7 @@ public class LoginViewModel : ObservableObject
         NavigateToRegisterCommand = new RelayCommand(ExecuteNavigateToRegister);
         LoginCommand = new AsyncRelayCommand(ExecuteLoginAsync, CanExecuteLogin);
 
-        NavigateToForgotPassword = new RelayCommand(ExecuteNavigateToForgotPassword);
+        NavigateToVerifyCommand = new RelayCommand(ExecuteNavigateToVerifyCommand);
 
         // Load saved credentials if they exist
         LoadSavedCredentialsAsync();
@@ -150,8 +151,8 @@ public class LoginViewModel : ObservableObject
     }
 
 
-    private void ExecuteNavigateToForgotPassword()
+    private void ExecuteNavigateToVerifyCommand()
     {
-        _navigationService.NavigateTo(typeof(ForgotPasswordViewModel).FullName!);
+        _navigationService.NavigateTo(typeof(VerifyViewModel).FullName!);
     }
 }

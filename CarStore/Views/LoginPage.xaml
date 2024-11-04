@@ -20,6 +20,12 @@
             x:Name="ContentArea" 
             Background= "White"
             HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="10">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Button x:Name="BackButton" Click="BackButton_Click"
+                    Style="{StaticResource NavigationBackButtonNormalStyle}"
+                    IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
+                    ToolTipService.ToolTip="Back" Width="100"/>
+            </StackPanel>
 
             <TextBlock Grid.Row="1" 
                        Text="ĐĂNG NHẬP" 
@@ -41,7 +47,7 @@
                     <CheckBox Content="Ghi nhớ đăng nhập" 
                         IsChecked="{x:Bind ViewModel.RememberMe, Mode=TwoWay}" />
                     <!--forgot password button-->
-                    <HyperlinkButton Content="Quên mật khẩu" Command="{x:Bind ViewModel.NavigateToForgotPassword}" Margin="20 0 0 0"/>
+                    <HyperlinkButton Content="Quên mật khẩu" Command="{x:Bind ViewModel.NavigateToVerifyCommand}" Margin="20 0 0 0"/>
                 </StackPanel>
             
                 

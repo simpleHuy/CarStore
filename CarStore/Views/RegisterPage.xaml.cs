@@ -38,4 +38,12 @@ public sealed partial class RegisterPage : Page
         ViewModel = App.GetService<RegisterViewModel>();
         InitializeComponent();
     }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+    }
 }

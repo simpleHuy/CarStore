@@ -16,6 +16,13 @@ public partial class VerifyViewModel : ObservableObject
     private readonly IAuthenticationService _authService;
 
     private string _username = string.Empty;
+    private string _email;
+
+    public string Email
+    {
+        get => _email;
+        set => SetProperty(ref _email, value);
+    }
     public string Username
     {
         get => _username;

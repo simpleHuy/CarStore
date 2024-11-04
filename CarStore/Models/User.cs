@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Capture.Frames;
 
 namespace CarStore.Models;
 public class User
 {
     public string? Id
     {
-        get; set;
+        get; 
+        set;
     }
     public string? Name
     {
@@ -19,7 +21,7 @@ public class User
     {
         get; set;
     }
-    public string? Phone
+    public string? Telephone
     {
         get; set;
     }
@@ -27,4 +29,33 @@ public class User
     {
         get; set;
     }
+
+    public string? Password
+    {
+        get; set;
+    }
+    public string? PasswordHash
+    {
+        get; set;
+    }
+
+    public string? Salt
+    {
+        get; set;
+    }
+
+    public string? Username
+    {
+        get; set;
+    }
+
+    public string? firstName
+    {
+        get; set;
+    }
+    public string? lastName
+    {
+        get; set;
+    }
+
 }
