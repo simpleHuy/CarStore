@@ -18,6 +18,11 @@
             <Color x:Key="SystemAccentColorDark2">#1a4c8f</Color>
             <Color x:Key="SystemAccentColorDark3">#113e7f</Color>
             <Color x:Key="ApplicationPageBackgroundThemeBrush">#3379d9</Color>
+            <LinearGradientBrush x:Key="GradientPageBackground" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#f5eee1" Offset="0" />
+                <GradientStop Color="#ffe6ee" Offset="0.5" />
+                <GradientStop Color="#d5f8ff" Offset="1" />
+            </LinearGradientBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
