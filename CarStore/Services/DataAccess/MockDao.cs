@@ -217,41 +217,49 @@ public class MockDao : IDao
             {
                 Id= 1,
                 Name = "Sedan",
+                ImageLocation = "../Assets/CategoryBackground/sedan.png",
             },
             new()
             {
                 Id= 2,
                 Name = "HatchBack",
+                ImageLocation = "../Assets/CategoryBackground/hatchback.png",
             },
             new()
             {
                 Id= 3,
                 Name = "SUV",
+                ImageLocation = "../Assets/CategoryBackground/suv.png",
             },
             new()
             {
                 Id= 4,
                 Name = "CUV",
+                ImageLocation = "../Assets/CategoryBackground/cuv.png",
             },
             new()
             {
                 Id= 5,
                 Name = "Minivan",
+                ImageLocation = "../Assets/CategoryBackground/minivan.png",
             },
             new()
             {
                 Id= 6,
                 Name = "Coupe",
+                ImageLocation = "../Assets/CategoryBackground/coupe.png",
             },
             new()
             {
                 Id= 7,
                 Name = "Convertible",
+                ImageLocation = "../Assets/CategoryBackground/convertible.png",
             },
             new()
             {
                 Id= 8,
                 Name = "Pickup",
+                ImageLocation = "../Assets/CategoryBackground/pickup.png",
             },
         };
 
@@ -271,10 +279,10 @@ public class MockDao : IDao
         return new User()
         {
             Id = "1",
-            Email = "minhtruc1234@gmail.com",
+            Email = "example@gmail.com",
             Telephone = "0333601234",
             AccountType = "Hội viên tiềm năng",
-            firstName = "Minh Trực",
+            firstName = "Admin",
             lastName = "Nguyễn",
         };
     }

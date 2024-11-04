@@ -8,7 +8,7 @@
     xmlns:local="using:CarStore.Models"
     xmlns:local1="using:CarStore.Services"
     xmlns:helpers="using:CarStore.Helpers"
-    Background="Transparent"
+    Background="{ThemeResource GradientPageBackground}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -28,9 +28,9 @@
         <DataTemplate x:Name="CategoryTemplate" x:DataType="local:TypeOfCar">
             <Button Margin="5" Background="{Binding ImageLocation}">
                 <Grid VerticalAlignment="Bottom">
-                    <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="None"
+                    <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="UniformToFill"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Opacity="0.5"/>
+                            Opacity="1"/>
                     <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
                                Style="{ThemeResource SubtitleTextBlockStyle}"
                                HorizontalAlignment="Center">
@@ -78,7 +78,7 @@
 
                 </ComboBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="InfoBtn" Background="{ThemeResource TextOnAccentFillColorSecondaryBrush}"
+                    <Button x:Name="InfoBtn" Background="White"
                         Content="Xem chi tiết" Margin="10 0 0 5" Width="140"
                             Click="InfoBtn_Click"/>
                     <Button x:Name="BuyBtn" Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
@@ -143,6 +143,7 @@
                             <Button x:Name="BtnLogin"
                                     Margin="5"
                                     Background="White"
+                                    Foreground="Black"
                                     Command="{x:Bind ViewModel.NavigateToLoginCommand}"
                                     Width="100">
                                 Đăng nhập
@@ -151,6 +152,7 @@
                             <Button x:Name="BtnSignup"
                                 Margin="5 5 25 5"
                                 Background="White"
+                                    Foreground="Black"
                                 Command="{x:Bind ViewModel.NavigateToSignupCommand}"
                                 Width="100">
                                 Đăng ký
@@ -217,7 +219,7 @@
                         ItemsSource="{x:Bind ViewModel.Categories}"
                         SelectionMode="None"
                               Margin="20 10 20 0"/>
-                    <Border x:Name="Popular" Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
+                    <Border x:Name="Popular" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
                         <StackPanel Orientation="Vertical"
@@ -238,7 +240,7 @@
                     <Grid x:Name="LongBanner" Margin="20 10 20 10">
                         <Image Source="../Assets/Banner/long-banner.png"></Image>
                     </Grid>
-                    <Border x:Name="Suggest" Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
+                    <Border x:Name="Suggest" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
                         <StackPanel Orientation="Vertical"
