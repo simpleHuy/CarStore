@@ -47,6 +47,13 @@ public sealed partial class MainPage : Page
 
     private void BuyBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        var selectedCar = (sender as Button).DataContext as Car;
+
+        // Kiểm tra nếu selectedCar không null, sau đó chuyển đến CarDetailPage và truyền xe đã chọn
+        if (selectedCar != null)
+        {
+            Frame.Navigate(typeof(CarDetailPage), selectedCar);
+        }
     }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
