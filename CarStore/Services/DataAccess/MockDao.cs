@@ -223,6 +223,7 @@ public class MockDao : IDao
             {
                 Id= 2,
                 Name = "HatchBack",
+                ImageLocation = "../Assets/CategoryBackground/hatchback.png",
             },
             new()
             {
@@ -278,10 +279,10 @@ public class MockDao : IDao
         return new User()
         {
             Id = "1",
-            Email = "minhtruc1234@gmail.com",
+            Email = "example@gmail.com",
             Telephone = "0333601234",
             AccountType = "Hội viên tiềm năng",
-            firstName = "Minh Trực",
+            firstName = "Admin",
             lastName = "Nguyễn",
         };
     }
