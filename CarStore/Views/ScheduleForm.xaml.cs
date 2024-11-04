@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,5 +31,46 @@ public sealed partial class ScheduleForm : Page
     {
         this.InitializeComponent();
         ViewModel = App.GetService<ScheduleFormViewModel>();
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+    }
+
+    private async void Summit_btn_click(object sender, RoutedEventArgs e)
+    {
+        /*temporary control*/
+
+        if (BranchPicker.SelectedItem == null || TimePicker.SelectedTime == null || DatePicker.Date == null)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Đặt lịch hẹn",
+                Content = "Vui lòng chọn hết tất cả các trường",
+                CloseButtonText = "Quay lại",
+            }.ShowAsync();
+
+        }
+        else
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Đặt lịch hẹn",
+                Content = "Đã đặt lịch hẹn thành công",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            if (Frame.CanGoBack)
+            {
+                Frame.GoBack();
+            }
+        }
+
     }
 }

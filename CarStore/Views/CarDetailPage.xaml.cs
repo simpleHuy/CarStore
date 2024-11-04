@@ -150,13 +150,8 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void BtnLogin_Click(object sender, RoutedEventArgs e)
+    private void Schudele_btn_click(object sender, RoutedEventArgs e)
     {
-
-    }
-
-    private void BtnSignup_Click(object sender, RoutedEventArgs e)
-    {
-
+        Frame.Navigate(typeof(ScheduleForm));
     }
 }
