@@ -47,6 +47,13 @@ public sealed partial class MainPage : Page
 
     private void BuyBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        var selectedCar = (sender as Button).DataContext as Car;
+
+        // Kiểm tra nếu selectedCar không null, sau đó chuyển đến CarDetailPage và truyền xe đã chọn
+        if (selectedCar != null)
+        {
+            Frame.Navigate(typeof(CarDetailPage), selectedCar);
+        }
     }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,7 +62,7 @@ public sealed partial class MainPage : Page
         if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is Color selectedVariant)
         {
             // Update ImageLocation based on selected Variant
-            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1.jpg";
+            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
         }
     }
 

@@ -157,15 +157,15 @@
                 <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.CurrentUser.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBlock Text="Thông tin cửa hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
-                    <TextBlock Text="Cửa hàng" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock Text="Cửa hàng:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                     <TextBlock Text="AnyCar" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
-                    <TextBlock Text="Số điện thoại" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock Text="Số điện thoại:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                     <TextBlock Text="(0273) 3607878" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
-                    <TextBlock Text="Địa chỉ" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
+                    <TextBlock Text="Địa chỉ:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
                     <TextBlock Text="371 Cộng Hòa, phường Tân Mỹ, quận 4, thành phố Hồ Chí Minh" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <TextBlock Text="Thông tin lịch hẹn" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
