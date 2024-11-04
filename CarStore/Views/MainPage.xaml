@@ -143,6 +143,7 @@
                             <Button x:Name="BtnLogin"
                                     Margin="5"
                                     Background="White"
+                                    Foreground="Black"
                                     Command="{x:Bind ViewModel.NavigateToLoginCommand}"
                                     Width="100">
                                 Đăng nhập
@@ -151,6 +152,7 @@
                             <Button x:Name="BtnSignup"
                                 Margin="5 5 25 5"
                                 Background="White"
+                                    Foreground="Black"
                                 Command="{x:Bind ViewModel.NavigateToSignupCommand}"
                                 Width="100">
                                 Đăng ký
