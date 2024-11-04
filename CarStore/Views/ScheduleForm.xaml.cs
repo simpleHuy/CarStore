@@ -23,7 +23,12 @@ namespace CarStore.Views;
 /// </summary>
 public sealed partial class ScheduleForm : Page
 {
+
     public ScheduleFormViewModel ViewModel
+    {
+        get; set;
+    }
+    public MainPageViewModel mainPageViewModel
     {
         get; set;
     }
@@ -31,6 +36,7 @@ public sealed partial class ScheduleForm : Page
     {
         this.InitializeComponent();
         ViewModel = App.GetService<ScheduleFormViewModel>();
+        mainPageViewModel = App.GetService<MainPageViewModel>();
     }
 
     private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -51,10 +57,20 @@ public sealed partial class ScheduleForm : Page
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Đặt lịch hẹn",
-                Content = "Vui lòng chọn hết tất cả các trường",
+                Content = "Vui lòng chọn hết tất cả các trường!",
                 CloseButtonText = "Quay lại",
             }.ShowAsync();
 
+        }
+        else if (!mainPageViewModel.IsLogin)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Đặt lịch hẹn",
+                Content = "Vui lòng đăng nhập để đặt lịch hẹn!",
+                CloseButtonText = "Quay lại",
+            }.ShowAsync();
         }
         else
         {
