@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CarStore.Helpers;
 using CarStore.Models;
@@ -88,11 +89,14 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         if (Directory.Exists(path))
         {
             // Get all jpg files in the directory
-            var imageFiles = Directory.GetFiles(path, "*.jpg", SearchOption.TopDirectoryOnly);
+            var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
+                                      .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
+                                      .ToArray();
 
             // Convert file paths to proper URI format for WinUI
             var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///../Assets/Cars/{SelectedCar.Images}/{SelectedCarColor}/{index + 1}.jpg").ToString());
+                new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
+
 
             SelectedCarPictures = new ObservableCollection<string>(imageUris);
         }
@@ -130,10 +134,10 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         CompetitorCars = new ObservableCollection<Car>();
         foreach (var car in Cars)
         {
-            if (CompetitorCars.Count > 5)
+            if (CompetitorCars.Count > 9)
                 break;
 
-            if (/*(car.Price > minPrice || car.Price < maxPrice) && car.CarId != SelectedCar.CarId*/ true)
+            if (/*(car.Price >= minPrice && car.Price <= maxPrice) && car.CarId != SelectedCar.CarId*/ true)
             {
                 CompetitorCars.Add(car);
             }
