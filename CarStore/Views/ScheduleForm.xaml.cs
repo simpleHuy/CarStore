@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,5 +31,16 @@ public sealed partial class ScheduleForm : Page
     {
         this.InitializeComponent();
         ViewModel = App.GetService<ScheduleFormViewModel>();
+    }
+
+    private async void Button_Click(object sender, RoutedEventArgs e)
+    {
+        /*ContentDialog dialog = new ContentDialog
+        {
+            Title = "Thông báo",
+            Content = "Thông tin đặt lịch hẹn đã được gửi đến cửa hàng. Cửa hàng sẽ sớm liên hệ để xác nhận!",
+            CloseButtonText = "Ok"
+        };
+        await dialog.ShowAsync();*/
     }
 }

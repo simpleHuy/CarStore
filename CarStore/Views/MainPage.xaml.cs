@@ -55,7 +55,7 @@ public sealed partial class MainPage : Page
         if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is Color selectedVariant)
         {
             // Update ImageLocation based on selected Variant
-            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1.jpg";
+            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
         }
     }
 

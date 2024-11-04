@@ -190,21 +190,21 @@
                       Margin="20 0 0 0"
                       MaxHeight="270"
                       Height="270">
-                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-1"/>
-                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-2"/>
-                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-3"/>
-                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.jpg" AutomationProperties.Name="Banner-4"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-2.png" AutomationProperties.Name="Banner-1"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.png" AutomationProperties.Name="Banner-2"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-2.png" AutomationProperties.Name="Banner-3"/>
+                            <Image Source="ms-appx:///Assets/Banner/big-banner-1.png" AutomationProperties.Name="Banner-4"/>
                         </FlipView>
                         <Image x:Name="TopCarousel_SubBanner_1"
                    Grid.Row="0" Grid.Column="2"
                    Margin="5 5 20 0 "
-                   Source="../Assets/Banner/sub-banner-1.jpg"
+                   Source="../Assets/Banner/sub-banner-1.png"
                    VerticalAlignment="Bottom"
              />
                         <Image x:Name="TopCarousel_SubBanner_2"
                     Grid.Row="1" Grid.Column="2"
                    Margin="5 5 20 0"
-                    Source="../Assets/Banner/sub-banner-2.jpg"
+                    Source="../Assets/Banner/sub-banner-2.png"
                    VerticalAlignment="Top"
             />
 
@@ -234,7 +234,7 @@
 
                     </Border>
                     <Grid x:Name="LongBanner" Margin="20 10 20 10">
-                        <Image Source="../Assets/Banner/long-banner.jpg"></Image>
+                        <Image Source="../Assets/Banner/long-banner.png"></Image>
                     </Grid>
                     <Border x:Name="Suggest" Background="{ThemeResource ControlSolidFillColorDefaultBrush}"
                             Margin="20 10 20 0"
