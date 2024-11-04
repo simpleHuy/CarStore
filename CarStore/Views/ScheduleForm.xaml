@@ -11,7 +11,7 @@
     xmlns:md="using:CarStore.Models"
     xmlns:services="using:CarStore.Services"
     mc:Ignorable="d"
-    Background="Transparent">
+    Background="{ThemeResource GradientPageBackground}">
 
     <Page.Resources>
         <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -112,7 +112,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                     HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
             <Border BorderBrush="Transparent" BorderThickness="0.5"
-                Background="{ThemeResource ControlFillColorDefaultBrush}"
+                Background="White"
                 CornerRadius="{ThemeResource OverlayCornerRadius}"
                 Width="500" Height="600"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -147,7 +147,7 @@
                 </StackPanel>
             </StackPanel>
         </Border>
-        <Border Background="{ThemeResource ControlFillColorDefaultBrush}"
+        <Border Background="White"
                 CornerRadius="{ThemeResource OverlayCornerRadius}" Width="500" Height="600"
                 HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
@@ -170,8 +170,8 @@
                 </StackPanel>
                 <TextBlock Text="Thông tin lịch hẹn" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <ComboBox x:Name="BranchPicker" PlaceholderText="Chi nhánh" Margin="20 10 0 0" Header="Showroom">
-                    <TextBlock Text="Cơ sở 1: 371 Cộng Hòa, phường Tân Mỹ, quận 4, thành phố Hồ Chí Minh"/>
-                    <TextBlock Text="Cơ sở 2: 127 Nguyễn Văn Cừ, phường 4, quận 5, thành phố Hồ Chí Minh"/>
+                    <TextBlock Text="Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"/>
+                    <TextBlock Text="Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"/>
                 </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="20" Orientation="Horizontal" Margin="20 10 0 0">
                     <CalendarDatePicker x:Name="DatePicker" Header="Chọn ngày" HorizontalAlignment="Center"/>
