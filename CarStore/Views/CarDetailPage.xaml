@@ -122,12 +122,12 @@
                                 <TextBlock Text="Đặt lịch xem xe" Style="{StaticResource BodyTextBlockStyle}"/>
                             </Button>
                             <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
-                                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
+                                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="Contact_btn_click">
                                 <TextBlock Text="Liên hệ với chủ" Style="{StaticResource BodyTextBlockStyle}"/>
                             </Button>
                             <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
-                                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
-                                <TextBlock Text="Thêm vào Wishlists" Style="{StaticResource BodyTextBlockStyle}"/>
+                                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="AddWishlist_btn_click">
+                                <TextBlock Text="Thêm vào Wishlists" Style="{StaticResource BodyTextBlockStyle}" />
                             </Button>
                         </StackPanel>
 
@@ -201,7 +201,7 @@
                         <!--View more button-->
                         <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Width="150" Height="40"
                                 CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center"
-                                Click="SeeMoreCompetitor" Margin="0 0 0 20">
+                                Click="SeeMoreCompetitor_btn_click" Margin="0 0 0 20">
                             <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"
                                                Foreground="Black"/>
                         </Button>
@@ -239,7 +239,7 @@
                                         <FontIcon Glyph="&#xE80F;" Foreground="Black"/>
                                     </Grid>
                                 </Button>
-                                <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" 
+                                <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Click="SeeMoreProduct_btn_click"
                                             CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center">
                                     <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"
                                                Foreground="Black"/>
