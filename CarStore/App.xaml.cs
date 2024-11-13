@@ -2,18 +2,13 @@
 using CarStore.Contracts.Services;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Services;
+using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
-using CarStore.Models;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.System;
-using Windows.UI.Core;
 
 namespace CarStore;
 
@@ -67,6 +62,10 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddTransient<INavigationViewService, NavigationViewService>();
+
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
@@ -87,6 +86,9 @@ public partial class App : Application
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
+            services.AddTransient<CarDetailViewModel>();
+            services.AddTransient<CarDetailPage>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

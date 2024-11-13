@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation.Collections;
-using CarStore.Models;
 
 namespace CarStore.Helpers;
 public sealed class FullObservableCollection<T> : ObservableCollection<T>
@@ -46,7 +39,7 @@ public sealed class FullObservableCollection<T> : ObservableCollection<T>
 
     private void ItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender, IndexOf((T) sender!));
+        NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, sender, sender, IndexOf((T)sender!));
         OnCollectionChanged(args);
     }
 }

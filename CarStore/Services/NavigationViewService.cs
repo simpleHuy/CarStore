@@ -2,7 +2,6 @@
 
 using CarStore.Contracts.Services;
 using CarStore.Helpers;
-using CarStore.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
 namespace CarStore.Services;

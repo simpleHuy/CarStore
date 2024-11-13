@@ -1,5 +1,4 @@
-﻿using System.Reflection.PortableExecutable;
-using CarStore.Contracts.Services;
+﻿using CarStore.Contracts.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
 
@@ -21,8 +20,9 @@ public class PageService : IPageService
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
         Configure<CarDetailViewModel, CarDetailPage>();
         Configure<MainPageViewModel, MainPage>();
-        Configure<ScheduleFormViewModel, ScheduleForm>();   
+        Configure<ScheduleFormViewModel, ScheduleForm>();
         Configure<VerifyViewModel, VerifyPage>();
+        Configure<ShellViewModel, ShellPage>();
     }
 
     public Type GetPageType(string key)
