@@ -88,7 +88,6 @@ public class MainPageViewModel : ObservableObject
         CheckAuthenticationState();
     }
 
-   
     private void CheckAuthenticationState()
     {
         var user = _authenticationService.GetCurrentUser();

@@ -23,6 +23,7 @@ public class PageService : IPageService
         Configure<MainPageViewModel, MainPage>();
         Configure<ScheduleFormViewModel, ScheduleForm>();   
         Configure<VerifyViewModel, VerifyPage>();
+        Configure<AccountPageViewModel, Account>();
     }
 
     public Type GetPageType(string key)
