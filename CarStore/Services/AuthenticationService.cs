@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using CarStore.Contracts.Services;
-using CarStore.Models;
+using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using Windows.Storage;
 

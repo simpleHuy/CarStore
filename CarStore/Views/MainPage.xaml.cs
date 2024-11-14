@@ -1,4 +1,4 @@
-﻿using CarStore.Models;
+﻿using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -59,7 +59,7 @@ public sealed partial class MainPage : Page
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var comboBox = (ComboBox)sender;
-        if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is Color selectedVariant)
+        if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is Variant selectedVariant)
         {
             // Update ImageLocation based on selected Variant
             currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";

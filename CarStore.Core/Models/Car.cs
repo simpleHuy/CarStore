@@ -4,10 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.Storage;
 
-namespace CarStore.Models;
+namespace CarStore.Core.Models;
 public class Car : INotifyPropertyChanged
 {
     public int CarId
@@ -43,7 +41,7 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
-    public List<Color>? Variant
+    public List<Variant>? Variant
     {
         get; set;
     }

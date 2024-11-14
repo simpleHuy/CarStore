@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:CarStore.Helpers" d:DataContext="{d:DesignInstance Type=vm:ScheduleFormViewModel}"
-    xmlns:md="using:CarStore.Models"
+    xmlns:md="using:CarStore.Core.Models"
     xmlns:services="using:CarStore.Services"
     mc:Ignorable="d"
     Background="{ThemeResource GradientPageBackground}">
@@ -18,7 +18,7 @@
         <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
-        <DataTemplate x:Name="VariantTemplate" x:DataType="md:Color">
+        <DataTemplate x:Name="VariantTemplate" x:DataType="md:Variant">
             <StackPanel Orientation="Horizontal">
                 <Border Background="{Binding Code}" Width="10" Height="10"></Border>
                 <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>

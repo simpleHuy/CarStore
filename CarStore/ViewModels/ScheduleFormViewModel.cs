@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarStore.Contracts.Services;
-using CarStore.Models;
+using CarStore.Core.Models;
 using CarStore.Services;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -41,6 +41,6 @@ public class ScheduleFormViewModel:ObservableObject, INotifyPropertyChanged
     public IRelayCommand NavigateToSignupCommand{get;}
     public Car CurrentSelectedCar{get; set;}
     public List<string?> SelectedCarImages{get; set;}
-    public Color SelectedCarColor{get; set;}
+    public Variant SelectedCarColor{get; set;}
     
 }

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarStore.Models;
-public class Color : INotifyPropertyChanged
+namespace CarStore.Core.Models;
+public class Variant : INotifyPropertyChanged
 {
     public int Id
     {

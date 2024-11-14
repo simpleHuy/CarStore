@@ -1,4 +1,4 @@
-﻿using CarStore.Models;
+﻿using CarStore.Core.Models;
 using CarStore.Services;
 
 namespace CarStore.Contracts.Services;

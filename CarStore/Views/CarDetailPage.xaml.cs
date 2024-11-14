@@ -16,7 +16,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using CarStore.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
-using CarStore.Models;
+using CarStore.Core.Models;
 using Windows.System;
 using System.Diagnostics;
 

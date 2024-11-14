@@ -1,11 +1,13 @@
 ﻿using CarStore.Activation;
 using CarStore.Contracts.Services;
+using CarStore.Core;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Services;
 using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -92,6 +94,15 @@ public partial class App : Application
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+
+            var envfile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
+            DotNetEnv.Env.Load(envfile);
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
+
         }).
         Build();
 

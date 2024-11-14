@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CarStore.Contracts.Services;
-using CarStore.Models;
+using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -42,18 +42,18 @@ public class MainPageViewModel : ObservableObject
         }
     }
 
-    public ObservableCollection<Models.Car>? Items
+    public ObservableCollection<Car>? Items
     {
         get; set;
     }
 
-    public ObservableCollection<Models.TypeOfCar>? Categories
+    public ObservableCollection<TypeOfCar>? Categories
     {
         get; set;
     }
 
-    public ObservableCollection<Models.Car>? PopularCars { get; set; }
-    public ObservableCollection<Models.Car>? SuggestCars { get; set; }
+    public ObservableCollection<Car>? PopularCars { get; set; }
+    public ObservableCollection<Car>? SuggestCars { get; set; }
 
     public IRelayCommand NavigateToLoginCommand
     {

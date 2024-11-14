@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CarStore.Views"
     xmlns:local1="using:CarStore.Services"
-    xmlns:local2="using:CarStore.Models"
+    xmlns:local2="using:CarStore.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
@@ -94,7 +94,7 @@
                                 </DataTemplate>
                             </ComboBox.HeaderTemplate>
                             <ComboBox.ItemTemplate>
-                                <DataTemplate x:DataType="local2:Color">
+                                <DataTemplate x:DataType="local2:Variant">
                                     <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" Foreground="Black"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Capture.Frames;
 
-namespace CarStore.Models;
+namespace CarStore.Core.Models;
 public class User
 {
     public string? Id
