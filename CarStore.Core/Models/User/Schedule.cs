@@ -10,9 +10,11 @@ public class Schedule
     public int Id { get; set; }
     public DateTime Date { get; set; }
     public int CarId { get; set; }
-    public Car Car { get; set; }
     public int CustomerId { get; set; }
-    public User Customer { get; set; }
     public int MerchantId { get; set; }
-    public User Merchant { get; set; }
+
+    // Navgiation Properties
+    public Car Car { get; set; }
+    //public User Customer { get; set; }
+    //public User Merchant { get; set; }
 }

@@ -16,6 +16,8 @@ public class EngineType
     {
         get; set;
     }
+
+    // Navigation Property
     public ICollection<Car> cars
     {
         get; set;

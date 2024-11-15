@@ -17,5 +17,6 @@ public class Manufacturer
         get; set;
     }
 
+    //Navigation Property
     public ICollection<Car> cars { get; set; }
 }

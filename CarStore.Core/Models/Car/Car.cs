@@ -16,18 +16,7 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-    //public int? Manufacturer
-    //{
-    //    get; set;
-    //}
-    //public int? EngineType
-    //{
-    //    get; set;
-    //}
-    //public int? TypeOfCar
-    //{
-    //    get; set;
-    //}
+
     public long? Price
     {
         get; set;
@@ -40,11 +29,9 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-
-    //public List<Variant>? Variant
-    //{
-    //    get; set;
-    //}
+    public int ManufacturerId { get; set; }
+    public int EngineTypeId { get; set; }
+    public int TypeOfCarId { get; set; }
 
     public string Images
     {
@@ -64,31 +51,12 @@ public class Car : INotifyPropertyChanged
     //    }
     //}
 
-
-    public IList<VariantOfCar> VariantOfCars { get; set; }
-    public int ManufacturerId { get; set; }
+    // Navigation properties
     public Manufacturer Manufacturer { get; set; }
-
-    public int EngineTypeId
-    {
-        get; set;
-    }
-    public EngineType EngineType
-    {
-        get; set;
-    }
-
-    public int TypeOfCarId
-    {
-        get; set;
-    }
-    public TypeOfCar TypeOfCar
-    {
-        get; set;
-    }
-
+    public EngineType EngineType { get; set; }
+    public TypeOfCar TypeOfCar { get; set; }
+    public IList<VariantOfCar> VariantOfCars { get; set; }
     public CarDetail carDetail { get; set; }
     public ICollection<Schedule> Schedules { get; set; }
-
     public event PropertyChangedEventHandler PropertyChanged;
 }

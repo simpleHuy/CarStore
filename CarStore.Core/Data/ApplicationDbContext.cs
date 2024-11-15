@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarStore.Core.Helpers;
 using CarStore.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -47,20 +48,29 @@ public class ApplicationDbContext : DbContext
                                            .HasForeignKey(vc => vc.VariantId)
                                            .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
-                                  .WithOne(s => s.Car)
-                                  .HasForeignKey(s => s.CarId)
+        modelBuilder.Entity<Car>().HasOne<CarDetail>(c => c.carDetail)
+                                  .WithOne(cd => cd.Car)
+                                  .HasForeignKey<CarDetail>(cd => cd.CarId)
                                   .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<CarDetail>().HasKey(cd => new { cd.CarId });
 
-        modelBuilder.Entity<User>().HasMany<Schedule>(c => c.schedules)
-                                  .WithOne(s => s.Merchant)
-                                  .HasForeignKey(s => s.MerchantId)
-                                  .OnDelete(DeleteBehavior.Cascade);
+        //modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
+        //                          .WithOne(s => s.Car)
+        //                          .HasForeignKey(s => s.CarId)
+        //                          .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<User>().HasMany<Schedule>(u => u.schedules)
-                                  .WithOne(s => s.Customer)
-                                  .HasForeignKey(s => s.CustomerId)
-                                  .OnDelete(DeleteBehavior.Cascade);
+        //modelBuilder.Entity<User>().HasMany<Schedule>(c => c.schedules)
+        //                          .WithOne(s => s.Merchant)
+        //                          .HasForeignKey(s => s.MerchantId)
+        //                          .OnDelete(DeleteBehavior.Cascade);
+
+        //modelBuilder.Entity<User>().HasMany<Schedule>(u => u.schedules)
+        //                          .WithOne(s => s.Customer)
+        //                          .HasForeignKey(s => s.CustomerId)
+        //                          .OnDelete(DeleteBehavior.Cascade);
+
+        //seeding data
+        modelBuilder.Seed();
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -78,6 +88,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<TypeOfCar> TypeOfCars { get; set; }
     public DbSet<Variant> variants { get; set; }
     public DbSet<VariantOfCar> variantsOfCars { get; set; }
-    public DbSet<User> users { get; set; }
-    public DbSet<Schedule> schedules { get; set; }
+    //public DbSet<User> users { get; set; }
+    //public DbSet<Schedule> schedules { get; set; }
 }

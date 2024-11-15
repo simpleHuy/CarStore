@@ -20,6 +20,8 @@ public class TypeOfCar
     {
         get; set;
     }
+
+    //Navigation Property
     public ICollection<Car> cars
     {
         get; set;

@@ -23,6 +23,7 @@ public class Variant : INotifyPropertyChanged
         get; set;
     }
 
+    //Navigation Property
     public IList<VariantOfCar> VariantOfCars { get; set; }
 
     public override string ToString()
