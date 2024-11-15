@@ -87,6 +87,8 @@ public partial class App : Application
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
+            services.AddTransient<CarDetailViewModel>();
+            services.AddTransient<CarDetailPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

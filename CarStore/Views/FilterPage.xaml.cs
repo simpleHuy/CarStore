@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +15,8 @@ using Microsoft.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using ListView = Microsoft.UI.Xaml.Controls.ListView;
 using CarStore.ViewModels;
+using CarStore.Models;
+using Windows.System;
 
 
 
@@ -35,24 +37,93 @@ public sealed partial class FilterPage : Page
     {
         get;
     }
+
+    public CarDetailViewModel CarDetailViewModel
+    {
+        get;
+    }
     public FilterPage()
     {
-        Items = GetOddEvenSource(10);
+        CarDetailViewModel = App.GetService<CarDetailViewModel>();
         ViewModel = App.GetService<FilterViewModel>();
+        this.DataContext = CarDetailViewModel;
         this.InitializeComponent();
     }
-    private ObservableCollection<string> GetOddEvenSource(int count)
+
+    private void SeeThisCar(object sender, ItemClickEventArgs e)
     {
-        ObservableCollection<string> oddEvenSource = new();
-
-        for (var number = 0; number < count; number++)
+        var selectedCar = e.ClickedItem as Car;
+        if (selectedCar != null)
         {
-            var item = (number % 2) == 0 ? $"{number} - Even" : $"{number} - Odd";
-            oddEvenSource.Add(item);
+            Frame.Navigate(typeof(CarDetailPage), selectedCar);
         }
-
-        return oddEvenSource;
     }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is Car selectedCar)
+        {
+            CarDetailViewModel.SelectedCar = selectedCar;
+        }
+    }
+
+    //private void ChooseThisPicture(object sender, ItemClickEventArgs e)
+    //{
+    //    if (e.ClickedItem is string clickedImagePath)
+    //    {
+    //        // Find the index of clicked item
+    //        int index = CarDetailViewModel.SelectedCarPictures.IndexOf(clickedImagePath);
+    //        if (index >= 0)
+    //        {
+    //            // Update the FlipView's selected index directly
+    //            Gallery.SelectedIndex = index;
+    //        }
+    //    }
+    //}
+
+    private async void ClickHomePageButton(object sender, RoutedEventArgs e)
+    {
+        var uri = new Uri("https://anycar.vn/");
+        await Launcher.LaunchUriAsync(uri);
+    }
+
+    private async void ClickFacebookButton(object sender, RoutedEventArgs e)
+    {
+        var uri = new Uri("https://www.facebook.com/anycar.vn/");
+        await Launcher.LaunchUriAsync(uri);
+    }
+
+
+    private void ColorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+
+        // Lấy giá trị màu sắc đang chọn
+        if (comboBox != null && comboBox.SelectedItem != null)
+        {
+            string selectedColor = comboBox.SelectedValue.ToString();
+
+            CarDetailViewModel.SelectedCarColor = selectedColor;
+        }
+    }
+
+    private void Color_Loaded(object sender, RoutedEventArgs e)
+    {
+        var comboBox = sender as ComboBox;
+        if (comboBox != null && comboBox.Items.Count > 0)
+        {
+            comboBox.SelectedIndex = 0;
+        }
+    }
+
+    private void BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+    }
 }
 
