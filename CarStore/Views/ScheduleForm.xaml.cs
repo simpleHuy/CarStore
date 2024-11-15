@@ -57,7 +57,7 @@ public sealed partial class ScheduleForm : Page
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Đặt lịch hẹn",
-                Content = "Vui lòng chọn hết tất cả các trường!",
+                Content = "Vui lòng chọn hết tất cả các trường trong thông tin lịch hẹn!",
                 CloseButtonText = "Quay lại",
             }.ShowAsync();
 

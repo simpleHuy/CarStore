@@ -34,13 +34,14 @@ public sealed partial class CarDetailPage : Page
         get; set;
     }
 
+    public MainPageViewModel? MainViewModel { get; set; }
+
     public CarDetailPage()
     {
         this.InitializeComponent();
         ViewModel = new CarDetailViewModel();
-        //this.SizeChanged += CarDetailPage_SizeChanged;
         this.DataContext = ViewModel;
-        //UpdateGridViewHeight();
+        MainViewModel = App.GetService<MainPageViewModel>();
     }
 
     //private void CarDetailPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -87,11 +88,6 @@ public sealed partial class CarDetailPage : Page
         {
             ViewModel.SelectedCar = selectedCar;
         }
-    }
-
-    private void SeeMoreCompetitor(object sender, RoutedEventArgs e)
-    {
-
     }
 
     private void ChooseThisPicture(object sender, ItemClickEventArgs e)
@@ -150,8 +146,64 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void Schudele_btn_click(object sender, RoutedEventArgs e)
+    private async void Schudele_btn_click(object sender, RoutedEventArgs e)
     {
+        if (!MainViewModel.IsLogin)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Bạn chưa đăng nhập",
+                Content = "Vui lòng đăng nhập để đặt lịch hẹn!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            return;
+        }
         Frame.Navigate(typeof(ScheduleForm));
+    }
+
+    private async void Contact_btn_click(object sender, RoutedEventArgs e)
+    {
+        await new ContentDialog()
+        {
+            XamlRoot = this.Content.XamlRoot,
+            Title = "Tính năng chưa hoàn thiện",
+            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            CloseButtonText = "OK",
+        }.ShowAsync();
+    }
+
+    private async void AddWishlist_btn_click(object sender, RoutedEventArgs e)
+    {
+        await new ContentDialog()
+        {
+            XamlRoot = this.Content.XamlRoot,
+            Title = "Tính năng chưa hoàn thiện",
+            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            CloseButtonText = "OK",
+        }.ShowAsync();
+    }
+
+    private async void SeeMoreCompetitor_btn_click(object sender, RoutedEventArgs e)
+    {
+        await new ContentDialog()
+        {
+            XamlRoot = this.Content.XamlRoot,
+            Title = "Tính năng chưa hoàn thiện",
+            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            CloseButtonText = "OK",
+        }.ShowAsync();
+    }
+
+    private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
+    {
+        await new ContentDialog()
+        {
+            XamlRoot = this.Content.XamlRoot,
+            Title = "Tính năng chưa hoàn thiện",
+            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            CloseButtonText = "OK",
+        }.ShowAsync();
     }
 }
