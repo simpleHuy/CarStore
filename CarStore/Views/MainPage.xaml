@@ -70,13 +70,13 @@
 
                 <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
                            Margin="10 2 10 10"/>
-                <ComboBox PlaceholderText="Màu sắc"
+                <!--<ComboBox PlaceholderText="Màu sắc"
                           Margin="10 0 0 0" 
                           ItemTemplate="{StaticResource VariantTemplate}"
                           ItemsSource="{x:Bind Variant}"
                           SelectionChanged="ComboBox_SelectionChanged">
 
-                </ComboBox>
+                </ComboBox>-->
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="InfoBtn" Background="White"
                         Content="Xem chi tiết" Margin="10 0 0 5" Width="140"

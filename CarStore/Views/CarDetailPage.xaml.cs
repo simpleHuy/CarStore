@@ -16,9 +16,9 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using CarStore.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
-using CarStore.Core.Models;
 using Windows.System;
 using System.Diagnostics;
+using CarStore.Core.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

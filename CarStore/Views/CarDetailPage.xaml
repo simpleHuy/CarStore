@@ -79,7 +79,7 @@
                         </TextBlock>
 
                         <!--Select color-->
-                        <ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
+                        <!--<ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
                                   ItemsSource="{x:Bind ViewModel.SelectedCar.Variant, Mode=OneWay}" Loaded="Color_Loaded" 
                                   BorderBrush="LightGray" BorderThickness="1" CornerRadius="{StaticResource OverlayCornerRadius}">
                             <ComboBox.ItemContainerStyle>
@@ -98,7 +98,7 @@
                                     <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" Foreground="Black"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        </ComboBox>-->
 
                         <!--Image With Selected color-->
                         <GridView x:Name="BasicGridView" ItemsSource="{x:Bind ViewModel.SelectedCarPictures, Mode=OneWay}"

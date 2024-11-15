@@ -9,9 +9,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CarStore.Helpers;
-using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CarStore.Core.Models;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
@@ -78,8 +78,8 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
         if (SelectedCarColor == null)
         {
-            path += "\\" + SelectedCar.DefaultColor;
-            SelectedCarColor = SelectedCar.DefaultColor;
+            //path += "\\" + SelectedCar.DefaultColor;
+            //SelectedCarColor = SelectedCar.DefaultColor;
         }
         else
         {

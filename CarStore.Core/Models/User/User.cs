@@ -7,54 +7,52 @@ using System.Threading.Tasks;
 namespace CarStore.Core.Models;
 public class User
 {
-    public string? Id
+    public string Id
     {
-        get; 
+        get;
         set;
     }
-    public string? Name
+    public string Name
     {
         get; set;
     }
-    public string? Email
+    public string Email
     {
         get; set;
     }
-    public string? Telephone
+    public string Telephone
     {
         get; set;
     }
-    public string? AccountType
+    public string AccountType
     {
         get; set;
     }
-
-    public string? Password
+    public string Password
     {
         get; set;
     }
-    public string? PasswordHash
+    public string PasswordHash
     {
         get; set;
     }
-
-    public string? Salt
-    {
-        get; set;
-    }
-
-    public string? Username
+    public string Salt
     {
         get; set;
     }
 
-    public string? firstName
+    public string Username
     {
         get; set;
     }
-    public string? lastName
+    public string firstName
+    {
+        get; set;
+    }
+    public string lastName
     {
         get; set;
     }
 
+    public ICollection<Schedule> schedules { get; set; }
 }
