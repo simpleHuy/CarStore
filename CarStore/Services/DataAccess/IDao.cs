@@ -12,5 +12,12 @@ public interface IDao
     List<Car> getPopularCars();
     List<Car> getSuggestCars();
     List<TypeOfCar> GetTypeOfCar();
+    List<Manufacturer> getAllManufacturers();
+
+    List<NumberOfSeats> getNumberOfSeats();
+
+    List<EngineType> GetEngineTypes();
+
+    List<PriceOfCar> getPriceOfCars();
     User GetUser();
 }

@@ -1,4 +1,5 @@
-﻿using CarStore.Models;
+﻿using System.Diagnostics;
+using CarStore.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -73,4 +74,19 @@ public sealed partial class MainPage : Page
             Frame.GoBack();
         }
     }
+
+    private void Categories_btn_click(object sender, ItemClickEventArgs e)
+    {
+        var typeOfCar = e.ClickedItem as TypeOfCar;
+        if (typeOfCar != null && Frame != null)
+        {
+            Frame.Navigate(typeof(FilterPage), typeOfCar);
+        }
+        else
+        {
+            // Handle the case where Frame is null
+            Debug.WriteLine("Frame is null or typeOfCar is null");
+        }
+    }
+
 }

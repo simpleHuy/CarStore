@@ -42,6 +42,15 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
+    public int IdSeats
+    {
+        get; set;
+    }
+
+    public int? PriceOfCarId
+    {
+        get; set;
+    }
 
     public List<Color>? Variant
     {

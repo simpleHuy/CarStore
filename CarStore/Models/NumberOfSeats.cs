@@ -8,12 +8,22 @@ using CarStore.Contracts.Services;
 
 namespace CarStore.Models;
 
-public class TypeOfCar :IFilterItem, INotifyPropertyChanged
+public class NumberOfSeats : IFilterItem, INotifyPropertyChanged
 {
-    public int Id { get; set; }
-    public string? Name { get; set; }
-    public string? ImageLocation { get; set; }
-    public string Type => "TypeOfCar";
+    public int Id
+    {
+        get; set;
+    }
+    public string? Name
+    {
+        get; set;
+    }
+
+    public string Type => "NumberOfSeats";
+    public string? ImageLocation
+    {
+        get; set;
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged(string propertyName)
