@@ -1,7 +1,11 @@
 ﻿using CarStore.Activation;
 using CarStore.Contracts.Services;
 using CarStore.Core;
+using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
+using CarStore.Core.Daos;
+using CarStore.Core.Models;
+using CarStore.Core.Repository;
 using CarStore.Core.Services;
 using CarStore.Models;
 using CarStore.Services;
@@ -103,6 +107,10 @@ public partial class App : Application
                 options.UseNpgsql(connectionString);
             });
 
+            // add repository, dao
+            services.AddScoped<ICarRepository, EfCoreCarRepository>();
+            services.AddScoped<IDao<Car>, EfCoreDao<Car>>();
+            services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
         }).
         Build();
 

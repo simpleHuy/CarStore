@@ -73,13 +73,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Seed();
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var envfile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
-        DotNetEnv.Env.Load(envfile);
-        var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-        optionsBuilder.UseNpgsql(connectionString);
-    }
 
     public DbSet<Car> Cars { get; set; }
     public DbSet<CarDetail> Details { get; set; }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CarStore.Core.Models;
 
-public class TypeOfCar
+public class TypeOfCar : INotifyPropertyChanged
 {
     public int Id
     {
@@ -27,4 +28,5 @@ public class TypeOfCar
         get; set;
     }
 
+    public event PropertyChangedEventHandler PropertyChanged;
 }

@@ -10,14 +10,23 @@ public sealed partial class MainPage : Page
 {
     public MainPageViewModel ViewModel
     {
-        get;
+        get; set;
     }
 
     public MainPage()
     {
         ViewModel = App.GetService<MainPageViewModel>();
         InitializeComponent();
+        DataContext = ViewModel;
+        Loaded += Page_Loaded;
     }
+
+    private async void Page_Loaded(object sender, RoutedEventArgs e)
+    {
+        await ViewModel.LoadCarsAsync();
+        await ViewModel.LoadCategoriesAsync();
+    }
+
     private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         //Frame.Navigate(typeof(LoginPage), name.Text);
