@@ -1,7 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using CarStore.Contracts.Services;
+using CarStore.Contracts.ViewModels;
 using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Daos;
@@ -15,11 +17,10 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace CarStore.ViewModels;
 
-public class MainPageViewModel : ObservableObject
+public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     private readonly IDao<Car> _car;
     private readonly IDao<TypeOfCar> _typeOfCar;
-    public event PropertyChangedEventHandler? PropertyChanged;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     private User? _currentUser;
@@ -50,18 +51,49 @@ public class MainPageViewModel : ObservableObject
         }
     }
 
+    private FullObservableCollection<Car>? _items = new();
     public FullObservableCollection<Car>? Items
     {
-        get; set;
+        get => _items;
+        set
+        {
+            _items = value;
+            OnPropertyChanged();
+        }
     }
 
+    private FullObservableCollection<TypeOfCar>? _categories = new();
     public FullObservableCollection<TypeOfCar>? Categories
     {
-        get; set;
+        get => _categories;
+        set
+        {
+            _categories = value;
+            OnPropertyChanged();
+        }
     }
 
-    public FullObservableCollection<Car>? PopularCars { get; set; }
-    public ObservableCollection<Car>? SuggestCars { get; set; }
+    private FullObservableCollection<Car>? _PopularCars = new();
+    public FullObservableCollection<Car>? PopularCars
+    {
+        get => _PopularCars;
+        set
+        {
+            _PopularCars = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private FullObservableCollection<Car>? _suggestCars = new();
+    public FullObservableCollection<Car>? SuggestCars 
+    {
+        get => _suggestCars;
+        set
+        {
+            _suggestCars = value;
+            OnPropertyChanged();
+        }
+    }
 
     public IRelayCommand NavigateToLoginCommand
     {
@@ -92,7 +124,13 @@ public class MainPageViewModel : ObservableObject
         CheckAuthenticationState();
     }
 
-    public async Task LoadCarsAsync()
+    public async Task LoadInitialDataAsync()
+    {
+        await LoadCarsAsync();
+        await LoadCategoriesAsync();
+    }
+
+    private async Task LoadCarsAsync()
     {
         var cars = await _car.GetAllAsync();
         Items = new FullObservableCollection<Car>(cars);
@@ -100,7 +138,7 @@ public class MainPageViewModel : ObservableObject
         SuggestCars = new FullObservableCollection<Car>(Items.Take(10).ToList());
     }
 
-    public async Task LoadCategoriesAsync()
+    private async Task LoadCategoriesAsync()
     {
         var categories = await _typeOfCar.GetAllAsync();
         Categories = new FullObservableCollection<TypeOfCar>(categories);
@@ -111,6 +149,12 @@ public class MainPageViewModel : ObservableObject
         var user = _authenticationService.GetCurrentUser();
         IsLogin = user != null;
         CurrentUser = user;
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
 

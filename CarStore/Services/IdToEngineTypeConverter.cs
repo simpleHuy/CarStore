@@ -1,4 +1,8 @@
-﻿using CarStore.Services.DataAccess;
+﻿using CarStore.Core.Contracts.Services;
+using CarStore.Core.Daos;
+using CarStore.Core.Data;
+using CarStore.Core.Models;
+using CarStore.Services.DataAccess;
 using Microsoft.UI.Xaml.Data;
 
 namespace CarStore.Services;
@@ -8,21 +12,25 @@ public class IdToEngineTypeConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         var id = (int)value;
-        MockDao dao = new MockDao();
-        var engineTypes = dao.GetEngineTypes();
-
-        string result = "";
-
-        foreach (var enginetype in engineTypes)
-        {
-            if (enginetype.Id == id)
-            {
-                result = enginetype.Name;
-            }
-        }
+        var result = "";
+        Task.Run(async () => result = await GetEngineTypeNameByIdAsync(id)).Wait();
 
         return result;
 
     }
     public object ConvertBack(object value, Type targetType, object parameter, string language) => throw new NotImplementedException();
+
+    public async Task<string> GetEngineTypeNameByIdAsync(int id)
+    {
+        var dbContextFactory = new ApplicationDbContextFactory();
+        using var context = dbContextFactory.CreateDbContext(null);
+
+        IDao<EngineType> dao = new EfCoreDao<EngineType>(context);
+
+        var engineTypes = await dao.GetAllAsync();
+
+        var result = engineTypes.FirstOrDefault(m => m.Id == id)?.Name ?? "";
+
+        return result;
+    }
 }

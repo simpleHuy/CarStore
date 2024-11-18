@@ -52,7 +52,7 @@
                     <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="10 5 5 5">
-                        <TextBlock Text="{Binding Path=Manufacturer, Converter={StaticResource IdToManufaturerConverter}}" Foreground="Wheat" Margin="4 2 4 2"
+                        <TextBlock Text="{Binding Path=ManufacturerId, Converter={StaticResource IdToManufaturerConverter}}" Foreground="Wheat" Margin="4 2 4 2"
                                    Style="{ThemeResource BodyStrongTextBlockStyle}">
                         </TextBlock>
                     </Border>

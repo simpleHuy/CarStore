@@ -1,7 +1,9 @@
-﻿using CarStore.Core.Models;
+﻿using System.Diagnostics;
+using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 using Windows.Devices.Enumeration;
 
 namespace CarStore.Views;
@@ -16,17 +18,18 @@ public sealed partial class MainPage : Page
     public MainPage()
     {
         ViewModel = App.GetService<MainPageViewModel>();
-        InitializeComponent();
-        DataContext = ViewModel;
-        Loaded += Page_Loaded;
+        Loaded += async (s, e) =>
+        {
+            await MainPage_Loaded(s, e);
+            InitializeComponent();
+            DataContext = ViewModel;
+        };
     }
 
-    private async void Page_Loaded(object sender, RoutedEventArgs e)
+    private async Task MainPage_Loaded(object sender, RoutedEventArgs e)
     {
-        await ViewModel.LoadCarsAsync();
-        await ViewModel.LoadCategoriesAsync();
+        await ViewModel.LoadInitialDataAsync();
     }
-
     private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         //Frame.Navigate(typeof(LoginPage), name.Text);
