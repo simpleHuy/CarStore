@@ -12,6 +12,9 @@ using CarStore.Helpers;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CarStore.Core.Models;
+using CarStore.Core.Daos;
+using CarStore.Core.Contracts.Services;
+using CarStore.Core.Contracts.Repository;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
@@ -49,11 +52,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    //public int Max_Item
-    //{
-    //    get; set;
-    //}
-
     private string _selectedCarColor;
     public string SelectedCarColor
     {
@@ -78,12 +76,18 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
         if (SelectedCarColor == null)
         {
-            //path += "\\" + SelectedCar.DefaultColor;
-            //SelectedCarColor = SelectedCar.DefaultColor;
+            List<VariantOfCar> variantOfCars = new List<VariantOfCar>();
+            string variantsCode = "";
+            Task.Run(async() => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
+            Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(variantOfCars[0].Name)).Wait();
+            SelectedCar.VariantOfCars = variantOfCars;
+            path += "\\" + variantsCode;
         }
         else
         {
-            path += "\\" + SelectedCarColor;
+            string variantsCode = "";
+            Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(SelectedCarColor)).Wait();
+            path += "\\" + variantsCode;
         }
 
         if (Directory.Exists(path))
@@ -156,10 +160,20 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    public CarDetailViewModel()
+    private readonly IDao<Car> _carDao;
+    private readonly ICarRepository _carRepository;
+
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository)
     {
-        IDao dao = new MockDao();
-        Cars = new FullObservableCollection<Car>(dao.getAllCars());
+        _carDao = car;
+        _carRepository = carRepository;
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+    }
+
+    private async Task LoadInitialDataAsync()
+    {
+        var cars = await _carDao.GetAllAsync();
+        Cars = new FullObservableCollection<Car>(cars);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

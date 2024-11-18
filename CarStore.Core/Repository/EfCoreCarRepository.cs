@@ -13,8 +13,11 @@ namespace CarStore.Core.Repository;
 public class EfCoreCarRepository : ICarRepository
 {
     private readonly ApplicationDbContext _context;
-    public IDao<Car> CarDao { get; }
 
+    public EfCoreCarRepository(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
     public async Task<List<Car>> GetCarByEngineType(int EngineTypeId)
     {
@@ -49,5 +52,18 @@ public class EfCoreCarRepository : ICarRepository
     public async Task<CarDetail> GetDetailById(int id)
     {
         return await _context.Details.FindAsync(id);
+    }
+
+    public async Task<List<VariantOfCar>> GetVariantsOfCar(int carId)
+    {
+        return await _context.variantsOfCars.Where(v => v.CarId == carId).ToListAsync();
+    }
+
+    public async Task<string> GetVariantsCodeByName(string Name)
+    {
+        var variantId = await _context.variantsOfCars.Where(v => v.Name == Name).Select(v => v.VariantId).FirstOrDefaultAsync();
+        var variantCode = await _context.variants.FindAsync(variantId);
+        if (variantCode == null) { return Name; }
+        return variantCode.Code;
     }
 }

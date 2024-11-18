@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
@@ -71,18 +72,14 @@ public sealed partial class MainPage : Page
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var comboBox = (ComboBox)sender;
-        if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is Variant selectedVariant)
+        if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is VariantOfCar selectedVariant)
         {
-            // Update ImageLocation based on selected Variant
-            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{selectedVariant.Code}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
-        }
-    }
-
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
+            // Update ImageLocation based on selected Variant 
+            var variantCode = "";
+            Task.Run(async () => { 
+                variantCode = await ViewModel._carRepository.GetVariantsCodeByName(selectedVariant.Name);
+            }).Wait();
+            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
         }
     }
 }

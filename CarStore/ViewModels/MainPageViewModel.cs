@@ -21,6 +21,7 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     private readonly IDao<Car> _car;
     private readonly IDao<TypeOfCar> _typeOfCar;
+    public readonly ICarRepository _carRepository;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     private User? _currentUser;
@@ -107,10 +108,11 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     //{
     //    get;
     //}
-    public MainPageViewModel(INavigationService navigationService, IAuthenticationService authService, IDao<Car> car, IDao<TypeOfCar> typeOfCar)
+    public MainPageViewModel(INavigationService navigationService, IAuthenticationService authService, IDao<Car> car, IDao<TypeOfCar> typeOfCar, ICarRepository carRepository)
     {
         _car = car;
         _typeOfCar = typeOfCar;
+        _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
 
@@ -134,6 +136,13 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     {
         var cars = await _car.GetAllAsync();
         Items = new FullObservableCollection<Car>(cars);
+        foreach (var item in Items)
+        {
+           Task.Run(async () =>
+           {
+               item.VariantOfCars = await _carRepository.GetVariantsOfCar(item.CarId);
+           }).Wait();
+        }
         PopularCars = new FullObservableCollection<Car>(Items.Take(8).ToList());
         SuggestCars = new FullObservableCollection<Car>(Items.Take(10).ToList());
     }

@@ -38,38 +38,12 @@ public sealed partial class CarDetailPage : Page
 
     public CarDetailPage()
     {
-        this.InitializeComponent();
-        ViewModel = new CarDetailViewModel();
-        this.DataContext = ViewModel;
+        ViewModel = App.GetService<CarDetailViewModel>();
+        InitializeComponent();
+        DataContext = ViewModel;
         MainViewModel = App.GetService<MainPageViewModel>();
+
     }
-
-    //private void CarDetailPage_SizeChanged(object sender, SizeChangedEventArgs e)
-    //{
-    //    var width = e.NewSize.Width;
-
-    //    if (width >= 1920) // Màn hình 24 inch
-    //    {
-    //        ViewModel.Max_Item=8;
-    //    }
-    //    else // Màn hình nhỏ hơn, ví dụ 16 inch
-    //    {
-    //        ViewModel.Max_Item = 6;
-    //    }
-    //}
-
-    //private void UpdateGridViewHeight()
-    //{
-    //    if (ListCompettorCars.Height > 600)
-    //    {
-    //        ListCompettorCars.Height = 600;
-    //        SeeMoreCompitetorText.Visibility = Visibility.Visible;
-    //    }
-    //    else
-    //    {
-    //        SeeMoreCompitetorText.Visibility = Visibility.Collapsed;
-    //    }
-    //}
 
     private void SeeThisCar(object sender, ItemClickEventArgs e)
     {
@@ -120,12 +94,11 @@ public sealed partial class CarDetailPage : Page
     {
         var comboBox = sender as ComboBox;
 
-        // Lấy giá trị màu sắc đang chọn
         if (comboBox != null && comboBox.SelectedItem != null)
         {
-            string selectedColor = comboBox.SelectedValue.ToString();
+            var selectedColor = comboBox.SelectedValue as VariantOfCar;
 
-            ViewModel.SelectedCarColor = selectedColor;
+            ViewModel.SelectedCarColor = selectedColor.Name;
         }
     }
 
