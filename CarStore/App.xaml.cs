@@ -5,6 +5,7 @@ using CarStore.Core;
 using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Daos;
+using CarStore.Core.Data;
 using CarStore.Core.Models;
 using CarStore.Core.Repository;
 using CarStore.Core.Services;
@@ -100,10 +101,11 @@ public partial class App : Application
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
-            //var envfile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
+            //var envFile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
             var basePath = AppContext.BaseDirectory;
             var curDir = new DirectoryInfo(basePath);
             var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
+            var a = new ApplicationDbContextFactory().CreateDbContext(new string[] { });
             var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
             DotNetEnv.Env.Load(envFile);
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
