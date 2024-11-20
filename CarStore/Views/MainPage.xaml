@@ -20,7 +20,7 @@
         <local1:IdToManufaturerConverter x:Key="IdToManufaturerConverter"/>
         <DataTemplate x:Name="VariantTemplate" x:DataType="local:VariantOfCar">
             <StackPanel Orientation="Horizontal">
-                <!--<Border Background="{Binding Code}" Width="10" Height="10"></Border>-->
+                <!--<Border Background="{Binding Name}" Width="10" Height="10"></Border>-->
                 <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>
             </StackPanel>
         </DataTemplate>
@@ -45,7 +45,7 @@
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
                 <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
                         CornerRadius="2">
-                    <Image  Source="{Binding DefautlImageLocation, Mode=TwoWay}" Width="250" Height="300" Stretch="Uniform"/>
+                    <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="250" Height="300" Stretch="Uniform"/>
                 </Border>
 
                 <StackPanel Orientation="Horizontal">
