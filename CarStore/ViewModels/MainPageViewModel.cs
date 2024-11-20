@@ -73,7 +73,7 @@ public class MainPageViewModel : ObservableObject
         _navigateService = navigationService;
         _authenticationService = authService;
 
-        NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(FilterViewModel).FullName!));
+        NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel ).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         //LogoutCommand = new RelayCommand(() =>
         //{

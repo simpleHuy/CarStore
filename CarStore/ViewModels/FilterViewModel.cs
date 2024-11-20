@@ -116,7 +116,7 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    // get all competitor Cars
+    // get all filtered Cars
     public FullObservableCollection<Car> FilteredCars
     {
         get => _carFilterService.FilteredCars;
@@ -220,6 +220,25 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
     protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public void FilterCarsByQuery(string queryText)
+    {
+        if (string.IsNullOrWhiteSpace(queryText))
+        {
+            // If the query text is empty, reset the filtered 
+            return;
+        }
+
+        var lowerQuery = queryText.ToLower();
+
+        // Filter cars based on Name, Manufacturer, or other properties
+        var filtered = Cars.Where(car =>
+            car.Name.ToLower().Contains(lowerQuery) ||
+            Manufacturers?.Any(m => m.Id == car.Manufacturer && m.Name.ToLower().Contains(lowerQuery)) == true
+        ).ToList();
+
+        Cars = new FullObservableCollection<Car>(filtered);
     }
 
 }

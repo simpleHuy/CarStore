@@ -83,6 +83,11 @@ public sealed partial class FilterPage: Page
                 Type = typeOfCar.Type
             });
         }
+        else if (e.Parameter is string queryText)
+        {
+            ViewModel.FilterCarsByQuery(queryText);
+
+        }
     }
 
     // Add a property to store the passed object if needed

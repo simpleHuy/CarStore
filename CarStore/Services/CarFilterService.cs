@@ -60,6 +60,7 @@ public class CarFilterService : ObservableObject
 
     public FullObservableCollection<Car> FilteredCars
     {
+        
         get => _filteredCars;
         private set
         {
