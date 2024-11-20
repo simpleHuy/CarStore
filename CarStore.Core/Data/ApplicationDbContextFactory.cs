@@ -43,6 +43,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         var envFile = FindEnvFile();
         DotNetEnv.Env.Load(envFile);
         var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+        Console.WriteLine(connectionString);
 
         if (connectionString == null)
         {
