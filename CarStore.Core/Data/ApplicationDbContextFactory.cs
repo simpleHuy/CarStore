@@ -11,7 +11,11 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
 {
     public ApplicationDbContext CreateDbContext(string[] args)
     {
-        var envFile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
+        var basePath = AppContext.BaseDirectory;
+        var curDir = new DirectoryInfo(basePath);
+        var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
+        var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
+        //var envFile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
         DotNetEnv.Env.Load(envFile);
         var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
 

@@ -1,4 +1,5 @@
-﻿using CarStore.Activation;
+﻿using System.Net.WebSockets;
+using CarStore.Activation;
 using CarStore.Contracts.Services;
 using CarStore.Core;
 using CarStore.Core.Contracts.Repository;
@@ -99,8 +100,12 @@ public partial class App : Application
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
-            var envfile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
-            DotNetEnv.Env.Load(envfile);
+            //var envfile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
+            var basePath = AppContext.BaseDirectory;
+            var curDir = new DirectoryInfo(basePath);
+            var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
+            var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
+            DotNetEnv.Env.Load(envFile);
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
             services.AddDbContext<ApplicationDbContext>(options =>
             {
