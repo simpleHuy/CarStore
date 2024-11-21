@@ -9,6 +9,13 @@ namespace CarStore.Services;
 
 public class IdToTypeOfCarConverter : IValueConverter
 {
+    private readonly IDao<TypeOfCar> _dao;
+
+    public IdToTypeOfCarConverter()
+    {
+        _dao = App.GetService<IDao<TypeOfCar>>();
+    }
+
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         var id = (int)value;
@@ -20,12 +27,7 @@ public class IdToTypeOfCarConverter : IValueConverter
 
     public async Task<string> GetTypeOfCarNameByIdAsync(int id)
     {
-        var dbContextFactory = new ApplicationDbContextFactory();
-        using var context = dbContextFactory.CreateDbContext(null);
-
-        IDao<TypeOfCar> dao = new EfCoreDao<TypeOfCar>(context);
-
-        var typeOfCars = await dao.GetAllAsync();
+        var typeOfCars = await _dao.GetAllAsync();
 
         var result = typeOfCars.FirstOrDefault(m => m.Id == id)?.Name ?? "";
 

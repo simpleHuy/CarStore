@@ -105,7 +105,6 @@ public partial class App : Application
             var basePath = AppContext.BaseDirectory;
             var curDir = new DirectoryInfo(basePath);
             var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
-            var a = new ApplicationDbContextFactory().CreateDbContext(new string[] { });
             var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
             DotNetEnv.Env.Load(envFile);
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
@@ -118,6 +117,9 @@ public partial class App : Application
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
             services.AddScoped<IDao<Car>, EfCoreDao<Car>>();
             services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
+            services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();
+            services.AddScoped<IDao<Manufacturer>, EfCoreDao<Manufacturer>>();
+            //services.AddScoped<IDao<>, EfCoreDao<>>();
         }).
         Build();
 
