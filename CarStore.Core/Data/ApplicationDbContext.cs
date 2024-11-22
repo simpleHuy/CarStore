@@ -54,6 +54,11 @@ public class ApplicationDbContext : DbContext
                                   .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<CarDetail>().HasKey(cd => new { cd.CarId });
 
+        modelBuilder.Entity<PriceOfCar>().HasMany<Car>(p => p.cars)
+                                         .WithOne(c => c.PriceOfCar)
+                                         .HasForeignKey(c => c.PriceOfCarId)
+                                         .OnDelete(DeleteBehavior.Cascade);  
+
         //modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
         //                          .WithOne(s => s.Car)
         //                          .HasForeignKey(s => s.CarId)
@@ -81,6 +86,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<TypeOfCar> TypeOfCars { get; set; }
     public DbSet<Variant> variants { get; set; }
     public DbSet<VariantOfCar> variantsOfCars { get; set; }
+    public DbSet<PriceOfCar> priceOfCars { get; set; }
     //public DbSet<User> users { get; set; }
     //public DbSet<Schedule> schedules { get; set; }
 }

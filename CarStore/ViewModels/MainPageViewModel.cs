@@ -116,7 +116,7 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         _navigateService = navigationService;
         _authenticationService = authService;
 
-        NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
+        NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel ).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         //LogoutCommand = new RelayCommand(() =>
         //{

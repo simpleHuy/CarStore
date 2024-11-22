@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarStore.Core.Models;
+using CarStore.Models;
 using Windows.Devices.Radios;
 using Windows.Storage;
 
@@ -150,7 +151,7 @@ public class MockDao : IDao
 
         return new List<Car>();
     }
-    public List<Manufacturer> getAllManufacturers()
+    public List<Manufacturer>getAllManufacturers()
     {
         var result = new List<Manufacturer>()
         {
@@ -209,6 +210,64 @@ public class MockDao : IDao
         };
 
         return result;
+    }
+
+    //public List<NumberOfSeats> getNumberOfSeats()
+    //{
+    //    var result = new List<NumberOfSeats>()
+    //    {
+    //        new()
+    //        {
+    //            Id = 1,
+    //            Name = "2 chỗ",
+    //        },
+    //        new()
+    //        {
+    //            Id = 2,
+    //            Name = "4 chỗ",
+    //        },
+    //        new()
+    //        {
+    //            Id = 3,
+    //            Name = "7 chỗ",
+    //        },
+    //    };
+
+    //    return result;
+    //}
+
+    public List<PriceOfCar> getPriceOfCars()
+    {
+        var result = new List<PriceOfCar>()
+        {
+            new()
+            {
+                Id = 1,
+                Name = "Dưới 500 triệu",
+            },
+            new()
+            {
+                Id = 2,
+                Name = "500 triệu - 1 tỷ",
+            },
+            new()
+            {
+                Id = 3,
+                Name = "1 tỷ - 2 tỷ",
+            },
+            new()
+            {
+                Id = 4,
+                Name = "2 tỷ - 3 tỷ",
+            },
+            new()
+            {
+                Id = 5,
+                Name = "Trên 3 tỷ",
+            },
+        };
+        return result;
+
     }
 
     public List<TypeOfCar> GetTypeOfCar()
@@ -288,5 +347,4 @@ public class MockDao : IDao
             lastName = "Nguyễn",
         };
     }
-
 }

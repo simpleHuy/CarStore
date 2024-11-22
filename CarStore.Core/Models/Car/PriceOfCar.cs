@@ -7,23 +7,25 @@ using System.Threading.Tasks;
 
 namespace CarStore.Core.Models;
 
-public class EngineType : INotifyPropertyChanged
+public class PriceOfCar : INotifyPropertyChanged
 {
     public int Id
     {
         get; set;
     }
-    public string Name
+    public string? Name
     {
         get; set;
     }
 
-    // Navigation Property
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
     public ICollection<Car> cars
     {
         get; set;
     }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
 }

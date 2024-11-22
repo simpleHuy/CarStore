@@ -99,6 +99,10 @@ public partial class App : Application
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
 
+            services.AddTransient<CarDetailViewModel>();
+            services.AddTransient<CarDetailPage>();
+            services.AddTransient<SearchingViewModel>();
+            services.AddTransient<SearchingPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

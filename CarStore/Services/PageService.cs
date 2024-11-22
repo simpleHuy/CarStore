@@ -22,6 +22,7 @@ public class PageService : IPageService
         Configure<MainPageViewModel, MainPage>();
         Configure<ScheduleFormViewModel, ScheduleForm>();
         Configure<VerifyViewModel, VerifyPage>();
+        Configure<SearchingViewModel, SearchingPage>();
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
     }

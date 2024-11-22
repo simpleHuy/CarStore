@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CarStore.Core.Models;
 
-public class Manufacturer
+public class Manufacturer : INotifyPropertyChanged
 {
     public int Id
     {
@@ -19,4 +20,6 @@ public class Manufacturer
 
     //Navigation Property
     public ICollection<Car> cars { get; set; }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

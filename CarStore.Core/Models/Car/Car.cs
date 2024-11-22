@@ -29,9 +29,7 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-    public int ManufacturerId { get; set; }
-    public int EngineTypeId { get; set; }
-    public int TypeOfCarId { get; set; }
+
 
     public string Images
     {
@@ -52,11 +50,32 @@ public class Car : INotifyPropertyChanged
     //}
 
     // Navigation properties
+    public int ManufacturerId
+    {
+        get; set;
+    }
+    public int EngineTypeId
+    {
+        get; set;
+    }
+    public int TypeOfCarId
+    {
+        get; set;
+    }
+    public int PriceOfCarId
+    {
+        get; set;
+    }
+
     public Manufacturer Manufacturer { get; set; }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
     public CarDetail carDetail { get; set; }
-    public ICollection<Schedule> Schedules { get; set; }
+    public PriceOfCar PriceOfCar
+    {
+        get; set;
+    }
+    //public ICollection<Schedule> Schedules { get; set; }
     public event PropertyChangedEventHandler PropertyChanged;
 }

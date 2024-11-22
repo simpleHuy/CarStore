@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarStore.Core.Models;
+using CarStore.Models;
 
 namespace CarStore.Services.DataAccess;
 public interface IDao
@@ -12,5 +13,10 @@ public interface IDao
     List<Car> getPopularCars();
     List<Car> getSuggestCars();
     List<TypeOfCar> GetTypeOfCar();
+    List<Manufacturer> getAllManufacturers();
+
+    List<EngineType> GetEngineTypes();
+
+    List<PriceOfCar> getPriceOfCars();
     User GetUser();
 }
