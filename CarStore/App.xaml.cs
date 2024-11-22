@@ -1,19 +1,22 @@
-﻿using CarStore.Activation;
+﻿using System.Net.WebSockets;
+using CarStore.Activation;
 using CarStore.Contracts.Services;
+using CarStore.Core;
+using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
+using CarStore.Core.Daos;
+using CarStore.Core.Data;
+using CarStore.Core.Models;
+using CarStore.Core.Repository;
 using CarStore.Core.Services;
+using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
-using CarStore.Models;
-
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.System;
-using Windows.UI.Core;
 
 namespace CarStore;
 
@@ -67,6 +70,10 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddTransient<INavigationViewService, NavigationViewService>();
+
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
@@ -89,9 +96,32 @@ public partial class App : Application
             services.AddTransient<VerifyPage>();
             services.AddTransient<AccountPageViewModel>();
             services.AddTransient<Account>();
+            services.AddTransient<CarDetailViewModel>();
+            services.AddTransient<CarDetailPage>();
+
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+
+            //var envFile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
+            var basePath = AppContext.BaseDirectory;
+            var curDir = new DirectoryInfo(basePath);
+            var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
+            var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
+            DotNetEnv.Env.Load(envFile);
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
+
+            // add repository, dao
+            services.AddScoped<ICarRepository, EfCoreCarRepository>();
+            services.AddScoped<IDao<Car>, EfCoreDao<Car>>();
+            services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
+            services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();
+            services.AddScoped<IDao<Manufacturer>, EfCoreDao<Manufacturer>>();
+            //services.AddScoped<IDao<>, EfCoreDao<>>();
         }).
         Build();
 

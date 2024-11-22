@@ -2,6 +2,7 @@ using CarStore.ViewModels;
 using CarStore.Services.DataAccess;
 using CarStore.Services;
 using CarStore.Models;
+using CarStore.Core.Models;
 
 
 namespace CarStore.Tests; 

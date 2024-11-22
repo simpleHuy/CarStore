@@ -1,15 +1,11 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Text.Json;
-using System.IO;
-using System.Collections.Generic;
-using Windows.Storage;
-using CarStore.Contracts.Services;
 using System.Text.RegularExpressions;
-using CarStore.Models;
+using CarStore.Contracts.Services;
+using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
+using Windows.Storage;
 
 namespace CarStore.Services;
 
@@ -32,7 +28,7 @@ public class AuthenticationService : IAuthenticationService
         _currentUser = null;
         dao = new MockDao();
         LoadUsers();
-        
+
     }
 
     private readonly User _userDefault = new()
@@ -184,7 +180,7 @@ public class AuthenticationService : IAuthenticationService
             //{
             //    return true;
             //}
-           
+
 
             // Or use the existing user storage system:
             if (username == "admin" && password == "1234")

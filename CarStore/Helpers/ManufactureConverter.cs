@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using Microsoft.UI.Xaml.Data;
-using System.Globalization;
-using Windows.Web.Syndication;
 
 namespace CarStore.Helpers;
 public class ManufactureConverter : IValueConverter
@@ -13,9 +7,9 @@ public class ManufactureConverter : IValueConverter
     private readonly Dictionary<int, string> manufacturers = new()
     { 
         // TODO: Implement to get from database
-        {1, "Toyota"}, 
-        {2, "Ford"}, 
-        {3, "Honda"}, 
+        {1, "Toyota"},
+        {2, "Ford"},
+        {3, "Honda"},
     };
 
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

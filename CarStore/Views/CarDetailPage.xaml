@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CarStore.Views"
     xmlns:local1="using:CarStore.Services"
-    xmlns:local2="using:CarStore.Models"
+    xmlns:local2="using:CarStore.Core.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d"
@@ -67,9 +67,9 @@
                         <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
                             <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.SelectedCar.Name}" Foreground="black"/>
                             <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Foreground="black">
-                            <Run Text="Loại xe:"/> <Run Text="{x:Bind ViewModel.SelectedCar.TypeOfCar, Converter={StaticResource TypeOfCar}}"/>, 
-                            <Run Text="Động cơ: "/><Run Text="{x:Bind ViewModel.SelectedCar.EngineType, Converter={StaticResource EngineType}}"/>, 
-                            <Run Text="Hãng: "/><Run Text="{x:Bind ViewModel.SelectedCar.Manufacturer, Converter={StaticResource Manufacturer}}"/>, 
+                            <Run Text="Loại xe:"/> <Run Text="{x:Bind ViewModel.SelectedCar.TypeOfCarId, Converter={StaticResource TypeOfCar}}"/>, 
+                            <Run Text="Động cơ: "/><Run Text="{x:Bind ViewModel.SelectedCar.EngineTypeId, Converter={StaticResource EngineType}}"/>, 
+                            <Run Text="Hãng: "/><Run Text="{x:Bind ViewModel.SelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}"/>, 
                             <Run Text="Tình trạng: "/><Run Text="{x:Bind ViewModel.SelectedCar.UsageStatus}"/>
                             </TextBlock>
                         </StackPanel>
@@ -80,7 +80,7 @@
 
                         <!--Select color-->
                         <ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
-                                  ItemsSource="{x:Bind ViewModel.SelectedCar.Variant, Mode=OneWay}" Loaded="Color_Loaded" 
+                                  ItemsSource="{x:Bind ViewModel.SelectedCar.VariantOfCars, Mode=OneWay}" Loaded="Color_Loaded" 
                                   BorderBrush="LightGray" BorderThickness="1" CornerRadius="{StaticResource OverlayCornerRadius}">
                             <ComboBox.ItemContainerStyle>
                                 <Style TargetType="ComboBoxItem">
@@ -94,7 +94,7 @@
                                 </DataTemplate>
                             </ComboBox.HeaderTemplate>
                             <ComboBox.ItemTemplate>
-                                <DataTemplate x:DataType="local2:Color">
+                                <DataTemplate x:DataType="local2:VariantOfCar">
                                     <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" Foreground="Black"/>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -169,7 +169,7 @@
                                                 <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                                                         HorizontalAlignment="Center" VerticalAlignment="Center"
                                                         Margin="10 5 5 5">
-                                                    <TextBlock Text="{x:Bind Path=Manufacturer, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
+                                                    <TextBlock Text="{x:Bind Path=ManufacturerId, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
                                                                Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="black">
                                                     </TextBlock>
                                                 </Border>
