@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CarStore.Views"
-    xmlns:local2="using:CarStore.Models"
+    xmlns:local2="using:CarStore.Core.Models"
     xmlns:helpers="using:CarStore.Helpers"
     xmlns:services="using:CarStore.Services"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -113,7 +113,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                                     HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10 5 5 5">
-                                                <TextBlock Text="{x:Bind Path=Manufacturer, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
+                                                <TextBlock Text="{x:Bind Path=ManufacturerId, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
                                     Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                                             </Border>
                                             <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" Width="200">
@@ -158,7 +158,7 @@
                                         <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                                                 HorizontalAlignment="Center" VerticalAlignment="Center"
                                                 Margin="10 5 5 5">
-                                            <TextBlock Text="{x:Bind Manufacturer, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
+                                            <TextBlock Text="{x:Bind ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
                                                         Style="{ThemeResource BodyStrongTextBlockStyle}">
                                             </TextBlock>
                                         </Border>
@@ -171,10 +171,10 @@
                                     <TextBlock Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="10 2 10 10"/>
                                     <!--Color grid view here-->
                                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
-                                        <GridView ItemsSource="{x:Bind Variant}" IsItemClickEnabled="True" Name="ColorGridView" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" 
+                                        <GridView ItemsSource="{x:Bind VariantOfCars}" IsItemClickEnabled="True" Name="ColorGridView" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" 
                                                   ItemClick="ColorGridView_ItemClick" SelectionMode="None">
                                             <GridView.ItemTemplate>
-                                                <DataTemplate x:DataType="local2:Color">
+                                                <DataTemplate x:DataType="local2:Variant">
                                                     <StackPanel Orientation="Vertical" Margin="5">
                                                         <Border Background="{Binding Code}" Width="20" Height="20" CornerRadius="10" BorderBrush="Wheat" BorderThickness="0.5"/>
                                                     </StackPanel>
