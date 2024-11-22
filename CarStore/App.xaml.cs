@@ -94,6 +94,8 @@ public partial class App : Application
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
+            services.AddTransient<AccountPageViewModel>();
+            services.AddTransient<Account>();
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
 

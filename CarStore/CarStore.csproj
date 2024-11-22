@@ -41,6 +41,7 @@
     <None Remove="Assets\CategoryBackground\Car2.jpg" />
     <None Remove="Assets\CategoryBackground\Car3.jpg" />
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
+    <None Remove="Views\Account.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\FilterPage.xaml" />
@@ -215,6 +216,12 @@
 
   <ItemGroup>
     <Folder Include="Assets\Avatars\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\Account.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
