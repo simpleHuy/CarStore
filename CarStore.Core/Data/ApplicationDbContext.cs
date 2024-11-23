@@ -58,6 +58,10 @@ public class ApplicationDbContext : DbContext
                                        .WithOne(c => c.PriceOfCar)
                                        .HasForeignKey(c => c.PriceOfCarId)
                                        .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<NumberSeat>().HasMany<CarDetail>(n => n.CarDetails)
+                                        .WithOne(cd => cd.NumberSeat)
+                                        .HasForeignKey(cd => cd.NumberSeatId)
+                                        .OnDelete(DeleteBehavior.SetNull);
 
 
         //modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
@@ -88,6 +92,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Variant> variants { get; set; }
     public DbSet<VariantOfCar> variantsOfCars { get; set; }
     public DbSet<PriceOfCar> priceOfCars { get; set; }
+    public DbSet<NumberSeat> numberSeats { get; set; }
     //public DbSet<User> users { get; set; }
     //public DbSet<Schedule> schedules { get; set; }
 }
