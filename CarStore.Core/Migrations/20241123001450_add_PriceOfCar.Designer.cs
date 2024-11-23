@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241122152507_add_PriceOfCar_table")]
-    partial class add_PriceOfCar_table
+    [Migration("20241123001450_add_PriceOfCar")]
+    partial class add_PriceOfCar
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,7 +86,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 1,
                             Name = "Honda Accord",
                             Price = 1319000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 3,
                             TypeOfCarId = 3,
                             UsageStatus = "New"
                         },
@@ -100,7 +100,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 1,
                             Name = "Honda Civic City Rs",
                             Price = 889000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 2,
                             TypeOfCarId = 1,
                             UsageStatus = "New"
                         },
@@ -114,7 +114,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 1,
                             Name = "Honda Type R",
                             Price = 2399000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 4,
                             TypeOfCarId = 6,
                             UsageStatus = "New"
                         },
@@ -128,7 +128,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera Cabriolet",
                             Price = 8910000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 2,
                             TypeOfCarId = 7,
                             UsageStatus = "New"
                         },
@@ -142,7 +142,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche 718 Cayman S",
                             Price = 4260000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 5,
                             TypeOfCarId = 6,
                             UsageStatus = "New"
                         },
@@ -156,7 +156,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera GTS",
                             Price = 9630000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 5,
                             TypeOfCarId = 6,
                             UsageStatus = "New"
                         },
@@ -170,7 +170,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera T",
                             Price = 8310000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 5,
                             TypeOfCarId = 6,
                             UsageStatus = "New"
                         },
@@ -184,7 +184,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche Taycan J1II",
                             Price = 4620000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 5,
                             TypeOfCarId = 6,
                             UsageStatus = "New"
                         },
@@ -198,7 +198,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 3,
                             Name = "Toyota Corolla Altis 1.8G",
                             Price = 725000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 2,
                             TypeOfCarId = 1,
                             UsageStatus = "New"
                         },
@@ -212,7 +212,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 8,
                             Name = "Vinfast VF7",
                             Price = 850000000L,
-                            PriceOfCarId = 0,
+                            PriceOfCarId = 2,
                             TypeOfCarId = 2,
                             UsageStatus = "New"
                         });
@@ -237,7 +237,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("CarId");
 
-                    b.ToTable("Details");
+                    b.ToTable("CarDetails");
 
                     b.HasData(
                         new
@@ -437,6 +437,33 @@ namespace CarStore.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("priceOfCars");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Dưới 500 triệu"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "500 triệu - 1 tỷ"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "1 tỷ - 2 tỷ"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "2 tỷ - 3 tỷ"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Trên 3 tỷ"
+                        });
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.TypeOfCar", b =>
@@ -683,25 +710,25 @@ namespace CarStore.Core.Migrations
                     b.HasOne("CarStore.Core.Models.EngineType", "EngineType")
                         .WithMany("cars")
                         .HasForeignKey("EngineTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("CarStore.Core.Models.Manufacturer", "Manufacturer")
                         .WithMany("cars")
                         .HasForeignKey("ManufacturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("CarStore.Core.Models.PriceOfCar", "PriceOfCar")
-                        .WithMany("cars")
+                        .WithMany("Cars")
                         .HasForeignKey("PriceOfCarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("CarStore.Core.Models.TypeOfCar", "TypeOfCar")
                         .WithMany("cars")
                         .HasForeignKey("TypeOfCarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("EngineType");
@@ -718,7 +745,7 @@ namespace CarStore.Core.Migrations
                     b.HasOne("CarStore.Core.Models.Car", "Car")
                         .WithOne("carDetail")
                         .HasForeignKey("CarStore.Core.Models.CarDetail", "CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -729,13 +756,13 @@ namespace CarStore.Core.Migrations
                     b.HasOne("CarStore.Core.Models.Car", "Car")
                         .WithMany("VariantOfCars")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.HasOne("CarStore.Core.Models.Variant", "Variant")
                         .WithMany("VariantOfCars")
                         .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -762,7 +789,7 @@ namespace CarStore.Core.Migrations
 
             modelBuilder.Entity("CarStore.Core.Models.PriceOfCar", b =>
                 {
-                    b.Navigation("cars");
+                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.TypeOfCar", b =>

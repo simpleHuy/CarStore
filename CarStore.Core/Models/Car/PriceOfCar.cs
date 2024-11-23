@@ -24,7 +24,7 @@ public class PriceOfCar : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public ICollection<Car> cars
+    public ICollection<Car> Cars
     {
         get; set;
     }
