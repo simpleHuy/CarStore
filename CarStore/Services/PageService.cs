@@ -25,6 +25,7 @@ public class PageService : IPageService
         Configure<SearchingViewModel, SearchingPage>();
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
+        Configure<SettingsViewModel, SettingsPage>();
     }
 
     public Type GetPageType(string key)

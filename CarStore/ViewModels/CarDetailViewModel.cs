@@ -15,6 +15,7 @@ using CarStore.Core.Models;
 using CarStore.Core.Daos;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Contracts.Repository;
+using CommunityToolkit.Mvvm.Input;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
@@ -162,7 +163,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
-
     public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository)
     {
         _carDao = car;
@@ -181,5 +181,4 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
 }

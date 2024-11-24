@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+
 using CarStore.Activation;
 using CarStore.Contracts.Services;
 using CarStore.Core;
@@ -13,6 +14,7 @@ using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -78,6 +80,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPageViewModel>();

@@ -179,4 +179,30 @@ public sealed partial class CarDetailPage : Page
             CloseButtonText = "OK",
         }.ShowAsync();
     }
+
+    private async void Compare_btn_click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = "So sánh xe",
+            Content = new Compare(ViewModel), // Chèn UserControl vào ContentDialog
+            PrimaryButtonText = "OK",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = this.XamlRoot // Quan trọng trong WinUI 3
+        };
+
+        // Hiển thị ContentDialog
+        var result = await dialog.ShowAsync();
+
+        // Xử lý kết quả của người dùng
+        if (result == ContentDialogResult.Primary)
+        {
+            // Người dùng nhấn OK
+        }
+        else
+        {
+            // Người dùng nhấn Cancel
+        }
+    }
 }

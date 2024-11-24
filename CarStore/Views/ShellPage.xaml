@@ -49,7 +49,7 @@
             -->
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -63,15 +63,86 @@
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
             <i:Interaction.Behaviors>
-                <behaviors:NavigationViewHeaderBehavior
-                DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                <behaviors:NavigationViewHeaderBehavior>
+                    <!--DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">-->
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <TextBlock
-                                Text="{Binding}"
-                                Style="{ThemeResource TitleTextBlockStyle}" />
-                            </Grid>
+                            <!--the header of a page-->
+                            <!--<Grid x:Name="Header" Background="Transparent"
+                                    HorizontalAlignment="Stretch" Margin="0 0 55 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Grid Name="Header_LeftSection" Grid.Row="0" Grid.Column="0" 
+                                    Margin="20 0" HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Grid.Column="0" Grid.Row="0" Height="40"
+                                            Source="../Assets/Logo/logo.png" />
+
+                                </Grid>
+                                <AutoSuggestBox x:Name="Header_SearchSection" TextChanged="AutoSuggestBox_TextChanged" QueryIcon="Find"
+                                                QuerySubmitted="Control2_QuerySubmitted"
+                                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                                HorizontalContentAlignment="Left"
+                                                VerticalContentAlignment="Center"
+                                                Grid.Column="1" Grid.Row="0" 
+                                                PlaceholderText="Tìm kiếm trên eCar"
+                                                Height="40" Width="500">
+                                    <AutoSuggestBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 5 0 0">
+                                                --><!-- Display Car Image --><!--
+                                                <Image Source="{Binding DefautlImageLocation}" Width="60" Height="60" />
+                                                --><!-- Display Car Name --><!--
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>--><!--
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </AutoSuggestBox.ItemTemplate>
+                                </AutoSuggestBox>
+
+                                <Grid x:Name="Header_AccountSection" 
+                                        Grid.Column="2" Grid.Row="0"
+                                        HorizontalAlignment="Right">
+                                    <StackPanel x:Name="Header_Buttons"  Orientation="Horizontal">
+                                        --><!--Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource InvertBooleanToVisibilityConverter}}">--><!--
+                                        <Button x:Name="BtnLogin" Margin="5" Background="White" Foreground="Black" Width="100">
+                                            --><!--Command="{x:Bind ViewModel.NavigateToLoginCommand}">--><!--
+                                            Đăng nhập
+                                        </Button>
+
+                                        <Button x:Name="BtnSignup" Margin="5 5 25 5" Background="White" Foreground="Black" Width="100">
+                                                --><!--Command="{x:Bind ViewModel.NavigateToSignupCommand}" Width="100">--><!--
+                                            Đăng ký
+                                        </Button>
+                                    </StackPanel>
+
+                                    <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal">
+                                        --><!--Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource BooleanToVisibilityConverter}}">--><!--
+                                        <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <StackPanel Orientation="Vertical" Margin="0 0 10 0">
+                                                    <TextBlock x:Name="AccountName" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                                                    --><!--Text="{x:Bind ViewModel.CurrentUser.lastName, Mode=OneWay}"--><!--
+                                                    <TextBlock x:Name="UserType" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
+                                                    --><!--Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}"--><!--
+                                                </StackPanel>
+                                                <Image Source="../Assets/Avatars/1.png" Height="50"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>-->
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>

@@ -42,6 +42,18 @@
     <None Remove="Assets\CategoryBackground\Car3.jpg" />
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
     <None Remove="Views\Account.xaml" />
+    <None Remove="Views\UserCtrl\Compare.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Page Update="Views\UserCtrl\Compare.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\CustomDialog\Test.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\FilterPage.xaml" />
