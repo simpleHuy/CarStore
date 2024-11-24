@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace CarStore.Core.Migrations
 {
     /// <inheritdoc />
@@ -14,6 +16,63 @@ namespace CarStore.Core.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Schedule");
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 4);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 5);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 6);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 7);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 8);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 9);
+
+            migrationBuilder.DeleteData(
+                table: "Details",
+                keyColumn: "CarId",
+                keyValue: 10);
+
+            migrationBuilder.AddColumn<int>(
+                name: "CarDetailId",
+                table: "Cars",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "PriceOfCarId",
@@ -39,71 +98,83 @@ namespace CarStore.Core.Migrations
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 1,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 2,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 3,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 4,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 5,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 6,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 7,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 8,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 9,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
 
             migrationBuilder.UpdateData(
                 table: "Cars",
                 keyColumn: "CarId",
                 keyValue: 10,
-                column: "PriceOfCarId",
-                value: 0);
+                columns: new[] { "CarDetailId", "PriceOfCarId" },
+                values: new object[] { 0, 0 });
+
+            migrationBuilder.InsertData(
+                table: "priceOfCars",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Dưới 500 triệu" },
+                    { 2, "500 triệu - 1 tỷ" },
+                    { 3, "1 tỷ - 2 tỷ" },
+                    { 4, "2 tỷ - 3 tỷ" },
+                    { 5, "Trên 3 tỷ" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cars_PriceOfCarId",
@@ -134,6 +205,10 @@ namespace CarStore.Core.Migrations
                 table: "Cars");
 
             migrationBuilder.DropColumn(
+                name: "CarDetailId",
+                table: "Cars");
+
+            migrationBuilder.DropColumn(
                 name: "PriceOfCarId",
                 table: "Cars");
 
@@ -157,6 +232,23 @@ namespace CarStore.Core.Migrations
                         principalTable: "Cars",
                         principalColumn: "CarId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Details",
+                columns: new[] { "CarId", "MaxDistance", "NumberSeat", "TimeGet100", "Year" },
+                values: new object[,]
+                {
+                    { 1, 770, 5, 8.6999999999999993, 2022 },
+                    { 2, 640, 5, 10.199999999999999, 2020 },
+                    { 3, 850, 4, 5.2000000000000002, 2022 },
+                    { 4, 710, 4, 3.3999999999999999, 2018 },
+                    { 5, 800, 2, 4.2000000000000002, 2023 },
+                    { 6, 750, 4, 3.3999999999999999, 2023 },
+                    { 7, 780, 4, 4.5, 2023 },
+                    { 8, 480, 4, 3.8999999999999999, 2023 },
+                    { 9, 900, 5, 10.0, 2023 },
+                    { 10, 470, 5, 8.5, 2023 }
                 });
 
             migrationBuilder.CreateIndex(

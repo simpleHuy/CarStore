@@ -50,6 +50,11 @@ public class Car : INotifyPropertyChanged
     //}
 
     // Navigation properties
+
+    public int CarDetailId
+    {
+        get; set;
+    }   
     public int ManufacturerId
     {
         get; set;

@@ -328,87 +328,34 @@ public static class ModelBuilderExtension
             }
         );
 
-        modelBuilder.Entity<CarDetail>().HasData(
-            new CarDetail()
-            {
-                CarId = 1,
-                NumberSeat = 5,
-                TimeGet100 = 8.7,
-                MaxDistance = 770,
-                Year = 2022
-            },
-            new CarDetail()
-            {
-                CarId = 2,
-                NumberSeat = 5,
-                TimeGet100 = 10.2,
-                MaxDistance = 640,
-                Year = 2020
-            },
-            new CarDetail()
-            {
-                CarId = 3,
-                NumberSeat = 4,
-                TimeGet100 = 5.2,
-                MaxDistance = 850,
-                Year = 2022
-            },
-            new CarDetail()
-            {
-                CarId = 4,
-                NumberSeat = 4,
-                TimeGet100 = 3.4,
-                MaxDistance = 710,
-                Year = 2018
-            },
-            new CarDetail()
-            {
-                CarId = 5,
-                NumberSeat = 2,
-                TimeGet100 = 4.2,  
-                MaxDistance = 800, 
-                Year = 2023
-            }, 
-            new CarDetail()
-            {
-                CarId = 6,
-                NumberSeat = 4,
-                TimeGet100 = 3.4,
-                MaxDistance = 750,
-                Year = 2023
-            }, 
-            new CarDetail()
-            {
-                CarId = 7,
-                NumberSeat = 4,
-                TimeGet100 = 4.5,
-                MaxDistance = 780,
-                Year = 2023
-            },
-            new CarDetail()
-            {
-                CarId = 8,
-                NumberSeat = 4,
-                TimeGet100 = 3.9,
-                MaxDistance = 480,
-                Year = 2023
-            },
-            new CarDetail()
-            {
-                CarId = 9,
-                NumberSeat = 5,
-                TimeGet100 = 10.0,
-                MaxDistance = 900,
-                Year = 2023
-            },
-            new CarDetail()
-            {
-                CarId = 10,
-                NumberSeat = 5,
-                TimeGet100 = 8.5,
-                MaxDistance = 470,
-                Year = 2023
-            }
+
+
+        modelBuilder.Entity<PriceOfCar>().HasData(
+                new()
+                {
+                    Id = 1,
+                    Name = "Dưới 500 triệu",
+                },
+                new()
+                {
+                    Id = 2,
+                    Name = "500 triệu - 1 tỷ",
+                },
+                new()
+                {
+                    Id = 3,
+                    Name = "1 tỷ - 2 tỷ",
+                },
+                new()
+                {
+                    Id = 4,
+                    Name = "2 tỷ - 3 tỷ",
+                },
+                new()
+                {
+                    Id = 5,
+                    Name = "Trên 3 tỷ",
+                }
         );
     }
 }
