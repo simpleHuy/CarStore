@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CarStore.Core.Contracts.Services;
+using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -18,25 +21,80 @@ using Windows.Foundation.Collections;
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace CarStore.Views;
-public sealed partial class Compare : UserControl
+public sealed partial class Compare : UserControl, INotifyPropertyChanged
 {
-    public readonly CarDetailViewModel ViewModel;
+    public readonly CarDetailViewModel ViewModel; // Has Compare Car
+
+    private Car _car;
+    public Car Car
+    {
+        get => _car;
+        set
+        {
+            if (_car != value)
+            {
+                _car = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Car)));
+            }
+        }
+    }
+    private readonly IDao<Car> _carDao;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public List<Car> Cars
+    {
+        get; set;
+    }
+
     public Compare(CarDetailViewModel VM)
     {
         ViewModel = VM;
         ViewModel.SelectedCar.DefautlImageLocation = "../" + ViewModel.SelectedCar.DefautlImageLocation;
+        _carDao = App.GetService<IDao<Car>>();
+        Task.Run(async () =>
+        {
+            Cars = await _carDao.GetAllAsync();
+        }).Wait();
+        foreach (Car car in Cars)
+        {
+            car.DefautlImageLocation = "../" + car.DefautlImageLocation;
+        }
         this.InitializeComponent();
     }
 
-    
-
-    private void OkButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
-        // Logic cho nút OK (có thể đóng dialog)
+        if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+        {
+            // Filter cars by name or manufacturer
+            var suitableItems = Cars
+                .Where(car =>
+                    car.Name.Contains(sender.Text, StringComparison.OrdinalIgnoreCase) ||
+                    car.ManufacturerId.ToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            // If no match, display "No results found"
+            if (suitableItems.Count == 0)
+            {
+                sender.ItemsSource = new[] { new { Name = "No results found", DefautlImageLocation = string.Empty } };
+            }
+            else
+            {
+                sender.ItemsSource = suitableItems;
+            }
+        }
     }
 
-    private void CancelButton_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
     {
-        // Logic cho nút Cancel (có thể đóng dialog)
+
+    }
+
+    private void CarChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+        var car = args.SelectedItem as Car; // Get selected car
+        Car = car;
+        sender.Text = car.Name;
     }
 }

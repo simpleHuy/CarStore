@@ -18,6 +18,10 @@ public class IdToTypeOfCarConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
+        if (value == null)
+        {
+            return "";
+        }
         var id = (int)value;
         string result = "";
         Task.Run(async () => result = await GetTypeOfCarNameByIdAsync(id)).Wait();

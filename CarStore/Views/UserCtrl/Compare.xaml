@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CarStore.Views"
     xmlns:local1="using:CarStore.Services"
+    xmlns:model="using:CarStore.Core.Models"
     xmlns:helpers="using:CarStore.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,38 +18,103 @@
         <local1:IdToTypeOfCarConverter x:Key="TypeOfCar"/>
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
+        <helpers:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="White" CornerRadius="10">
-        <StackPanel x:Name="Card" Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
-            Margin="5"
-            CornerRadius="{ThemeResource OverlayCornerRadius}">
-            <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
+    <StackPanel Background="White" CornerRadius="10" Orientation="Vertical">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
+                    Margin="5" CornerRadius="{ThemeResource OverlayCornerRadius}" Grid.Column="0">
+                <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
                     CornerRadius="2">
-                <Image  Source="{x:Bind ViewModel.SelectedCar.DefautlImageLocation}" Width="300" Height="250" Stretch="Uniform"/>
-            </Border>
-
-            <StackPanel Orientation="Horizontal">
-                <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
-                HorizontalAlignment="Center" VerticalAlignment="Center"
-                Margin="10 5 5 5">
-                    <TextBlock Text="{x:Bind Path=ViewModel.SelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
-                        Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="Wheat">
-                    </TextBlock>
+                    <Image  Source="{x:Bind ViewModel.SelectedCar.DefautlImageLocation}" Width="300" Height="250" Stretch="Uniform"
+                        HorizontalAlignment="Center"/>
                 </Border>
-                <TextBlock Text="{x:Bind ViewModel.SelectedCar.Name}" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="black"/>
 
+                <StackPanel Orientation="Horizontal">
+                    <Border Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Margin="10 5 5 5">
+                        <TextBlock Text="{x:Bind Path=ViewModel.SelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}" Margin="4 2 4 2"
+                               Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="Wheat">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock Text="{x:Bind ViewModel.SelectedCar.Name}" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="black"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding ViewModel.SelectedCar.Price, Converter={StaticResource ConvertPriceToOldPrice}}" 
+                           Style="{ThemeResource BodyTextBlockStyle}"
+                           Margin="10 5 10 2" TextDecorations="Strikethrough" Foreground="black"/>
+                    <Border Background="OrangeRed" CornerRadius="8">
+                        <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="Black" FontWeight="SemiBold"></TextBlock>
+                    </Border>
+                </StackPanel>
+
+                <TextBlock Text="{x:Bind ViewModel.SelectedCar.Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
+                        Margin="10 2 10 10" Foreground="black"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="OldPrice" Text="{Binding ViewModel.SelectedCar.Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}"
-                    Margin="10 5 10 2" TextDecorations="Strikethrough" Foreground="black"/>
-                <Border Background="OrangeRed" CornerRadius="8">
-                    <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="Black" FontWeight="SemiBold"></TextBlock>
+
+            <StackPanel Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
+                        Margin="5" CornerRadius="{ThemeResource OverlayCornerRadius}" Grid.Column="1"
+                        Visibility="{x:Bind Car, Converter={StaticResource NotNullToVisibilityConverter}, Mode=OneWay}">
+                <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
+                        CornerRadius="2">
+                    <Image  Source="{x:Bind Car.DefautlImageLocation, Mode=OneWay}" Width="300" Height="250" Stretch="Uniform"
+                HorizontalAlignment="Center"/>
                 </Border>
-            </StackPanel>
 
-            <TextBlock x:Name="Price" Text="{x:Bind ViewModel.SelectedCar.Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
-                Margin="10 2 10 10" Foreground="black"/>
-        </StackPanel>
-    </Grid>
+                <StackPanel Orientation="Horizontal">
+                    <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
+                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Margin="10 5 5 5">
+                        <TextBlock Text="{x:Bind Car.ManufacturerId, Converter={StaticResource Manufacturer}, Mode=OneWay}" Margin="4 2 4 2"
+                       Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="Wheat">
+                        </TextBlock>
+                    </Border>
+                    <TextBlock Text="{x:Bind Car.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="black"/>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="OldPrice" Text="{Binding Car.Price, Converter={StaticResource ConvertPriceToOldPrice}, Mode=OneWay}" 
+                               Style="{ThemeResource BodyTextBlockStyle}"
+                               Margin="10 5 10 2" TextDecorations="Strikethrough" Foreground="black"/>
+                    <Border Background="OrangeRed" CornerRadius="8">
+                        <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="Black" FontWeight="SemiBold"></TextBlock>
+                    </Border>
+                </StackPanel>
+
+                <TextBlock x:Name="Price" Text="{x:Bind Car.Price, Converter={StaticResource currency}, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}"
+                            Margin="10 2 10 10" Foreground="black"/>
+            </StackPanel>
+        </Grid>
+
+        <AutoSuggestBox TextChanged="TextChanged" QueryIcon="Find"
+                        QuerySubmitted="QuerySubmitted"
+                        SuggestionChosen="CarChosen"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center"
+                        PlaceholderText="Tìm kiếm trên eCar"
+                        Height="40" Margin="15" Width="500">
+            <AutoSuggestBox.Resources>
+                <Style TargetType="ScrollViewer">
+                    <Setter Property="MaxHeight" Value="200"/>
+                    <!-- Giới hạn chiều cao danh sách -->
+                </Style>
+            </AutoSuggestBox.Resources>
+
+            <AutoSuggestBox.ItemTemplate>
+                <DataTemplate x:DataType="model:Car">
+                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 5 0 0">
+                        <Image Source="{Binding DefautlImageLocation}" Width="60" Height="60" />
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </AutoSuggestBox.ItemTemplate>
+        </AutoSuggestBox>
+    </StackPanel>
 </UserControl>

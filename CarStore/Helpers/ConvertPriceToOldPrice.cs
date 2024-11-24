@@ -7,6 +7,10 @@ namespace CarStore.Helpers
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            if (value == null)
+            {
+                return "";
+            }
             var price = (long)value;
             price = price * 100 / 80;
             CultureInfo vietnameseCulture = new CultureInfo("vi-VN");

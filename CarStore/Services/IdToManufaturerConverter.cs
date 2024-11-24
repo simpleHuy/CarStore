@@ -18,6 +18,10 @@ public class IdToManufaturerConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
+        if (value == null)
+        {
+            return "";
+        }
         var id = (int)value;
         var result = "";
         Task.Run(async () => result = await GetManufacturerNameByIdAsync(id)).Wait();

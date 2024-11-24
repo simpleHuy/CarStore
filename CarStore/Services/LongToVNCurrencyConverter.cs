@@ -7,6 +7,10 @@ public class LongToVNCurrencyConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
+        if(value == null)
+        {
+            return "";
+        }
         var number = (long)value;
         CultureInfo vietnameseCulture = new CultureInfo("vi-VN");
         var formattedAmount = number.ToString("C0", vietnameseCulture);
