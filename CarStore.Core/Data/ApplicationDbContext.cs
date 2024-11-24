@@ -26,38 +26,43 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<EngineType>().HasMany<Car>(c => c.cars)
                                          .WithOne(et => et.EngineType)
                                          .HasForeignKey(et => et.EngineTypeId)
-                                         .OnDelete(DeleteBehavior.Cascade);
+                                         .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Manufacturer>().HasMany<Car>(c => c.cars)
                                          .WithOne(et => et.Manufacturer)
                                          .HasForeignKey(et => et.ManufacturerId)
-                                         .OnDelete(DeleteBehavior.Cascade);
+                                         .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<TypeOfCar>().HasMany<Car>(c => c.cars)
                                          .WithOne(et => et.TypeOfCar)
                                          .HasForeignKey(et => et.TypeOfCarId)
-                                         .OnDelete(DeleteBehavior.Cascade);
+                                         .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<VariantOfCar>().HasKey(sc => new { sc.CarId, sc.VariantId });
         modelBuilder.Entity<VariantOfCar>().HasOne<Car>(vc => vc.Car)
                                            .WithMany(c => c.VariantOfCars)
                                            .HasForeignKey(vc => vc.CarId)
-                                           .OnDelete(DeleteBehavior.Cascade);
+                                           .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<VariantOfCar>().HasOne<Variant>(vc => vc.Variant)
                                            .WithMany(c => c.VariantOfCars)
                                            .HasForeignKey(vc => vc.VariantId)
-                                           .OnDelete(DeleteBehavior.Cascade);
+                                           .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Car>().HasOne<CarDetail>(c => c.carDetail)
                                   .WithOne(cd => cd.Car)
                                   .HasForeignKey<CarDetail>(cd => cd.CarId)
-                                  .OnDelete(DeleteBehavior.Cascade);
+                                  .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<CarDetail>().HasKey(cd => new { cd.CarId });
 
-        modelBuilder.Entity<Car>().HasOne<PriceOfCar>(c => c.PriceOfCar)
-                                                    .WithMany(p => p.cars)
-                                                    .HasForeignKey(c => c.PriceOfCarId)
-                                                    .OnDelete(DeleteBehavior.Cascade);      
+        modelBuilder.Entity<PriceOfCar>().HasMany<Car>(pc => pc.Cars)
+                                       .WithOne(c => c.PriceOfCar)
+                                       .HasForeignKey(c => c.PriceOfCarId)
+                                       .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<NumberSeat>().HasMany<CarDetail>(n => n.CarDetails)
+                                        .WithOne(cd => cd.NumberSeat)
+                                        .HasForeignKey(cd => cd.NumberSeatId)
+                                        .OnDelete(DeleteBehavior.SetNull);
+
 
         //modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
         //                          .WithOne(s => s.Car)
@@ -80,13 +85,14 @@ public class ApplicationDbContext : DbContext
 
 
     public DbSet<Car> Cars { get; set; }
-    public DbSet<CarDetail> Details { get; set; }
+    public DbSet<CarDetail> CarDetails { get; set; }
     public DbSet<EngineType> EngineTypes { get; set; }
     public DbSet<Manufacturer> Manufacturers { get; set; }
     public DbSet<TypeOfCar> TypeOfCars { get; set; }
     public DbSet<Variant> variants { get; set; }
     public DbSet<VariantOfCar> variantsOfCars { get; set; }
     public DbSet<PriceOfCar> priceOfCars { get; set; }
+    public DbSet<NumberSeat> numberSeats { get; set; }
     //public DbSet<User> users { get; set; }
     //public DbSet<Schedule> schedules { get; set; }
 }

@@ -51,7 +51,7 @@ public class EfCoreCarRepository : ICarRepository
 
     public async Task<CarDetail> GetDetailById(int id)
     {
-        return await _context.Details.FindAsync(id);
+        return await _context.CarDetails.FindAsync(id);
     }
 
     public async Task<List<VariantOfCar>> GetVariantsOfCar(int carId)

@@ -3,6 +3,7 @@ using System;
 using CarStore.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,16 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:CarStore.Core/Migrations/20241122155212_add_PriceOfCar_table.Designer.cs
+    [Migration("20241122155212_add_PriceOfCar_table")]
+    partial class add_PriceOfCar_table
+========
+    [Migration("20241123001450_add_PriceOfCar")]
+    partial class add_PriceOfCar
+>>>>>>>> 80e9fb788f33acb98e3298241182b9b36a2aec59:CarStore.Core/Migrations/20241123001450_add_PriceOfCar.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,7 +244,7 @@ namespace CarStore.Core.Migrations
                     b.Property<int>("MaxDistance")
                         .HasColumnType("integer");
 
-                    b.Property<int>("NumberSeatId")
+                    b.Property<int>("NumberSeat")
                         .HasColumnType("integer");
 
                     b.Property<double>("TimeGet100")
@@ -247,8 +255,9 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("CarId");
 
-                    b.HasIndex("NumberSeatId");
-
+<<<<<<<< HEAD:CarStore.Core/Migrations/20241122155212_add_PriceOfCar_table.Designer.cs
+                    b.ToTable("Details");
+========
                     b.ToTable("CarDetails");
 
                     b.HasData(
@@ -256,7 +265,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 1,
                             MaxDistance = 770,
-                            NumberSeatId = 3,
+                            NumberSeat = 5,
                             TimeGet100 = 8.6999999999999993,
                             Year = 2022
                         },
@@ -264,7 +273,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 2,
                             MaxDistance = 640,
-                            NumberSeatId = 2,
+                            NumberSeat = 5,
                             TimeGet100 = 10.199999999999999,
                             Year = 2020
                         },
@@ -272,7 +281,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 3,
                             MaxDistance = 850,
-                            NumberSeatId = 2,
+                            NumberSeat = 4,
                             TimeGet100 = 5.2000000000000002,
                             Year = 2022
                         },
@@ -280,7 +289,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 4,
                             MaxDistance = 710,
-                            NumberSeatId = 1,
+                            NumberSeat = 4,
                             TimeGet100 = 3.3999999999999999,
                             Year = 2018
                         },
@@ -288,7 +297,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 5,
                             MaxDistance = 800,
-                            NumberSeatId = 2,
+                            NumberSeat = 2,
                             TimeGet100 = 4.2000000000000002,
                             Year = 2023
                         },
@@ -296,7 +305,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 6,
                             MaxDistance = 750,
-                            NumberSeatId = 2,
+                            NumberSeat = 4,
                             TimeGet100 = 3.3999999999999999,
                             Year = 2023
                         },
@@ -304,7 +313,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 7,
                             MaxDistance = 780,
-                            NumberSeatId = 2,
+                            NumberSeat = 4,
                             TimeGet100 = 4.5,
                             Year = 2023
                         },
@@ -312,7 +321,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 8,
                             MaxDistance = 480,
-                            NumberSeatId = 2,
+                            NumberSeat = 4,
                             TimeGet100 = 3.8999999999999999,
                             Year = 2023
                         },
@@ -320,7 +329,7 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 9,
                             MaxDistance = 900,
-                            NumberSeatId = 3,
+                            NumberSeat = 5,
                             TimeGet100 = 10.0,
                             Year = 2023
                         },
@@ -328,10 +337,11 @@ namespace CarStore.Core.Migrations
                         {
                             CarId = 10,
                             MaxDistance = 470,
-                            NumberSeatId = 3,
+                            NumberSeat = 5,
                             TimeGet100 = 8.5,
                             Year = 2023
                         });
+>>>>>>>> 80e9fb788f33acb98e3298241182b9b36a2aec59:CarStore.Core/Migrations/20241123001450_add_PriceOfCar.Designer.cs
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.EngineType", b =>
@@ -432,44 +442,6 @@ namespace CarStore.Core.Migrations
                         {
                             Id = 9,
                             Name = "Porsche"
-                        });
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.NumberSeat", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("numberSeats");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "2 chỗ"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "4 chỗ"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "5 chỗ"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "7 chỗ"
                         });
                 });
 
@@ -798,15 +770,7 @@ namespace CarStore.Core.Migrations
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.HasOne("CarStore.Core.Models.NumberSeat", "NumberSeat")
-                        .WithMany("CarDetails")
-                        .HasForeignKey("NumberSeatId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
                     b.Navigation("Car");
-
-                    b.Navigation("NumberSeat");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.VariantOfCar", b =>
@@ -843,11 +807,6 @@ namespace CarStore.Core.Migrations
             modelBuilder.Entity("CarStore.Core.Models.Manufacturer", b =>
                 {
                     b.Navigation("cars");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.NumberSeat", b =>
-                {
-                    b.Navigation("CarDetails");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.PriceOfCar", b =>

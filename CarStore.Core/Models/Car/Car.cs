@@ -77,10 +77,7 @@ public class Car : INotifyPropertyChanged
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
     public CarDetail carDetail { get; set; }
-    public PriceOfCar PriceOfCar
-    {
-        get; set;
-    }
+    public PriceOfCar PriceOfCar { get; set; }
     //public ICollection<Schedule> Schedules { get; set; }
     public event PropertyChangedEventHandler PropertyChanged;
 }

@@ -12,11 +12,20 @@ namespace CarStore.Core.Models;
 public class CarDetail
 {
     [Key] public int CarId { get; set; }
-    public int NumberSeat { get; set; }
     public double TimeGet100 { get; set; } //second
     public int MaxDistance { get; set; } //km
     public int Year { get; set; }
-    
+
     //Navigation properties
+    public int NumberSeatId
+    {
+        get; set;
+    }
+
     public Car Car { get; set; }
+    public NumberSeat NumberSeat
+    {
+        get; set;
+    }
+
 }
