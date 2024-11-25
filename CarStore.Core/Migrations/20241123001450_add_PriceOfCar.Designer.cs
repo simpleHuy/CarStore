@@ -12,13 +12,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-<<<<<<<< HEAD:CarStore.Core/Migrations/20241122155212_add_PriceOfCar_table.Designer.cs
-    [Migration("20241122155212_add_PriceOfCar_table")]
-    partial class add_PriceOfCar_table
-========
+
     [Migration("20241123001450_add_PriceOfCar")]
     partial class add_PriceOfCar
->>>>>>>> 80e9fb788f33acb98e3298241182b9b36a2aec59:CarStore.Core/Migrations/20241123001450_add_PriceOfCar.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,7 +136,7 @@ namespace CarStore.Core.Migrations
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera Cabriolet",
                             Price = 8910000000L,
-                            PriceOfCarId = 2,
+                            PriceOfCarId = 5,
                             TypeOfCarId = 7,
                             UsageStatus = "New"
                         },
@@ -255,9 +251,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("CarId");
 
-<<<<<<<< HEAD:CarStore.Core/Migrations/20241122155212_add_PriceOfCar_table.Designer.cs
-                    b.ToTable("Details");
-========
+
                     b.ToTable("CarDetails");
 
                     b.HasData(
@@ -341,7 +335,6 @@ namespace CarStore.Core.Migrations
                             TimeGet100 = 8.5,
                             Year = 2023
                         });
->>>>>>>> 80e9fb788f33acb98e3298241182b9b36a2aec59:CarStore.Core/Migrations/20241123001450_add_PriceOfCar.Designer.cs
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.EngineType", b =>

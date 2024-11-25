@@ -50,11 +50,6 @@ public class Car : INotifyPropertyChanged
     //}
 
     // Navigation properties
-
-    public int CarDetailId
-    {
-        get; set;
-    }   
     public int ManufacturerId
     {
         get; set;
@@ -71,13 +66,21 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-
+    //public int NumberSeatId
+    //{
+    //    get; set;
+    //}
     public Manufacturer Manufacturer { get; set; }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
     public CarDetail carDetail { get; set; }
     public PriceOfCar PriceOfCar { get; set; }
+
+    //public NumberSeat NumberSeat
+    //{
+    //    get; set;
+    //}
     //public ICollection<Schedule> Schedules { get; set; }
     public event PropertyChangedEventHandler PropertyChanged;
 }

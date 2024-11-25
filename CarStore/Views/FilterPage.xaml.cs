@@ -29,7 +29,7 @@ namespace CarStore.Views;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class FilterPage: Page
+public sealed partial class FilterPage : Page
 {
     public FilterViewModel? ViewModel
     {
@@ -46,12 +46,9 @@ public sealed partial class FilterPage: Page
         this.InitializeComponent();
         ViewModel = new FilterViewModel();
         this.DataContext = ViewModel;
-
         MainViewModel = App.GetService<MainPageViewModel>();
-        
+
     }
-
-
     private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
         var selectedItem = (sender as MenuFlyoutItem)?.Text;
@@ -67,27 +64,18 @@ public sealed partial class FilterPage: Page
             Frame.Navigate(typeof(CarDetailPage), selectedCar);
         }
     }
-
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-
-        if (e.Parameter is TypeOfCar typeOfCar)
+        if(e.Parameter is string queryText)
         {
-            // Now you have access to the passed typeOfCar object
-            // Store it in a property or use it directly
-            this.TypeOfCar = typeOfCar;
-            ViewModel.SelectedFilters.Add(new SelectedFilter
-            {
-                Name = typeOfCar.Name,
-                Id = typeOfCar.Id,
-            });
+            ViewModel.SearchQuery = queryText;
         }
-        else if (e.Parameter is string queryText)
-        {
-            ViewModel.FilterCarsByQuery(queryText);
+        else {
+            Debug.WriteLine("query is empty");
+        }
 
-        }
+
     }
 
     // Add a property to store the passed object if needed
@@ -95,21 +83,22 @@ public sealed partial class FilterPage: Page
     {
         get; private set;
     }
-
+    // create map type of filteriten
     private void CheckBox_Checked(object sender, RoutedEventArgs e)
     {
         var checkBox = sender as CheckBox;
         if (checkBox?.DataContext is IFilterItem filterItem && ViewModel != null)
         {
             // Check if the filter is already in the SelectedFilters collection
-            if (!ViewModel.SelectedFilters.Any(f => f.Name == filterItem.Name && f.Type == filterItem.Type))
+            if (!ViewModel.SelectedFilters.Any(f => f.Name == filterItem.Name))
             {
                 // Add the filter to SelectedFilters
+
                 ViewModel.SelectedFilters.Add(new SelectedFilter
                 {
                     Name = filterItem.Name,
                     Id = filterItem.Id,
-                    Type = filterItem.Type
+                    Type = filterItem.GetType().Name
                 });
             }
         }
@@ -122,7 +111,7 @@ public sealed partial class FilterPage: Page
         {
             // Find the corresponding filter in SelectedFilters
             var selectedFilter = ViewModel.SelectedFilters.FirstOrDefault(f =>
-                f.Name == filterItem.Name && f.Type == filterItem.Type);
+                f.Name == filterItem.Name);
 
             if (selectedFilter != null)
             {
@@ -207,7 +196,6 @@ public sealed partial class FilterPage: Page
             }
         }
     }
-
     private ItemsControl FindFilterItemsControl(string filterType)
     {
         // Map filter types to their corresponding ItemsControl names
@@ -215,7 +203,7 @@ public sealed partial class FilterPage: Page
         {
             { "Manufacturer", "ManufacturersItemsControl" },
             { "EngineType", "EngineTypesItemsControl" },
-            { "NumberOfSeats", "SeatsItemsControl" },
+            { "NumberSeat", "SeatsItemsControl" },
             { "TypeOfCar", "TypeCarsItemsControl" },
             { "PriceOfCar", "PriceOfCarsItemsControl" }
         };
@@ -250,21 +238,6 @@ public sealed partial class FilterPage: Page
     }
 
 
-
-
-    //private void ChooseThisPicture(object sender, ItemClickEventArgs e)
-    //{
-    //    if (e.ClickedItem is string clickedImagePath)
-    //    {
-    //        // Find the index of clicked item
-    //        int index = ViewModel.SelectedCarPictures.IndexOf(clickedImagePath);
-    //        if (index >= 0)
-    //        {
-    //            // Update the FlipView's selected index directly
-    //            Gallery.SelectedIndex = index;
-    //        }
-    //    }
-    //}
 
     private async void ClickHomePageButton(object sender, RoutedEventArgs e)
     {

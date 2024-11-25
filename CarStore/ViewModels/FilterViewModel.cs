@@ -16,12 +16,15 @@ using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CarStore.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CarStore.Core.Contracts.Repository;
+using CarStore.Core.Contracts.Services;
 
 namespace CarStore.ViewModels;
 public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
 {
     private readonly CarFilterService _carFilterService;
-    
+    private string _searchQuery;
+
 
     // Car will be binded
     private Car? _selectedCar;
@@ -59,11 +62,6 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
             OnPropertyChanged(nameof(SelectedCarPictures));
         }
     }
-
-    //public int Max_Item
-    //{
-    //    get; set;
-    //}
 
     private string _selectedCarColor;
     public string SelectedCarColor
@@ -156,10 +154,10 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
     }
 
     // declare Number of Seats
-    //public FullObservableCollection<NumberOfSeats>? SeatOfCar
-    //{
-    //    get; set;
-    //}
+    public FullObservableCollection<NumberSeat>? SeatOfCar
+    {
+        get; set;
+    }
 
     // declare Type of Car
     public TypeOfCar? MainTypeCar
@@ -186,11 +184,29 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
 
     public FilterViewModel()
     {
+        _carDao = App.GetService<IDao<Car>>();
+        _manufacturerDao = App.GetService<IDao<Manufacturer>>();
+        _engineTypeDao = App.GetService<IDao<EngineType>>();
+        _priceOfCarDao = App.GetService<IDao<PriceOfCar>>();
+        _typeOfCarDao = App.GetService<IDao<TypeOfCar>>();
+        _numberOfSeatsDao = App.GetService<IDao<NumberSeat>>();
+        _carRepository = App.GetService<ICarRepository>();
         _carFilterService = new CarFilterService();
         _carFilterService.PropertyChanged += OnCarFilterServicePropertyChanged;
-        InitializeData();
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
     }
 
+    public string SearchQuery
+    {
+        get => _searchQuery;
+        set
+        {
+            _searchQuery = value;
+            OnPropertyChanged(nameof(SearchQuery));
+            _carFilterService.SearchQuery = value;
+            //FilterCarsByQuery(value);
+        }
+    }
     private void OnCarFilterServicePropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(_carFilterService.FilteredCars))
@@ -199,22 +215,30 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
             OnPropertyChanged(nameof(FilteredCars));
         }
     }
+    private readonly IDao<Car> _carDao;
+    private readonly IDao<Manufacturer> _manufacturerDao;
+    private readonly IDao<EngineType> _engineTypeDao;
+    private readonly IDao<PriceOfCar> _priceOfCarDao;
+    private readonly IDao<TypeOfCar> _typeOfCarDao;
+    private readonly IDao<NumberSeat> _numberOfSeatsDao;
 
-    private void InitializeData()
+    private readonly ICarRepository _carRepository;
+
+    private async Task LoadInitialDataAsync()
     {
-        IDao dao = new MockDao();
-        Cars = new FullObservableCollection<Car>(dao.getAllCars());
-        Manufacturers = new FullObservableCollection<Manufacturer>(dao.getAllManufacturers());
-        EngineTypes = new FullObservableCollection<EngineType>(dao.GetEngineTypes());
-        TypeCars = new FullObservableCollection<TypeOfCar>(dao.GetTypeOfCar());
-        //SeatOfCar = new FullObservableCollection<NumberOfSeats>();
+        var cars = await _carDao.GetAllAsync();
+        var manufactures = await _manufacturerDao.GetAllAsync();
+        var engineTypes = await _engineTypeDao.GetAllAsync();
+        var priceOfCars = await _priceOfCarDao.GetAllAsync();
+        var typeOfCars = await _typeOfCarDao.GetAllAsync();
+        var numberOfSeats = await _numberOfSeatsDao.GetAllAsync();
+        Cars = new FullObservableCollection<Car>(cars);
+        Manufacturers = new FullObservableCollection<Manufacturer>(manufactures);
+        EngineTypes = new FullObservableCollection<EngineType>(engineTypes);
+        PriceCar = new FullObservableCollection<PriceOfCar>(priceOfCars);
+        TypeCars = new FullObservableCollection<TypeOfCar>(typeOfCars);
+        SeatOfCar = new FullObservableCollection<NumberSeat>(numberOfSeats);
         SelectedFilters = new ObservableCollection<SelectedFilter>();
-        //{
-        //    new SelectedFilter { Type = "Manufacturer", Id = 1, Name = "Honda" },
-        //    new SelectedFilter { Type = "EngineType", Id = 1, Name = "Xăng" }
-        //};
-        PriceCar = new FullObservableCollection<PriceOfCar>(dao.getPriceOfCars());
-
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -223,24 +247,7 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public void FilterCarsByQuery(string queryText)
-    {
-        if (string.IsNullOrWhiteSpace(queryText))
-        {
-            // If the query text is empty, reset the filtered 
-            return;
-        }
 
-        var lowerQuery = queryText.ToLower();
-
-        // Filter cars based on Name, Manufacturer, or other properties
-        var filtered = Cars.Where(car =>
-            car.Name.ToLower().Contains(lowerQuery) ||
-            Manufacturers?.Any(m => m.Id == car.ManufacturerId && m.Name.ToLower().Contains(lowerQuery)) == true
-        ).ToList();
-
-        Cars = new FullObservableCollection<Car>(filtered);
-    }
 
 }
 

@@ -11,10 +11,6 @@ public interface IFilterItem
     {
         get; set;
     }
-    string Type
-    {
-        get;
-    }
     int Id
     {
         get; set;

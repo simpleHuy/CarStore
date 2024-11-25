@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CarStore.Contracts.Services;
 
 namespace CarStore.Core.Models;
 
-public class TypeOfCar : INotifyPropertyChanged
+public class TypeOfCar : IFilterItem, INotifyPropertyChanged
 {
     public int Id
     {

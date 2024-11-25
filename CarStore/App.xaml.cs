@@ -125,6 +125,9 @@ public partial class App : Application
             services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
             services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();
             services.AddScoped<IDao<Manufacturer>, EfCoreDao<Manufacturer>>();
+            services.AddScoped<IDao<PriceOfCar>, EfCoreDao<PriceOfCar>>();
+            services.AddScoped<IDao<NumberSeat>, EfCoreDao<NumberSeat>>();
+
             //services.AddScoped<IDao<>, EfCoreDao<>>();
         }).
         Build();

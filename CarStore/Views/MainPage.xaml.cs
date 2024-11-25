@@ -9,6 +9,9 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using Windows.Devices.Enumeration;
 using CarStore.Services.DataAccess;
+using CarStore.Core.Contracts.Services;
+using CarStore.Helpers;
+using System.Collections.ObjectModel;
 namespace CarStore.Views;
 
 public sealed partial class MainPage : Page
@@ -25,11 +28,41 @@ public sealed partial class MainPage : Page
         get;
         set;
     }
+    private readonly IDao<Car> _carDao;
+    private readonly IDao<TypeOfCar> _typeOfCarDao;
+    private bool flag;
+    public FullObservableCollection<Car> Cars
+    {
+        get; set;
+    }
+
+    public FullObservableCollection<TypeOfCar> TypeOfCars
+    {
+        get; set;
+    }
+    private async Task LoadInitialDataAsync()
+    {
+        if (_carDao == null)
+        {
+            // Handle the null case appropriately, e.g., log an error or initialize _carDao
+            throw new InvalidOperationException("_carDao is not initialized.");
+        }
+
+        var cars = await _carDao.GetAllAsync();
+        var typeOfCars = await _typeOfCarDao.GetAllAsync();
+ 
+        Cars = new FullObservableCollection<Car>(cars);
+        TypeOfCars = new FullObservableCollection<TypeOfCar>(typeOfCars);
+
+    }
 
     public MainPage()
     {
+        flag = false;
+        _carDao = App.GetService<IDao<Car>>();
+        _typeOfCarDao = App.GetService<IDao<TypeOfCar>>();
         ViewModel = App.GetService<MainPageViewModel>();
-        dao = new MockDao();
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
         Loaded += async (s, e) =>
         {
             await MainPage_Loaded(s, e);
@@ -73,7 +106,7 @@ public sealed partial class MainPage : Page
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
             // Filter cars by name or manufacturer
-            var suitableItems =dao. getAllCars()
+            var suitableItems = Cars
                 .Where(car =>
                     car.Name.Contains(sender.Text, StringComparison.OrdinalIgnoreCase) ||
                     car.Manufacturer.ToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
@@ -102,9 +135,10 @@ public sealed partial class MainPage : Page
         if (selectedCar != null)
         {
             // Find the actual car object based on the selected name
-            var car = dao.getAllCars().FirstOrDefault(c => c.Name == selectedCar.Name);
+            var car = Cars.FirstOrDefault(c => c.Name == selectedCar.Name);
             if (car != null)
             {
+                flag = true;
                 // Navigate to CarDetailPage with the selected car as a parameter
                 Frame.Navigate(typeof(CarDetailPage), car);
             }
@@ -115,41 +149,18 @@ public sealed partial class MainPage : Page
     {
         // Get the query text entered by the user
         var queryText = args.QueryText;
-
+        if (flag)
+            return;
         if (!string.IsNullOrWhiteSpace(queryText))
         {
             // Find the relevant TypeOfCar object based on queryText
-            var typeOfCar = GetTypeOfCarByQuery(queryText);
-
-            if (typeOfCar != null)
-            {
-                // Navigate to FilterPage with the selected TypeOfCar
-                Frame.Navigate(typeof(FilterPage), typeOfCar);
-            }
-            else
-            {
-                // If no matching TypeOfCar is found, navigate with the queryText
-                Debug.WriteLine($"No matching TypeOfCar found for query: {queryText}");
-                Frame.Navigate(typeof(FilterPage), queryText);
-            }
+            Frame.Navigate(typeof(FilterPage), queryText);
         }
         else
         {
             Debug.WriteLine("Query text is empty.");
         }
     }
-
-    // Mock method to find TypeOfCar by query
-    private TypeOfCar GetTypeOfCarByQuery(string queryText)
-    {
-        var typeOfCars = dao.GetTypeOfCar(); // Replace with your actual data source
-        return typeOfCars.FirstOrDefault(type =>
-            type.Name.Contains(queryText, StringComparison.OrdinalIgnoreCase));
-    }
-
-
-
-
     private void BuyBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         var selectedCar = (sender as Button).DataContext as Car;

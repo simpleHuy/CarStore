@@ -83,8 +83,6 @@
                         Content="Mua ngay" Margin="10 0 10 5" Width="140"
                             Click="BuyBtn_Click"/>
                 </StackPanel>
-
-
             </StackPanel>
 
         </DataTemplate>
