@@ -67,14 +67,23 @@ public sealed partial class FilterPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        if(e.Parameter is string queryText)
+        if (e.Parameter is TypeOfCar typeOfCar)
+        {
+            // Now you have access to the passed typeOfCar object
+            // Store it in a property or use it directly
+            this.TypeOfCar = typeOfCar;
+            ViewModel.SelectedFilters.Add(new SelectedFilter
+            {
+                Name = typeOfCar.Name,
+                Id = typeOfCar.Id,
+                Type = typeof(TypeOfCar).Name
+            });
+        }
+        else if (e.Parameter is string queryText)
         {
             ViewModel.SearchQuery = queryText;
-        }
-        else {
-            Debug.WriteLine("query is empty");
-        }
 
+        }
 
     }
 
