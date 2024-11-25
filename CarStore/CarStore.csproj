@@ -42,6 +42,7 @@
     <None Remove="Assets\CategoryBackground\Car3.jpg" />
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
     <None Remove="Views\Account.xaml" />
+    <None Remove="Views\AddItemPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\FilterPage.xaml" />
@@ -77,30 +78,30 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.0.230907" />
 	</ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
-    <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
-    <PackageReference Include="DotNetEnv" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.240512000" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="Npgsql" Version="7.0.8" />
-    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
-    <PackageReference Include="WinUIEx" Version="2.3.2" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
-    <PackageReference Include="WinUIEx" Version="2.4.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />
+		<PackageReference Include="DotNetEnv" Version="3.1.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.240512000" />
+		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+		<PackageReference Include="Npgsql" Version="7.0.8" />
+		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+		<PackageReference Include="WinUIEx" Version="2.4.2" />
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\CarStore.Core\CarStore.Core.csproj" />
   </ItemGroup>
 
@@ -231,6 +232,12 @@
 
   <ItemGroup>
     <Folder Include="Assets\Avatars\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AddItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

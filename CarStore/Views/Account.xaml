@@ -42,10 +42,6 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="BackButton"
-                    Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    ToolTipService.ToolTip="Back" Width="100" 
-                    FontWeight="Bold" Foreground="Black"/>
                     <Image 
                             Grid.Column="1" Grid.Row="0"
                             Source="../Assets/Logo/logo.png"
@@ -64,8 +60,8 @@
                         <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel Orientation="Vertical" Margin="0 0 10 0">
-                                    <TextBlock x:Name="AccountName" Text="Nguyen Minh Truc" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
-                                    <TextBlock x:Name="UserType" Text="Hoi vien tiem nang" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
+                                    <TextBlock x:Name="AccountName" Text="{x:Bind mainPageViewModel.CurrentUser.firstName}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="UserType" Text="{x:Bind mainPageViewModel.CurrentUser.AccountType}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
                                 </StackPanel>
                                 <Image Source="../Assets/Avatars/1.png" Height="50"/>
                             </StackPanel>
@@ -88,8 +84,11 @@
                     </Grid.ColumnDefinitions>
                     <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="../Assets/Avatars/1.png" Height="100" Margin="20"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-                        <TextBlock Text="Nguyễn Minh Trực" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                        <TextBlock Text="🌟 Hội viên tiềm năng" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="{x:Bind ViewModel.ViewedUser.firstName}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind ViewModel.ViewedUser.lastName}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="{x:Bind ViewModel.ViewedUser.AccountType}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
                         <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200"/>
@@ -133,6 +132,13 @@
                         </GridView>
                     </ScrollViewer>
                 
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="80 5" Spacing="8">
+                    <Button x:Name="AddItemBtn" Background="Transparent" BorderThickness="0" Click="AddItemBtn_Click">
+                        <Border Background="White" Width="100" Height="100" CornerRadius="{ThemeResource ControlCornerRadius}">
+                            <FontIcon Glyph="&#xE710;" />
+                        </Border>
+                    </Button>
                 </StackPanel>
                 <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
                     <GridView.ItemTemplate>

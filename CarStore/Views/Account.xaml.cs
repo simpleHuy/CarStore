@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Npgsql;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -32,18 +33,24 @@ public sealed partial class Account : Page
     {
         get; set;
     }
+
     public Account()
     {
         ViewModel = App.GetService<AccountPageViewModel>();
         this.InitializeComponent();
-        //mainPageViewModel = new();
-        
+        mainPageViewModel = App.GetService<MainPageViewModel>();
+    }
 
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+        ViewModel.CurrentUser = e.Parameter as User;
+        ViewModel.ViewedUser = ViewModel.CurrentUser;
     }
 
     private void ListCompettorCars_ItemClick(object sender, ItemClickEventArgs e)
     {
-        //See thisc car
+        //Frame.Navigate(typeof(CarDetail), e.ClickedItem);
     }
 
     private void ColorGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -65,4 +72,8 @@ public sealed partial class Account : Page
         }
     }
 
+    private void AddItemBtn_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(AddItemPage));
+    }
 }

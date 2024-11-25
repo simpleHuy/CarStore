@@ -45,6 +45,10 @@ public partial class App : Application
     }
 
     public static WindowEx MainWindow { get; } = new MainWindow();
+    public static Window? Window
+    {
+        get; private set;
+    }
 
     public static UIElement? AppTitlebar
     {
@@ -98,11 +102,12 @@ public partial class App : Application
             services.AddTransient<Account>();
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
-
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
             services.AddTransient<SearchingViewModel>();
             services.AddTransient<SearchingPage>();
+            services.AddTransient<AddItemPageViewModel>();
+            services.AddTransient<AddItemPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
