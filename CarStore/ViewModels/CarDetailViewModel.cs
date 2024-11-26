@@ -25,7 +25,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
     // Car will be binded
     private Car? _selectedCar;
-    public FullObservableCollection<Car>? Cars
+    public List<Car>? Cars
     {
         get; set;
     }
@@ -112,7 +112,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     }
 
     // get all competitor Cars
-    public ObservableCollection<Car>? CompetitorCars
+    public List<Car>? CompetitorCars
     {
         get; set;
     }
@@ -136,7 +136,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         var delta = 0.2;
         var minPrice = SelectedCar.Price * (1.0 - delta);
         var maxPrice = SelectedCar.Price * (1.0 + delta);
-        CompetitorCars = new ObservableCollection<Car>();
+        CompetitorCars = new List<Car>();
         foreach (var car in Cars)
         {
             if (CompetitorCars.Count > 9)
@@ -173,7 +173,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     private async Task LoadInitialDataAsync()
     {
         var cars = await _carDao.GetAllAsync();
-        Cars = new FullObservableCollection<Car>(cars);
+        Cars = new List<Car>(cars);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

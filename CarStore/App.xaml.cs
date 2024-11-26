@@ -94,7 +94,6 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ForgotPasswordViewModel>();
             services.AddTransient<ForgotPasswordPage>();
-            services.AddTransient<MainPageViewModel>();
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
@@ -102,11 +101,10 @@ public partial class App : Application
             services.AddTransient<Account>();
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
-
-            services.AddTransient<CarDetailViewModel>();
-            services.AddTransient<CarDetailPage>();
             services.AddTransient<SearchingViewModel>();
             services.AddTransient<SearchingPage>();
+            services.AddTransient<CompareViewModel>();
+            services.AddTransient<ComparePage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -129,6 +127,7 @@ public partial class App : Application
             services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
             services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();
             services.AddScoped<IDao<Manufacturer>, EfCoreDao<Manufacturer>>();
+            services.AddScoped<IDao<CarDetail>, EfCoreDao<CarDetail>>();
             //services.AddScoped<IDao<>, EfCoreDao<>>();
         }).
         Build();

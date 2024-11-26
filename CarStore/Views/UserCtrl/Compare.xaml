@@ -116,5 +116,74 @@
                 </DataTemplate>
             </AutoSuggestBox.ItemTemplate>
         </AutoSuggestBox>
+
+        <GridView ItemsSource="{x:Bind CompetitorCars, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="model:Car">
+                    <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"
+                          Margin="80 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="800"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="400" Height="400" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20 10">
+                            <Image Source="{x:Bind DefautlImageLocation, Mode=OneWay}"
+                                   Width="400" Height="400" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="40 10">
+                            <StackPanel Orientation="Horizontal">
+                                <Border Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
+                                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Margin="10 5 5 5">
+                                    <TextBlock Text="{x:Bind ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
+                                                Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                    </TextBlock>
+                                </Border>
+                                <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>
+                                <Button BorderThickness="0">
+                                    <FontIcon Glyph="&#xE70F;" />
+                                </Button>
+                            </StackPanel>
+                            <TextBlock Text="{x:Bind Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}" 
+                                       Foreground="Red" TextDecorations="Strikethrough" Margin="10 5 10 2"/>
+                            <TextBlock Text="{x:Bind Price, Converter={StaticResource currency}}" 
+                                       Style="{ThemeResource SubtitleTextBlockStyle}" Margin="10 2 10 10"/>
+                            <!--Color grid view here-->
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <GridView ItemsSource="{x:Bind VariantOfCars}" IsItemClickEnabled="True" Name="ColorGridView" 
+                                          ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" 
+                                          ItemClick="ColorGridView_ItemClick" SelectionMode="None">
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Variant">
+                                            <StackPanel Orientation="Vertical" Margin="5">
+                                                <Border Background="{Binding Code}" Width="20" Height="20" CornerRadius="10" BorderBrush="Wheat" BorderThickness="0.5"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                </GridView>
+                            </ScrollViewer>
+                        </StackPanel>
+                        <StackPanel  Grid.Column="1" Grid.Row="1" Margin="20 0 20 10">
+                            <TextBlock Text="Mô tả" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="40 0"/>
+                            <ScrollView Height="200" BorderBrush="Wheat" BorderThickness="0.5" Width="700">
+                                <TextBlock Text="{x:Bind Description}" Margin="20 0" Width="700"/>
+                            </ScrollView>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
     </StackPanel>
 </UserControl>

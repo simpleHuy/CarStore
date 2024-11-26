@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CarStore.Views.ComparePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CarStore.Views"
+    xmlns:service="using:CarStore.Services"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource GradientPageBackground}">
+
+    <Page.Resources>
+        <service:IdToEngineTypeConverter x:Key="EngineType"/>
+        <service:IdToManufaturerConverter x:Key="Manufacturer"/>
+        <service:IdToTypeOfCarConverter x:Key="TypeOfCar"/>
+        <service:LongToVNCurrencyConverter x:Key="VNCurrency"/>
+    </Page.Resources>
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+            <Rectangle Height="330" Margin="10"/>
+            <TextBlock Text="Tên:" FontSize="20" Margin="10"/>
+            <TextBlock Text="Giá:" FontSize="20" Margin="10"/>
+            <TextBlock Text="Nhà sản xuất:" FontSize="20" Margin="10"/>
+            <TextBlock Text="Loại xe:" FontSize="20" Margin="10"/>
+            <TextBlock Text="Loại động cơ:" FontSize="20" Margin="10"/>
+        </StackPanel>
+        
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="15" Padding="15" HorizontalAlignment="Center">
+            <Image Source="{x:Bind ViewModel.Car1.DefautlImageLocation}" Margin="10" Grid.Row="0" Height="300"/>
+            <TextBlock Text="{x:Bind ViewModel.Car1.Name}" FontSize="20" Margin="10" Grid.Row="1"/>
+            <TextBlock Text="{x:Bind ViewModel.Car1.Price, Converter={StaticResource VNCurrency} }" FontSize="20" Margin="10" Grid.Row="2"/>
+            <TextBlock Text="{x:Bind ViewModel.Car1.ManufacturerId, Converter={StaticResource Manufacturer}}" FontSize="20" Margin="10" Grid.Row="3"/>
+            <TextBlock Text="{x:Bind ViewModel.Car1.TypeOfCarId, Converter={StaticResource TypeOfCar}}" FontSize="20" Margin="10" Grid.Row="4"/>
+            <TextBlock Text="{x:Bind ViewModel.Car1.EngineTypeId, Converter={StaticResource EngineType}}" FontSize="20" Margin="10" Grid.Row="5"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical" Grid.Column="2">
+
+        </StackPanel>
+    </Grid>-->
+
+    <StackPanel>
+        <!-- ListView -->
+        <ListView ItemsSource="{x:Bind ComparisonData}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="local:ComparisonRow">
+                    <Grid>
+                        <!-- Define three columns -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <!-- Thuộc tính -->
+                            <ColumnDefinition Width="3*"/>
+                            <!-- Object 1 -->
+                            <ColumnDefinition Width="3*"/>
+                            <!-- Object 2 -->
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Cột Thuộc tính -->
+                        <TextBlock Grid.Column="0" 
+                                   Text="{x:Bind PropertyName}" 
+                                   VerticalAlignment="Center" 
+                                   FontWeight="Bold"/>
+
+                        <!-- Cột Object 1 -->
+                        <ContentControl Grid.Column="1">
+                            <ContentControl.Content>
+                                <Image Source="{x:Bind Value1}" 
+                                       Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBlock Text="{x:Bind Value1}" 
+                                           Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToInvertedVisibilityConverter}}"/>
+                            </ContentControl.Content>
+                        </ContentControl>
+                        <!-- Cột Object 2 -->
+                        <ContentControl Grid.Column="2">
+                            <ContentControl.Content>
+                                <Image Source="{x:Bind Value2}" 
+                                       Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                <TextBlock Text="{x:Bind Value2}" 
+                                           Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToInvertedVisibilityConverter}}"/>
+                            </ContentControl.Content>
+                        </ContentControl>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackPanel>
+
+</Page>

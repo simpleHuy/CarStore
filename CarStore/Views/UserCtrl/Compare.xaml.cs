@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
+using CarStore.Helpers;
 using CarStore.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -25,6 +27,8 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
 {
     public readonly CarDetailViewModel ViewModel; // Has Compare Car
 
+    public Car Car1 { get; set; }
+
     private Car _car;
     public Car Car
     {
@@ -38,28 +42,31 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
             }
         }
     }
-    private readonly IDao<Car> _carDao;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public List<Car> Cars
     {
         get; set;
+    } = new List<Car>();
+    public List<Car> CompetitorCars
+    {
+        get; set;
     }
-
     public Compare(CarDetailViewModel VM)
     {
         ViewModel = VM;
-        ViewModel.SelectedCar.DefautlImageLocation = "../" + ViewModel.SelectedCar.DefautlImageLocation;
-        _carDao = App.GetService<IDao<Car>>();
-        Task.Run(async () =>
-        {
-            Cars = await _carDao.GetAllAsync();
-        }).Wait();
-        foreach (Car car in Cars)
+        foreach(var car in ViewModel.Cars)
         {
             car.DefautlImageLocation = "../" + car.DefautlImageLocation;
+            Cars.Add(car);
+            if(car.CarId == ViewModel.SelectedCar.CarId)
+            {
+                Car1 = car;
+            }
         }
+        //CompetitorCars = Cars.Where(car => car.PriceOfCarId == ViewModel.SelectedCar.PriceOfCarId).ToList();
+        CompetitorCars = Cars;
         this.InitializeComponent();
     }
 
@@ -94,7 +101,16 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
     private void CarChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         var car = args.SelectedItem as Car; // Get selected car
+        if(car == null)
+        {
+            return;
+        }
         Car = car;
         sender.Text = car.Name;
+    }
+
+    private void ColorGridView_ItemClick(object sender, ItemClickEventArgs e)
+    {
+
     }
 }
