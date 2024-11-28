@@ -15,86 +15,37 @@ using Microsoft.UI.Xaml.Navigation;
 using CarStore.Core.Models;
 using CarStore.ViewModels;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace CarStore.Views
+namespace CarStore.Views;
+
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class ComparePage : Page
 {
 
-    public class ComparisonRow
+    public readonly CompareViewModel ViewModel;
+    public List<String> PropsCompare { get; set; }
+        = new List<string> { "Name", "Price", "DefautlImageLocation", "Manufacturer", "EngineType" };
+
+    public ComparePage()
     {
-        public bool IsImageRow
-        {
-            get; set;
-        } // Determines if this row is for images
-        public string PropertyName
-        {
-            get; set;
-        }
-        public string Value1
-        {
-            get; set;
-        } // Value for Object 1
-        public string Value2
-        {
-            get; set;
-        } // Value for Object 2
+        ViewModel = App.GetService<CompareViewModel>();
+        this.InitializeComponent();
     }
 
-
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ComparePage : Page
+    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-
-
-        private readonly CompareViewModel ViewModel;
-        public List<ComparisonRow> ComparisonData
+        base.OnNavigatedTo(e);
+        if (e.Parameter is List<Car> cars)
         {
-            get; set;
-        }
-
-        public ComparePage()
-        {
-            ViewModel = App.GetService<CompareViewModel>();
-            this.InitializeComponent();
-
-            ComparisonData = new List<ComparisonRow>
-            {
-                new ComparisonRow
-                {
-                    IsImageRow = true,
-                    PropertyName = "", // Empty for image row
-                    Value1 = "ms-appx:///Assets/Object1.png",
-                    Value2 = "ms-appx:///Assets/Object2.png"
-                },
-                new ComparisonRow
-                {
-                    IsImageRow = false,
-                    PropertyName = "Name",
-                    Value1 = "Object 1 Name",
-                    Value2 = "Object 2 Name"
-                },
-                new ComparisonRow
-                {
-                    IsImageRow = false,
-                    PropertyName = "Price",
-                    Value1 = "$100",
-                    Value2 = "$120"
-                }
-            };
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            if (e.Parameter is List<Car> cars)
-            {
-                ViewModel.Car1 = cars[0];
-                ViewModel.Car2 = cars[1];
-            }
+            ViewModel.CarCompare = cars;
         }
     }
 }

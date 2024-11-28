@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices.WindowsRuntime;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
@@ -25,7 +26,8 @@ using Windows.Foundation.Collections;
 namespace CarStore.Views;
 public sealed partial class Compare : UserControl, INotifyPropertyChanged
 {
-    public readonly CarDetailViewModel ViewModel; // Has Compare Car
+    public readonly CarDetailViewModel ViewModel;
+    private readonly IDao<Car> _carDao;
 
     public Car Car1 { get; set; }
 
@@ -55,18 +57,20 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
     }
     public Compare(CarDetailViewModel VM)
     {
+        _carDao = App.GetService<IDao<Car>>();
         ViewModel = VM;
-        foreach(var car in ViewModel.Cars)
+
+        Task.Run(async() => Cars = await _carDao.GetAllAsync()).Wait();
+        foreach (var car in Cars) 
         {
             car.DefautlImageLocation = "../" + car.DefautlImageLocation;
-            Cars.Add(car);
-            if(car.CarId == ViewModel.SelectedCar.CarId)
+            if (car.CarId == ViewModel.SelectedCar.CarId)
             {
                 Car1 = car;
             }
         }
-        //CompetitorCars = Cars.Where(car => car.PriceOfCarId == ViewModel.SelectedCar.PriceOfCarId).ToList();
-        CompetitorCars = Cars;
+        Cars.Remove(Car1);
+        CompetitorCars = new List<Car>(Cars);
         this.InitializeComponent();
     }
 
@@ -109,8 +113,12 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
         sender.Text = car.Name;
     }
 
-    private void ColorGridView_ItemClick(object sender, ItemClickEventArgs e)
+    private void ChooseThisCar(object sender, ItemClickEventArgs e)
     {
-
+        var car = e.ClickedItem as Car;
+        if (car == null)
+            return;
+        
+        Car = car;
     }
 }

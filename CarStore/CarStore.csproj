@@ -44,11 +44,15 @@
     <None Remove="Views\Account.xaml" />
     <None Remove="Views\ComparePage.xaml" />
     <None Remove="Views\UserCtrl\Compare.xaml" />
+    <None Remove="Views\UserCtrl\RowOfTable.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\UserCtrl\RowOfTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\ComparePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,6 +26,7 @@ public class PageService : IPageService
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<CompareViewModel, ComparePage>();
     }
 
     public Type GetPageType(string key)

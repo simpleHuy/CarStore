@@ -5,6 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CarStore.Views"
     xmlns:service="using:CarStore.Services"
+    xmlns:model="using:CarStore.Core.Models"
+    xmlns:UserControl="using:CarStore.Views.UserCtrl"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -15,89 +17,49 @@
         <service:IdToManufaturerConverter x:Key="Manufacturer"/>
         <service:IdToTypeOfCarConverter x:Key="TypeOfCar"/>
         <service:LongToVNCurrencyConverter x:Key="VNCurrency"/>
+        <service:IdToNumberOfSeatsConverter x:Key="NumberOfSeats"/>
     </Page.Resources>
-    <!--<Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <StackPanel Padding="20 0">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <StackPanel Orientation="Vertical" Grid.Column="0">
-            <Rectangle Height="330" Margin="10"/>
-            <TextBlock Text="Tên:" FontSize="20" Margin="10"/>
-            <TextBlock Text="Giá:" FontSize="20" Margin="10"/>
-            <TextBlock Text="Nhà sản xuất:" FontSize="20" Margin="10"/>
-            <TextBlock Text="Loại xe:" FontSize="20" Margin="10"/>
-            <TextBlock Text="Loại động cơ:" FontSize="20" Margin="10"/>
-        </StackPanel>
-        
-        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="15" Padding="15" HorizontalAlignment="Center">
-            <Image Source="{x:Bind ViewModel.Car1.DefautlImageLocation}" Margin="10" Grid.Row="0" Height="300"/>
-            <TextBlock Text="{x:Bind ViewModel.Car1.Name}" FontSize="20" Margin="10" Grid.Row="1"/>
-            <TextBlock Text="{x:Bind ViewModel.Car1.Price, Converter={StaticResource VNCurrency} }" FontSize="20" Margin="10" Grid.Row="2"/>
-            <TextBlock Text="{x:Bind ViewModel.Car1.ManufacturerId, Converter={StaticResource Manufacturer}}" FontSize="20" Margin="10" Grid.Row="3"/>
-            <TextBlock Text="{x:Bind ViewModel.Car1.TypeOfCarId, Converter={StaticResource TypeOfCar}}" FontSize="20" Margin="10" Grid.Row="4"/>
-            <TextBlock Text="{x:Bind ViewModel.Car1.EngineTypeId, Converter={StaticResource EngineType}}" FontSize="20" Margin="10" Grid.Row="5"/>
-        </StackPanel>
+            <TextBlock Grid.Column="0" FontWeight="Bold" Margin="5"/>
+            <Image Grid.Column="1" Source="{x:Bind ViewModel.CarCompare[0].DefautlImageLocation}" Margin="5" Height="300"/>
+            <Image Grid.Column="2" Source="{x:Bind ViewModel.CarCompare[1].DefautlImageLocation}" Margin="5" Height="300"/>
+        </Grid>
 
-        <StackPanel Orientation="Vertical" Grid.Column="2">
-
-        </StackPanel>
-    </Grid>-->
-
-    <StackPanel>
-        <!-- ListView -->
-        <ListView ItemsSource="{x:Bind ComparisonData}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="local:ComparisonRow">
-                    <Grid>
-                        <!-- Define three columns -->
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2*"/>
-                            <!-- Thuộc tính -->
-                            <ColumnDefinition Width="3*"/>
-                            <!-- Object 1 -->
-                            <ColumnDefinition Width="3*"/>
-                            <!-- Object 2 -->
-                        </Grid.ColumnDefinitions>
-
-                        <!-- Cột Thuộc tính -->
-                        <TextBlock Grid.Column="0" 
-                                   Text="{x:Bind PropertyName}" 
-                                   VerticalAlignment="Center" 
-                                   FontWeight="Bold"/>
-
-                        <!-- Cột Object 1 -->
-                        <ContentControl Grid.Column="1">
-                            <ContentControl.Content>
-                                <Image Source="{x:Bind Value1}" 
-                                       Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <TextBlock Text="{x:Bind Value1}" 
-                                           Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToInvertedVisibilityConverter}}"/>
-                            </ContentControl.Content>
-                        </ContentControl>
-                        <!-- Cột Object 2 -->
-                        <ContentControl Grid.Column="2">
-                            <ContentControl.Content>
-                                <Image Source="{x:Bind Value2}" 
-                                       Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                                <TextBlock Text="{x:Bind Value2}" 
-                                           Visibility="{x:Bind IsImageRow, Converter={StaticResource BoolToInvertedVisibilityConverter}}"/>
-                            </ContentControl.Content>
-                        </ContentControl>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <UserControl:RowOfTable Label="Tên" 
+                                Value1="{x:Bind ViewModel.CarCompare[0].Name}" 
+                                Value2="{x:Bind ViewModel.CarCompare[1].Name}"/>
+        <UserControl:RowOfTable Label="Giá"
+                                Value1="{x:Bind ViewModel.CarCompare[0].Price, Converter={StaticResource VNCurrency}}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].Price, Converter={StaticResource VNCurrency}}"/>
+        <UserControl:RowOfTable Label="Hãng sản xuất" 
+                                Value1="{x:Bind ViewModel.CarCompare[0].ManufacturerId, Converter={StaticResource Manufacturer}}" 
+                                Value2="{x:Bind ViewModel.CarCompare[1].ManufacturerId, Converter={StaticResource Manufacturer}}"/>
+        <UserControl:RowOfTable Label="Loại động cơ" 
+                                Value1="{x:Bind ViewModel.CarCompare[0].EngineTypeId, Converter={StaticResource EngineType}}" 
+                                Value2="{x:Bind ViewModel.CarCompare[1].EngineTypeId, Converter={StaticResource EngineType}}"/>
+        <UserControl:RowOfTable Label="Loại xe"
+                                Value1="{x:Bind ViewModel.CarCompare[0].TypeOfCarId, Converter={StaticResource TypeOfCar}}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].TypeOfCarId, Converter={StaticResource TypeOfCar}}"/>
+        <UserControl:RowOfTable Label="Thời gian tăng tốc 0-100 km/h (tính theo s)"
+                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.TimeGet100}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.TimeGet100}"/>
+        <UserControl:RowOfTable Label="Khoảng cách tối đa đi được khi đầy nhiên liệu(tính theo km)"
+                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.MaxDistance}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.MaxDistance}"/>
+        <UserControl:RowOfTable Label="Năm sản xuất"
+                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.Year}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.Year}"/>
+        <UserControl:RowOfTable Label="Số chỗ ngồi"
+                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"
+                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"/>
     </StackPanel>
+
 
 </Page>

@@ -123,12 +123,7 @@ public partial class App : Application
 
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
-            services.AddScoped<IDao<Car>, EfCoreDao<Car>>();
-            services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
-            services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();
-            services.AddScoped<IDao<Manufacturer>, EfCoreDao<Manufacturer>>();
-            services.AddScoped<IDao<CarDetail>, EfCoreDao<CarDetail>>();
-            //services.AddScoped<IDao<>, EfCoreDao<>>();
+            services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
         }).
         Build();
 
