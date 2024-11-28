@@ -19,47 +19,49 @@
         <service:LongToVNCurrencyConverter x:Key="VNCurrency"/>
         <service:IdToNumberOfSeatsConverter x:Key="NumberOfSeats"/>
     </Page.Resources>
-    <StackPanel Padding="20 0">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid Background="White">
+        <StackPanel Padding="20 0" VerticalAlignment="Center">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" FontWeight="Bold" Margin="5"/>
-            <Image Grid.Column="1" Source="{x:Bind ViewModel.CarCompare[0].DefautlImageLocation}" Margin="5" Height="300"/>
-            <Image Grid.Column="2" Source="{x:Bind ViewModel.CarCompare[1].DefautlImageLocation}" Margin="5" Height="300"/>
-        </Grid>
+                <TextBlock Grid.Column="0" FontWeight="Bold" Margin="5"/>
+                <Image Grid.Column="1" Source="{x:Bind ViewModel.CarCompare[0].DefautlImageLocation}" Margin="5" Height="300"/>
+                <Image Grid.Column="2" Source="{x:Bind ViewModel.CarCompare[1].DefautlImageLocation}" Margin="5" Height="300"/>
+            </Grid>
 
-        <UserControl:RowOfTable Label="Tên" 
-                                Value1="{x:Bind ViewModel.CarCompare[0].Name}" 
-                                Value2="{x:Bind ViewModel.CarCompare[1].Name}"/>
-        <UserControl:RowOfTable Label="Giá"
-                                Value1="{x:Bind ViewModel.CarCompare[0].Price, Converter={StaticResource VNCurrency}}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].Price, Converter={StaticResource VNCurrency}}"/>
-        <UserControl:RowOfTable Label="Hãng sản xuất" 
-                                Value1="{x:Bind ViewModel.CarCompare[0].ManufacturerId, Converter={StaticResource Manufacturer}}" 
-                                Value2="{x:Bind ViewModel.CarCompare[1].ManufacturerId, Converter={StaticResource Manufacturer}}"/>
-        <UserControl:RowOfTable Label="Loại động cơ" 
-                                Value1="{x:Bind ViewModel.CarCompare[0].EngineTypeId, Converter={StaticResource EngineType}}" 
-                                Value2="{x:Bind ViewModel.CarCompare[1].EngineTypeId, Converter={StaticResource EngineType}}"/>
-        <UserControl:RowOfTable Label="Loại xe"
-                                Value1="{x:Bind ViewModel.CarCompare[0].TypeOfCarId, Converter={StaticResource TypeOfCar}}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].TypeOfCarId, Converter={StaticResource TypeOfCar}}"/>
-        <UserControl:RowOfTable Label="Thời gian tăng tốc 0-100 km/h (tính theo s)"
-                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.TimeGet100}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.TimeGet100}"/>
-        <UserControl:RowOfTable Label="Khoảng cách tối đa đi được khi đầy nhiên liệu(tính theo km)"
-                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.MaxDistance}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.MaxDistance}"/>
-        <UserControl:RowOfTable Label="Năm sản xuất"
-                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.Year}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.Year}"/>
-        <UserControl:RowOfTable Label="Số chỗ ngồi"
-                                Value1="{x:Bind ViewModel.CarCompare[0].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"
-                                Value2="{x:Bind ViewModel.CarCompare[1].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"/>
-    </StackPanel>
-
+            <UserControl:RowOfTable Label="Tên" 
+                                    Value1="{x:Bind ViewModel.CarCompare[0].Name}" 
+                                    Value2="{x:Bind ViewModel.CarCompare[1].Name}"/>
+            <UserControl:RowOfTable Label="Giá"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].Price, Converter={StaticResource VNCurrency}}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].Price, Converter={StaticResource VNCurrency}}"/>
+            <UserControl:RowOfTable Label="Hãng sản xuất" 
+                                    Value1="{x:Bind ViewModel.CarCompare[0].ManufacturerId, Converter={StaticResource Manufacturer}}" 
+                                    Value2="{x:Bind ViewModel.CarCompare[1].ManufacturerId, Converter={StaticResource Manufacturer}}"/>
+            <UserControl:RowOfTable Label="Loại động cơ" 
+                                    Value1="{x:Bind ViewModel.CarCompare[0].EngineTypeId, Converter={StaticResource EngineType}}" 
+                                    Value2="{x:Bind ViewModel.CarCompare[1].EngineTypeId, Converter={StaticResource EngineType}}"/>
+            <UserControl:RowOfTable Label="Loại xe"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].TypeOfCarId, Converter={StaticResource TypeOfCar}}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].TypeOfCarId, Converter={StaticResource TypeOfCar}}"/>
+            <UserControl:RowOfTable Label="Thời gian tăng tốc 0-100 km/h (tính theo s)"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].carDetail.TimeGet100}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].carDetail.TimeGet100}"/>
+            <UserControl:RowOfTable Label="Khoảng cách tối đa đi được khi đầy nhiên liệu
+                                    (tính theo km)"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].carDetail.MaxDistance}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].carDetail.MaxDistance}"/>
+            <UserControl:RowOfTable Label="Năm sản xuất"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].carDetail.Year}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].carDetail.Year}"/>
+            <UserControl:RowOfTable Label="Số chỗ ngồi"
+                                    Value1="{x:Bind ViewModel.CarCompare[0].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"
+                                    Value2="{x:Bind ViewModel.CarCompare[1].carDetail.NumberSeatId, Converter={StaticResource NumberOfSeats}}"/>
+        </StackPanel>
+    </Grid>
 
 </Page>

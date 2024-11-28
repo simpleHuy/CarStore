@@ -102,19 +102,19 @@
 
                     <!--Some button-->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Click="Schudele_btn_click"
+                        <Button Style="{StaticResource AccentButtonStyle}" Click="Schudele_btn_click"
                                 CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
                             <TextBlock Text="Đặt lịch xem xe" Style="{StaticResource BodyTextBlockStyle}"/>
                         </Button>
-                        <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                        <Button  Style="{StaticResource AccentButtonStyle}"
                                 CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="Contact_btn_click">
                             <TextBlock Text="Liên hệ với chủ" Style="{StaticResource BodyTextBlockStyle}"/>
                         </Button>
-                        <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                        <Button  Style="{StaticResource AccentButtonStyle}"
                                 CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="AddWishlist_btn_click">
                             <TextBlock Text="Thêm vào Wishlists" Style="{StaticResource BodyTextBlockStyle}" />
                         </Button>
-                        <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Click="Compare_btn_click"
+                        <Button  Style="{StaticResource AccentButtonStyle}" Click="Compare_btn_click"
                             CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
                             <TextBlock Text="So sánh" Style="{StaticResource BodyTextBlockStyle}"/>
                         </Button>
@@ -188,11 +188,10 @@
                     </Grid>
 
                     <!--View more button-->
-                    <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Width="150" Height="40"
+                    <Button  Style="{StaticResource AccentButtonStyle}" Width="150" Height="40"
                             CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center"
                             Click="SeeMoreCompetitor_btn_click" Margin="0 0 0 20">
-                        <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"
-                                            Foreground="Black"/>
+                        <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                     </Button>
 
                 </StackPanel>
@@ -228,10 +227,9 @@
                                     <FontIcon Glyph="&#xE80F;" Foreground="Black"/>
                                 </Grid>
                             </Button>
-                            <Button Background="{ThemeResource AccentTextFillColorTertiaryBrush}" Click="SeeMoreProduct_btn_click"
+                            <Button  Style="{StaticResource AccentButtonStyle}" Click="SeeMoreProduct_btn_click"
                                         CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center">
-                                <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"
-                                            Foreground="Black"/>
+                                <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"/>
                             </Button>
                         </StackPanel>
                     </StackPanel>

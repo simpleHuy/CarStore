@@ -10,19 +10,22 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="300" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="0" >
-            <TextBlock Text="{x:Bind Label, Mode=OneWay}" FontWeight="Bold" Margin="5" TextWrapping="Wrap"/>
+            <TextBlock Text="{x:Bind Label, Mode=OneWay}"  Style="{StaticResource SubtitleTextBlockStyle}"
+                       FontWeight="Bold" Margin="15 5" TextWrapping="Wrap"/>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1">
-            <TextBlock  Text="{x:Bind Value1, Mode=OneWay}" Margin="5" />
+            <TextBlock  Text="{x:Bind Value1, Mode=OneWay}" Margin="5" TextAlignment="Center" 
+                        VerticalAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal"/>
         </Border>
         <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="2">
-            <TextBlock Text="{x:Bind Value2, Mode=OneWay}" Margin="5" />
+            <TextBlock Text="{x:Bind Value2, Mode=OneWay}" Margin="5" TextAlignment="Center" 
+                       VerticalAlignment="Center" Style="{StaticResource SubtitleTextBlockStyle}" FontWeight="Normal"/>
         </Border>
     </Grid>
 </Page>
