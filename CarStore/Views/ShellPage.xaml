@@ -30,16 +30,16 @@
                    Margin="28,0,0,0"/>
         </Grid>
         <NavigationView
-        x:Name="NavigationViewControl"
-        Canvas.ZIndex="0"
-        IsBackButtonVisible="Visible"
-        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
-        IsSettingsVisible="False"
-        ExpandedModeThresholdWidth="1280"
-        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-        Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
-        IsPaneOpen="False">
+                x:Name="NavigationViewControl"
+                Canvas.ZIndex="0"
+                IsBackButtonVisible="Visible"
+                IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+                IsSettingsVisible="False"
+                ExpandedModeThresholdWidth="1280"
+                DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
+                IsPaneOpen="False">
             <NavigationView.MenuItems>
                 <!--
             TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -51,6 +51,12 @@
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>

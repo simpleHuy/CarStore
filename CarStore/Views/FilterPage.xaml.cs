@@ -281,17 +281,6 @@ public sealed partial class FilterPage : Page
             comboBox.SelectedIndex = 0;
         }
     }
-
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
-        }
-    }
-
-
-
     private async void SeeMoreCompetitor_btn_click(object sender, RoutedEventArgs e)
     {
         await new ContentDialog()
@@ -312,5 +301,10 @@ public sealed partial class FilterPage : Page
             Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
             CloseButtonText = "OK",
         }.ShowAsync();
+    }
+
+    private void Back_Home_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MainPage));
     }
 }

@@ -29,11 +29,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <Button x:Name="BackButton" Click="BackButton_Click"
-                    Style="{StaticResource NavigationBackButtonNormalStyle}"
-                    IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
-                    ToolTipService.ToolTip="Back" Width="100" Foreground="Black" FontWeight="Bold"/>
-                <Image Source="../Assets/Logo/Logo.png"/>
+                <Button Click="Back_Home_Click" BorderThickness="0" Background="Transparent">
+                    <Image Source="../Assets/Logo/Logo.png"/>
+                </Button>
             </StackPanel>
         </Grid>
 

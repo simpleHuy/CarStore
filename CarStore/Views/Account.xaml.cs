@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CarStore.Contracts.Services;
 using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
@@ -25,6 +26,7 @@ namespace CarStore.Views;
 /// </summary>
 public sealed partial class Account : Page
 {
+    private readonly INavigationService _navigationService;
     public AccountPageViewModel ViewModel
     {
         get; set;
@@ -34,11 +36,16 @@ public sealed partial class Account : Page
         get; set;
     }
 
-    public Account()
+    public Account(INavigationService navigationService)
     {
+        _navigationService = navigationService;
         ViewModel = App.GetService<AccountPageViewModel>();
         this.InitializeComponent();
         mainPageViewModel = App.GetService<MainPageViewModel>();
+        if (!mainPageViewModel.IsLogin)
+        {
+            _navigationService.NavigateTo(typeof(LoginViewModel).FullName!);
+        }
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)

@@ -157,4 +157,7 @@
     <value>Settings</value>
     <comment>Page title for SettingsPage</comment>
   </data>
+  <data name="Shell_User.Content" xml:space="preserve">
+    <value>User</value>
+  </data>
 </root>
