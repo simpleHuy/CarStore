@@ -63,7 +63,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="16 0 16 16" Spacing="8">
                     <TextBox x:Name="CarPriceTxt" Header="Giá*" MinWidth="200"/>
-                    <ComboBox x:Name="StatusCbb" Header="Tình trạng sử dụng*" SelectedIndex="0" MinWidth="200">
+                    <ComboBox x:Name="StatusCbb" Header="Tình trạng sử dụng*" MinWidth="200">
                         <ComboBoxItem Content="Xe mới"/>
                         <ComboBoxItem Content="Xe cũ"/>
                     </ComboBox>

@@ -104,14 +104,20 @@ public sealed partial class AddItemPage : Page
         var CarManufacture = ManufactureCbb.SelectedItem as Manufacturer;
         var CarVariants = ViewModel.Variants;
         var CarFolderPath = FolderPath.Text;
-        var Status = StatusCbb.SelectedItem as string;
+        var Statuscbb = StatusCbb.SelectedItem as ComboBoxItem;
+        var Status = Statuscbb?.Content.ToString();
         var NumberOfSeats = NumOfSeatTxt.Text;
         if (string.IsNullOrWhiteSpace(CarName) || string.IsNullOrWhiteSpace(CarPrice) || CarManufacture == null || CarVariants.Count == 0 || string.IsNullOrWhiteSpace(CarFolderPath) || string.IsNullOrWhiteSpace(Status) || string.IsNullOrWhiteSpace(NumberOfSeats))
         {
             ErrorTxt.Visibility = Visibility.Visible;
             return;
         }
-        ErrorTxt.Visibility = Visibility.Collapsed;
+        else
+        {
+            ErrorTxt.Visibility = Visibility.Collapsed;
+            ClearInputFields();
+        }
+            
         //Optional fields
         var CarDescription = DescriptionTxt.Text;
         var TimeToGet100 = TimeGet100Txt.Text;
@@ -125,6 +131,11 @@ public sealed partial class AddItemPage : Page
             ManufacturerId = CarManufacture!.Id,
             Description = CarDescription,
         };
+    }
+
+    private void ClearInputFields()
+    {
+        CarNameTxt.Text = string.Empty; CarPriceTxt.Text = string.Empty; ManufactureCbb.SelectedItem = null; FolderPath.Text = string.Empty; StatusCbb.SelectedItem = null; NumOfSeatTxt.Text = string.Empty; DescriptionTxt.Text = string.Empty; TimeGet100Txt.Text = string.Empty; LongestDistanceTxt.Text = string.Empty;
     }
 
     private void CancelBtn_Click(object sender, RoutedEventArgs e)
