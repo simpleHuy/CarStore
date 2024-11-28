@@ -39,7 +39,7 @@
         ExpandedModeThresholdWidth="1280"
         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
         Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
-            IsPaneOpen="False">
+        IsPaneOpen="False">
             <NavigationView.MenuItems>
                 <!--
             TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -77,7 +77,7 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+            <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>

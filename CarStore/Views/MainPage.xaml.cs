@@ -200,4 +200,8 @@ public sealed partial class MainPage : Page
         }
     }
 
+    private void BtnAccount_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(Account),ViewModel.CurrentUser);
+    }
 }

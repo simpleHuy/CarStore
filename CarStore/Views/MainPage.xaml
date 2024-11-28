@@ -169,7 +169,7 @@
 
                         <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
                             Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
+                            <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical" Margin="0 0 10 0">
                                         <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.lastName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>

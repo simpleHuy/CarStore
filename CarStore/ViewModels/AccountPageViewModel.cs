@@ -32,6 +32,15 @@ public class AccountPageViewModel: ObservableObject
     {
         get; set;
     }
+    public User CurrentUser
+    {
+        get; set;
+    }
+
+    public User ViewedUser
+    {
+        get; set;
+    }
 
     public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao)
     {
@@ -39,6 +48,7 @@ public class AccountPageViewModel: ObservableObject
         _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
+
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         Task.Run(async () =>
