@@ -50,7 +50,8 @@ public sealed partial class Account : Page
 
     private void ListCompettorCars_ItemClick(object sender, ItemClickEventArgs e)
     {
-        //Frame.Navigate(typeof(CarDetail), e.ClickedItem);
+        var car = e.ClickedItem as Car;
+        Frame.Navigate(typeof(CarDetailPage), car);
     }
 
     private void ColorGridView_ItemClick(object sender, ItemClickEventArgs e)

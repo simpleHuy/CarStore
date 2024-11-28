@@ -18,9 +18,9 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Name="VariantPreview_Item" x:DataType="model:Variant">
+        <DataTemplate x:Name="VariantPreview_Item" x:DataType="model:VariantOfCar">
             <StackPanel Orientation="Horizontal">
-                <Border Width="10" Height="10" Background="{x:Bind Code}" Margin="5"/>
+                <Border Width="10" Height="10" Background="{x:Bind Variant.Code}" Margin="5"/>
                 <TextBlock Text="{x:Bind Name}"/>
             </StackPanel>
         </DataTemplate>

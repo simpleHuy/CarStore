@@ -26,9 +26,10 @@ namespace CarStore.Views;
 /// </summary>
 public sealed partial class AddItemPage : Page
 {
-    public AddItemPageViewModel ViewModel { get; set; } = new();
+    public AddItemPageViewModel ViewModel { get; set; }
     public AddItemPage()
     {
+        ViewModel = App.GetService<AddItemPageViewModel>();
         this.InitializeComponent();
         ColorPicker.ItemsSource = ViewModel.colors;
         ManufactureCbb.ItemsSource = ViewModel.Manufacturers;
@@ -51,13 +52,14 @@ public sealed partial class AddItemPage : Page
     {
         var variantString = InputVariantTxt.Text;
         var colorPick = ColorPicker.SelectedItem as string;
-        var newVariant = new Variant();
-        newVariant.Name = variantString;
-        newVariant.Code = colorPick;
+        var newVariantOfCar = new VariantOfCar();
+        newVariantOfCar.Name = variantString;
+        newVariantOfCar.Variant = new Variant();
+        newVariantOfCar.Variant.Code = colorPick;
 
         if (!string.IsNullOrWhiteSpace(variantString) && !string.IsNullOrEmpty(colorPick))
         {
-            ViewModel.Variants.Add(newVariant);
+            ViewModel.Variants.Add(newVariantOfCar);
             InputVariantTxt.Text = string.Empty;
             ColorPicker.SelectedIndex = -1; // Reset the ComboBox
         }
@@ -71,7 +73,7 @@ public sealed partial class AddItemPage : Page
 
     void DeleteItemFromList()
     {
-        var selectedVariant = VariantList.SelectedItem as Variant;
+        var selectedVariant = VariantList.SelectedItem as VariantOfCar;
         if (selectedVariant != null)
         {
             ViewModel.Variants.Remove(selectedVariant);
