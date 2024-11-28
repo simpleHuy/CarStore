@@ -1,4 +1,5 @@
 ﻿using System.Net.WebSockets;
+
 using CarStore.Activation;
 using CarStore.Contracts.Services;
 using CarStore.Core;
@@ -13,6 +14,7 @@ using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -82,6 +84,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<SettingsViewModel>();
+            services.AddTransient<SettingsPage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPageViewModel>();
@@ -94,7 +98,6 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ForgotPasswordViewModel>();
             services.AddTransient<ForgotPasswordPage>();
-            services.AddTransient<MainPageViewModel>();
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
@@ -106,6 +109,8 @@ public partial class App : Application
             services.AddTransient<CarDetailPage>();
             services.AddTransient<SearchingViewModel>();
             services.AddTransient<SearchingPage>();
+            services.AddTransient<CompareViewModel>();
+            services.AddTransient<ComparePage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
 
@@ -126,6 +131,7 @@ public partial class App : Application
 
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
+            services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
             services.AddScoped<IDao<Car>, EfCoreDao<Car>>();
             services.AddScoped<IDao<TypeOfCar>, EfCoreDao<TypeOfCar>>();
             services.AddScoped<IDao<EngineType>, EfCoreDao<EngineType>>();

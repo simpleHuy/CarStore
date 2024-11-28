@@ -19,6 +19,8 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.System;
 using System.Diagnostics;
 using CarStore.Core.Models;
+using Microsoft.UI.Xaml.Shapes;
+using System.Text.RegularExpressions;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -111,14 +113,6 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
-        }
-    }
-
     private async void Schudele_btn_click(object sender, RoutedEventArgs e)
     {
         if (!MainViewModel.IsLogin)
@@ -178,5 +172,45 @@ public sealed partial class CarDetailPage : Page
             Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
             CloseButtonText = "OK",
         }.ShowAsync();
+    }
+
+    private async void Compare_btn_click(object sender, RoutedEventArgs e)
+    {
+        var compareControl = new Compare(ViewModel);
+        var dialog = new ContentDialog
+        {
+            Title = "So sánh xe",
+            Content = compareControl,
+            PrimaryButtonText = "OK",
+            CloseButtonText = "Cancel",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = this.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+
+        if (result == ContentDialogResult.Primary)
+        {
+            var car2 = compareControl.Car;
+            if (car2 == null)
+            {
+                await new ContentDialog()
+                {
+                    XamlRoot = this.Content.XamlRoot,
+                    Title = "Chưa đủ xe",
+                    Content = "Vui lòng Chọn thêm 1 chiếc xe để so sánh!",
+                    CloseButtonText = "OK",
+                }.ShowAsync();
+                return;
+            }
+            var car1 = ViewModel.SelectedCar;
+            car1.DefautlImageLocation = Regex.Replace(car1.DefautlImageLocation, @"^\.\./", "");
+            car2.DefautlImageLocation = Regex.Replace(car2.DefautlImageLocation, @"^\.\./", "");
+            Frame.Navigate(typeof(ComparePage), new List<Car> { car1, car2 });
+        }
+        else
+        {
+            // Người dùng nhấn Cancel
+        }
     }
 }

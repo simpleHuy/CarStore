@@ -25,6 +25,8 @@ public class PageService : IPageService
         Configure<SearchingViewModel, SearchingPage>();
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
+        Configure<SettingsViewModel, SettingsPage>();
+        Configure<CompareViewModel, ComparePage>();
         Configure<AddItemPageViewModel, AddItemPage>();
 
     }

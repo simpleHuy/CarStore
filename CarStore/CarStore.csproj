@@ -42,6 +42,26 @@
     <None Remove="Assets\CategoryBackground\Car3.jpg" />
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
     <None Remove="Views\Account.xaml" />
+    <None Remove="Views\ComparePage.xaml" />
+    <None Remove="Views\UserCtrl\Compare.xaml" />
+    <None Remove="Views\UserCtrl\RowOfTable.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Page Update="Views\UserCtrl\RowOfTable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\ComparePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\UserCtrl\Compare.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\CustomDialog\Test.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Remove="Views\AddItemPage.xaml" />
   </ItemGroup>
   <ItemGroup>
@@ -78,6 +98,24 @@
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.0.230907" />
 	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
+    <PackageReference Include="Npgsql" Version="7.0.8" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <PackageReference Include="WinUIEx" Version="2.4.2" />
+  </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.1.240916" />

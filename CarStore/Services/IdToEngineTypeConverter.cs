@@ -19,6 +19,10 @@ public class IdToEngineTypeConverter : IValueConverter
 
     public object Convert(object value, Type targetType, object parameter, string language)
     {
+        if (value == null)
+        {
+            return "";
+        }
         var id = (int)value;
         var result = "";
         Task.Run(async () => result = await GetEngineTypeNameByIdAsync(id)).Wait();
