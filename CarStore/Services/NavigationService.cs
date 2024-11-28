@@ -97,7 +97,7 @@ public class NavigationService : INavigationService
             if (navigated)
             {
                 _lastParameterUsed = parameter;
-                if (vmBeforeNavigation is INavigationAware navigationAware): 'Object reference not set to an instance of an 
+                if (vmBeforeNavigation is INavigationAware navigationAware)
                 {
                     navigationAware.OnNavigatedFrom();
                 }

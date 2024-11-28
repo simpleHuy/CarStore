@@ -26,7 +26,6 @@ namespace CarStore.Views;
 /// </summary>
 public sealed partial class Account : Page
 {
-    private readonly INavigationService _navigationService;
     public AccountPageViewModel ViewModel
     {
         get; set;
@@ -36,15 +35,19 @@ public sealed partial class Account : Page
         get; set;
     }
 
-    public Account(INavigationService navigationService)
+    public Account()
     {
-        _navigationService = navigationService;
         ViewModel = App.GetService<AccountPageViewModel>();
         this.InitializeComponent();
         mainPageViewModel = App.GetService<MainPageViewModel>();
+        this.Loaded += Account_Loaded;
+    }
+
+    private void Account_Loaded(object sender, RoutedEventArgs e)
+    {
         if (!mainPageViewModel.IsLogin)
         {
-            _navigationService.NavigateTo(typeof(LoginViewModel).FullName!);
+            Frame.Navigate(typeof(LoginPage));
         }
     }
 
