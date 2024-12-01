@@ -58,11 +58,6 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BackButton" Click="BackButton_Click"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
-                        ToolTipService.ToolTip="Back" Width="100" 
-                        FontWeight="Bold" Foreground="Black"/>
                 <Image 
                     Grid.Column="1" Grid.Row="0"
                     Source="../Assets/Logo/logo.png"

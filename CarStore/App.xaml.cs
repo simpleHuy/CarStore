@@ -98,6 +98,7 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ForgotPasswordViewModel>();
             services.AddTransient<ForgotPasswordPage>();
+            services.AddTransient<ScheduleForm>();
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();

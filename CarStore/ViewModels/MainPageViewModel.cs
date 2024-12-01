@@ -118,39 +118,18 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel ).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
+        Task.Run(async() =>
+        {
+            SuggestCars = new FullObservableCollection<Car>(await _car.GetAllAsync());
+            Categories = new FullObservableCollection<TypeOfCar>(await _typeOfCar.GetAllAsync());
+            PopularCars = SuggestCars; // Due to lack of data, we use the same data for both
+        }).Wait();
         //LogoutCommand = new RelayCommand(() =>
         //{
         //    _authenticationService.Logout();
         //    CheckAuthenticationState();
         //});
         CheckAuthenticationState();
-    }
-
-    public async Task LoadInitialDataAsync()
-    {
-        await LoadCarsAsync();
-        await LoadCategoriesAsync();
-    }
-
-    private async Task LoadCarsAsync()
-    {
-        var cars = await _car.GetAllAsync();
-        Items = new FullObservableCollection<Car>(cars);
-        foreach (var item in Items)
-        {
-           Task.Run(async () =>
-           {
-               item.VariantOfCars = await _carRepository.GetVariantsOfCar(item.CarId);
-           }).Wait();
-        }
-        PopularCars = new FullObservableCollection<Car>(Items.Take(8).ToList());
-        SuggestCars = new FullObservableCollection<Car>(Items.Take(10).ToList());
-    }
-
-    private async Task LoadCategoriesAsync()
-    {
-        var categories = await _typeOfCar.GetAllAsync();
-        Categories = new FullObservableCollection<TypeOfCar>(categories);
     }
 
     private void CheckAuthenticationState()

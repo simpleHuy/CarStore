@@ -39,14 +39,6 @@ public sealed partial class ScheduleForm : Page
         mainPageViewModel = App.GetService<MainPageViewModel>();
     }
 
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
-        }
-    }
-
     private async void Summit_btn_click(object sender, RoutedEventArgs e)
     {
         /*temporary control*/
@@ -61,16 +53,6 @@ public sealed partial class ScheduleForm : Page
                 CloseButtonText = "Quay lại",
             }.ShowAsync();
 
-        }
-        else if (!mainPageViewModel.IsLogin)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Đặt lịch hẹn",
-                Content = "Vui lòng đăng nhập để đặt lịch hẹn!",
-                CloseButtonText = "Quay lại",
-            }.ShowAsync();
         }
         else
         {

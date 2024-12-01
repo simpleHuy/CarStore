@@ -16,8 +16,6 @@ namespace CarStore.Views;
 
 public sealed partial class MainPage : Page
 {
-    IDao dao;
-
     public MainPageViewModel ViewModel
     {
         get; set;
@@ -28,53 +26,16 @@ public sealed partial class MainPage : Page
         get;
         set;
     }
-    private readonly IDao<Car> _carDao;
-    private readonly IDao<TypeOfCar> _typeOfCarDao;
     private bool flag;
-    public FullObservableCollection<Car> Cars
-    {
-        get; set;
-    }
-
-    public FullObservableCollection<TypeOfCar> TypeOfCars
-    {
-        get; set;
-    }
-    private async Task LoadInitialDataAsync()
-    {
-        if (_carDao == null)
-        {
-            // Handle the null case appropriately, e.g., log an error or initialize _carDao
-            throw new InvalidOperationException("_carDao is not initialized.");
-        }
-
-        var cars = await _carDao.GetAllAsync();
-        var typeOfCars = await _typeOfCarDao.GetAllAsync();
- 
-        Cars = new FullObservableCollection<Car>(cars);
-        TypeOfCars = new FullObservableCollection<TypeOfCar>(typeOfCars);
-
-    }
 
     public MainPage()
     {
         flag = false;
-        _carDao = App.GetService<IDao<Car>>();
-        _typeOfCarDao = App.GetService<IDao<TypeOfCar>>();
         ViewModel = App.GetService<MainPageViewModel>();
-        Task.Run(async () => await LoadInitialDataAsync()).Wait();
-        Loaded += async (s, e) =>
-        {
-            await MainPage_Loaded(s, e);
-            InitializeComponent();
-            DataContext = ViewModel;
-        };
+        InitializeComponent();
+        DataContext = ViewModel;
     }
 
-    private async Task MainPage_Loaded(object sender, RoutedEventArgs e)
-    {
-        await ViewModel.LoadInitialDataAsync();
-    }
     private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
     {
         //Frame.Navigate(typeof(LoginPage), name.Text);
@@ -106,7 +67,7 @@ public sealed partial class MainPage : Page
         if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
         {
             // Filter cars by name or manufacturer
-            var suitableItems = Cars
+            var suitableItems = ViewModel.SuggestCars
                 .Where(car =>
                     car.Name.Contains(sender.Text, StringComparison.OrdinalIgnoreCase) ||
                     car.Manufacturer.ToString().Contains(sender.Text, StringComparison.OrdinalIgnoreCase))
@@ -135,7 +96,7 @@ public sealed partial class MainPage : Page
         if (selectedCar != null)
         {
             // Find the actual car object based on the selected name
-            var car = Cars.FirstOrDefault(c => c.Name == selectedCar.Name);
+            var car = ViewModel.SuggestCars.FirstOrDefault(c => c.Name == selectedCar.Name);
             if (car != null)
             {
                 flag = true;

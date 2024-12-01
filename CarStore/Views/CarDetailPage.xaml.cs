@@ -127,6 +127,7 @@ public sealed partial class CarDetailPage : Page
 
             return;
         }
+
         Frame.Navigate(typeof(ScheduleForm));
     }
 

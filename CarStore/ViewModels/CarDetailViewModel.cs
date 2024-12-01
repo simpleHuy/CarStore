@@ -16,10 +16,14 @@ using CarStore.Core.Daos;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Contracts.Repository;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
+using CarStore.Contracts.Services;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
+
+    private INavigationService _navigationService;
 
     //private FullObservableCollection<Car>? _competitorModels;
 
@@ -116,21 +120,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         get; set;
     }
-    //private void LoadCompetitorCars()
-    //{
-    //    var delta = 0.2;
-    //    var minPrice = SelectedCar.Price * (1.0 - delta);
-    //    var maxPrice = SelectedCar.Price * (1.0 + delta);
-    //    CompetitorCars = new ObservableCollection<Car>();
-    //    foreach (var car in Cars)
-    //    {
-    //        if((car.Price > minPrice || /*&&*/ car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
-    //        {
-    //            CompetitorCars.Add(car);
-    //        }
-    //    }
-    //}
-
     private void GetTopCompetitorCars()
     {
         var delta = 0.2;
@@ -163,8 +152,9 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository)
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, INavigationService navigationService)
     {
+        _navigationService = navigationService;
         _carDao = car;
         _carRepository = carRepository;
         Task.Run(async () => await LoadInitialDataAsync()).Wait();
