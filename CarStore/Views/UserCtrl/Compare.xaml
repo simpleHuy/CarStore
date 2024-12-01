@@ -20,7 +20,7 @@
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
         <helpers:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
     </UserControl.Resources>
-    <ScrollView>
+    <ScrollView Padding="20 5">
         <StackPanel Background="White" CornerRadius="10" Orientation="Vertical">
             <Grid>
                 <Grid.ColumnDefinitions>
