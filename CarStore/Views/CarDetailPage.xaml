@@ -102,7 +102,7 @@
 
                     <!--Some button-->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Button Style="{StaticResource AccentButtonStyle}" Click="Schudele_btn_click"
+                        <Button Style="{StaticResource AccentButtonStyle}" Click="Schedule_btn_click"
                                 CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
                             <TextBlock Text="Đặt lịch xem xe" Style="{StaticResource BodyTextBlockStyle}"/>
                         </Button>

@@ -15,6 +15,12 @@ public class Schedule
 
     // Navgiation Properties
     public Car Car { get; set; }
-    //public User Customer { get; set; }
-    //public User Merchant { get; set; }
+    public User Customer
+    {
+        get; set;
+    }
+    public User Merchant
+    {
+        get; set;
+    }
 }

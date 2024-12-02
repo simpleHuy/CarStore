@@ -23,7 +23,6 @@ namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
 
-    private INavigationService _navigationService;
 
     //private FullObservableCollection<Car>? _competitorModels;
 
@@ -152,9 +151,8 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, INavigationService navigationService)
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository)
     {
-        _navigationService = navigationService;
         _carDao = car;
         _carRepository = carRepository;
         Task.Run(async () => await LoadInitialDataAsync()).Wait();
@@ -170,5 +168,9 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    public IRelayCommand NavigateToScheduleCommand
+    {
+        get;
     }
 }

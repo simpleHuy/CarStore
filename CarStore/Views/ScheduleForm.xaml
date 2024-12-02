@@ -16,7 +16,7 @@
     <Page.Resources>
         <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
-        <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
+        <services:IdToManufaturerConverter x:Key="Manufacturer"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
         <DataTemplate x:Name="VariantTemplate" x:DataType="md:Variant">
             <StackPanel Orientation="Horizontal">
@@ -58,10 +58,12 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Image 
+                <Button Background="Transparent" Click="Back_HomePage" BorderThickness="0">
+                    <Image 
                     Grid.Column="1" Grid.Row="0"
                     Source="../Assets/Logo/logo.png"
                     Height="40"/>
+                </Button>
             </Grid>
             <AutoSuggestBox x:Name="Header_SearchSection"
                 HorizontalContentAlignment="Left"
@@ -117,7 +119,7 @@
                     <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="10 5 5 5">  
-                        <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.Manufacturer, Converter={StaticResource ManufactureConverter}}" Foreground="Wheat" Margin="4 2 4 4"
+                        <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 4"
                    Style="{ThemeResource SubtitleTextBlockStyle}">
                         </TextBlock>
                     </Border>

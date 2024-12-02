@@ -160,4 +160,7 @@
   <data name="Shell_User.Content" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="Shell_Login.Content" xml:space="preserve">
+    <value>Login</value>
+  </data>
 </root>

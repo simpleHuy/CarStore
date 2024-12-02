@@ -41,7 +41,7 @@ public sealed partial class CarDetailPage : Page
     public CarDetailPage()
     {
         ViewModel = App.GetService<CarDetailViewModel>();
-        InitializeComponent();
+        this.InitializeComponent();
         DataContext = ViewModel;
         MainViewModel = App.GetService<MainPageViewModel>();
 
@@ -113,7 +113,7 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private async void Schudele_btn_click(object sender, RoutedEventArgs e)
+    private async void Schedule_btn_click(object sender, RoutedEventArgs e)
     {
         if (!MainViewModel.IsLogin)
         {
@@ -128,7 +128,7 @@ public sealed partial class CarDetailPage : Page
             return;
         }
 
-        Frame.Navigate(typeof(ScheduleForm));
+        Frame.Navigate(typeof(ScheduleForm), ViewModel.SelectedCar);
     }
 
     private async void Contact_btn_click(object sender, RoutedEventArgs e)

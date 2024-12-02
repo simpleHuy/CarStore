@@ -13,6 +13,10 @@
     Background="{ThemeResource GradientPageBackground}"
     Loaded="OnLoaded">
 
+    <Page.Resources>
+        <helpers:BooleanToVisibilityConverter x:Key="Visibility"/>
+    </Page.Resources>
+    
     <Grid>
         <Grid x:Name="AppTitleBar"
           Canvas.ZIndex="1"
@@ -54,7 +58,14 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel">
+            <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel">
+                <NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
+                                helpers:NavigationHelper.NavigationParameter="{x:Bind ViewModel.CurrentUser}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>

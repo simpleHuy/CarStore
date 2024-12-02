@@ -41,13 +41,6 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
-    //public string DefaultColor
-    //{
-    //    get
-    //    {
-    //        return Variant[0].Code;
-    //    }
-    //}
 
     // Navigation properties
     public int ManufacturerId
@@ -66,21 +59,16 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-    //public int NumberSeatId
-    //{
-    //    get; set;
-    //}
     public Manufacturer Manufacturer { get; set; }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
     public CarDetail carDetail { get; set; }
     public PriceOfCar PriceOfCar { get; set; }
+    public IList<Schedule> Schedules
+    {
+        get; set;
+    }
 
-    //public NumberSeat NumberSeat
-    //{
-    //    get; set;
-    //}
-    //public ICollection<Schedule> Schedules { get; set; }
     public event PropertyChangedEventHandler PropertyChanged;
 }

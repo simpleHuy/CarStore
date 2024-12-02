@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CarStore.Core.Models;
 public class User
 {
-    public string Id
+    public int Id
     {
         get;
         set;
@@ -54,5 +54,6 @@ public class User
         get; set;
     }
 
-    public ICollection<Schedule> schedules { get; set; }
+    public ICollection<Schedule> CustommerSchedules { get; set; }
+    public ICollection<Schedule> MerchantSchedules { get; set; }
 }

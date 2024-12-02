@@ -1,7 +1,8 @@
-using CarStore.Contracts.Services;
+﻿using CarStore.Contracts.Services;
 using CarStore.Helpers;
+using CarStore.Services;
 using CarStore.ViewModels;
-
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -18,6 +19,7 @@ public sealed partial class ShellPage : Page
     {
         get;
     }
+
 
     public ShellPage(ShellViewModel viewModel)
     {

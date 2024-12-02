@@ -14,7 +14,6 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<LoginViewModel, LoginPage>();
         Configure<RegisterViewModel, RegisterPage>();
         Configure<FilterViewModel, FilterPage>();
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
@@ -25,10 +24,9 @@ public class PageService : IPageService
         Configure<SearchingViewModel, SearchingPage>();
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
-        Configure<SettingsViewModel, SettingsPage>();
         Configure<CompareViewModel, ComparePage>();
         Configure<AddItemPageViewModel, AddItemPage>();
-
+        Configure<LoginViewModel, LoginPage>();
     }
 
     public Type GetPageType(string key)

@@ -30,32 +30,12 @@ public sealed partial class Account : Page
     {
         get; set;
     }
-    private MainPageViewModel mainPageViewModel
-    {
-        get; set;
-    }
 
     public Account()
     {
+        InitializeComponent();
         ViewModel = App.GetService<AccountPageViewModel>();
-        this.InitializeComponent();
-        mainPageViewModel = App.GetService<MainPageViewModel>();
-        this.Loaded += Account_Loaded;
-    }
-
-    private void Account_Loaded(object sender, RoutedEventArgs e)
-    {
-        if (!mainPageViewModel.IsLogin)
-        {
-            Frame.Navigate(typeof(LoginPage));
-        }
-    }
-
-    protected override void OnNavigatedTo(NavigationEventArgs e)
-    {
-        base.OnNavigatedTo(e);
-        ViewModel.CurrentUser = e.Parameter as User;
-        ViewModel.ViewedUser = ViewModel.CurrentUser;
+        DataContext = ViewModel;
     }
 
     private void ListCompettorCars_ItemClick(object sender, ItemClickEventArgs e)

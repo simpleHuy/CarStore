@@ -339,7 +339,7 @@ public class MockDao : IDao
     {
         return new User()
         {
-            Id = "1",
+            Id = 1,
             Email = "example@gmail.com",
             Telephone = "0333601234",
             AccountType = "Hội viên tiềm năng",

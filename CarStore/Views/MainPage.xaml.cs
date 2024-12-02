@@ -36,21 +36,6 @@ public sealed partial class MainPage : Page
         DataContext = ViewModel;
     }
 
-    private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
-    {
-        //Frame.Navigate(typeof(LoginPage), name.Text);
-    }
-
-    private void BtnLogin_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-
-    }
-
-    private void BtnSignup_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
-    {
-
-    }
-
     //See detail of car
     private void InfoBtn_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
@@ -163,6 +148,6 @@ public sealed partial class MainPage : Page
 
     private void BtnAccount_Click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(Account),ViewModel.CurrentUser);
+        Frame.Navigate(typeof(Account));
     }
 }

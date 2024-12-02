@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using CarStore.Contracts.Services;
@@ -14,7 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace CarStore.ViewModels;
-public class AccountPageViewModel: ObservableObject
+public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
     public readonly IDao<Car> _carDao;
@@ -32,12 +33,22 @@ public class AccountPageViewModel: ObservableObject
     {
         get; set;
     }
-    public User CurrentUser
+
+    private User? _currentUser;
+    public User? CurrentUser
     {
-        get; set;
+        get => _currentUser;
+        set
+        {
+            if (_currentUser != value)
+            {
+                _currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
+            }
+        }
     }
 
-    public User ViewedUser
+    public User? ViewedUser
     {
         get; set;
     }
@@ -55,5 +66,14 @@ public class AccountPageViewModel: ObservableObject
         {
             Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
         }).Wait();
+
+        CheckAuthenticationState();
+    }
+
+    private void CheckAuthenticationState()
+    {
+        var user = _authenticationService.GetCurrentUser();
+        CurrentUser = user;
+        ViewedUser = user;
     }
 }
