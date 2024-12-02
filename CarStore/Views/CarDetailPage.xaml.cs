@@ -36,14 +36,11 @@ public sealed partial class CarDetailPage : Page
         get; set;
     }
 
-    public MainPageViewModel? MainViewModel { get; set; }
-
     public CarDetailPage()
     {
         ViewModel = App.GetService<CarDetailViewModel>();
         this.InitializeComponent();
         DataContext = ViewModel;
-        MainViewModel = App.GetService<MainPageViewModel>();
 
     }
 
@@ -115,7 +112,7 @@ public sealed partial class CarDetailPage : Page
 
     private async void Schedule_btn_click(object sender, RoutedEventArgs e)
     {
-        if (!MainViewModel.IsLogin)
+        if (!ViewModel.IsLogin)
         {
             await new ContentDialog()
             {

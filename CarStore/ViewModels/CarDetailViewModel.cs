@@ -22,10 +22,6 @@ using CarStore.Contracts.Services;
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
-
-
-    //private FullObservableCollection<Car>? _competitorModels;
-
     // Car will be binded
     private Car? _selectedCar;
     public List<Car>? Cars
@@ -151,11 +147,22 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository)
+    private readonly IAuthenticationService authentication;
+
+    public bool IsLogin
+    {
+        get
+        {
+            var user = authentication.GetCurrentUser();
+            return user != null;
+        }
+    }
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication)
     {
         _carDao = car;
         _carRepository = carRepository;
         Task.Run(async () => await LoadInitialDataAsync()).Wait();
+        this.authentication = authentication;
     }
 
     private async Task LoadInitialDataAsync()
