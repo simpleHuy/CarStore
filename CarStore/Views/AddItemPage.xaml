@@ -38,7 +38,7 @@
         </DataTemplate>
     </Page.Resources>
 
-    <StackPanel>
+    <StackPanel HorizontalAlignment="Center">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MaxWidth="450"/>

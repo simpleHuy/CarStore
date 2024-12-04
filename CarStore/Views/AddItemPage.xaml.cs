@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -98,7 +98,7 @@ public sealed partial class AddItemPage : Page
         }
     }
 
-    private void AddItemBtn_Click(object sender, RoutedEventArgs e)
+    private async void AddItemBtn_Click(object sender, RoutedEventArgs e)
     {
         //Compulsory fields
         var CarName = CarNameTxt.Text;
@@ -133,6 +133,18 @@ public sealed partial class AddItemPage : Page
             ManufacturerId = CarManufacture!.Id,
             Description = CarDescription,
         };
+
+        var dialog = new ContentDialog()
+        {
+            Title = "Thêm thành công",
+            Content = "Thông tin xe của bạn đang được kiểm duyệt",
+            CloseButtonText = "OK",
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = this.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
+        Frame.GoBack();
     }
 
     private void ClearInputFields()
@@ -142,6 +154,6 @@ public sealed partial class AddItemPage : Page
 
     private void CancelBtn_Click(object sender, RoutedEventArgs e)
     {
-
+        Frame.GoBack();
     }
 }
