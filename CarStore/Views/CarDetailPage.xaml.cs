@@ -163,13 +163,7 @@ public sealed partial class CarDetailPage : Page
 
     private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
     {
-        await new ContentDialog()
-        {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
+        Frame.Navigate(typeof(MockAnyCarPage));
     }
 
     private async void Compare_btn_click(object sender, RoutedEventArgs e)
