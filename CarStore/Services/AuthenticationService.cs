@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using CarStore.Contracts.Services;
 using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
+using CarStore.ViewModels;
 using Windows.Storage;
 
 namespace CarStore.Services;
@@ -41,14 +42,30 @@ public class AuthenticationService : IAuthenticationService
         Telephone = "hashdawsd"
     };
 
-    event EventHandler<AuthStateChangedEventArgs> IAuthenticationService.AuthStateChanged
+    public event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
+    private bool _isAuthenticated;
+    public bool IsAuthenticated
     {
-        add => throw new NotImplementedException();
-
-        remove => throw new NotImplementedException();
+        get => _isAuthenticated;
+        private set
+        {
+            if (_isAuthenticated != value)
+            {
+                _isAuthenticated = value;
+                // Khi trạng thái thay đổi, kích hoạt sự kiện AuthStateChanged
+                OnAuthStateChanged(new AuthStateChangedEventArgs(_isAuthenticated));
+            }
+        }
     }
+    protected virtual void OnAuthStateChanged(AuthStateChangedEventArgs e)
+    {
+        AuthStateChanged?.Invoke(this, e);
+    }
+
     public void Logout()
     {
+        IsAuthenticated = false;
+
         // Clear the current user
         _users.Clear();
         _currentUser = null;
@@ -173,6 +190,8 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<bool> LoginAsync(string username, string password)
     {
+        IsAuthenticated = true;
+
         return await Task.Run(() =>
         {
             // For demo purposes - replace with your actual authentication logic

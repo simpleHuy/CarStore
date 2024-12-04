@@ -8,7 +8,8 @@ public class BooleanToVisibilityConverter : IValueConverter
     {
         if (value is bool val)
         {
-            return val ? Visibility.Visible : Visibility.Collapsed;
+            bool inverse = parameter?.ToString() == "Inverse";
+            return (val ^ inverse) ? Visibility.Visible : Visibility.Collapsed;
         }
         return Visibility.Collapsed;
     }

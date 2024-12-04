@@ -44,7 +44,6 @@ public interface IAuthenticationService
 
     bool VerifyEmail(string email);
     void Logout();
-
     User GetCurrentUser();
     event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
 }

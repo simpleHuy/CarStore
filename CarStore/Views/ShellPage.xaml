@@ -58,14 +58,16 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-            <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel">
+            <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel"
+                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, 
+                                            ConverterParameter='Inverse', Mode=OneWay}">
                 <NavigationViewItem.Icon>
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
 
             <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
-                                helpers:NavigationHelper.NavigationParameter="{x:Bind ViewModel.CurrentUser}">
+                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
