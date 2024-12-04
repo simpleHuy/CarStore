@@ -179,36 +179,10 @@ public sealed partial class CarDetailPage : Page
         {
             Title = "So sánh xe",
             Content = compareControl,
-            PrimaryButtonText = "OK",
-            CloseButtonText = "Cancel",
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = this.XamlRoot
         };
 
         var result = await dialog.ShowAsync();
-
-        if (result == ContentDialogResult.Primary)
-        {
-            var car2 = compareControl.Car;
-            if (car2 == null)
-            {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Chưa đủ xe",
-                    Content = "Vui lòng Chọn thêm 1 chiếc xe để so sánh!",
-                    CloseButtonText = "OK",
-                }.ShowAsync();
-                return;
-            }
-            var car1 = ViewModel.SelectedCar;
-            car1.DefautlImageLocation = Regex.Replace(car1.DefautlImageLocation, @"^\.\./", "");
-            car2.DefautlImageLocation = Regex.Replace(car2.DefautlImageLocation, @"^\.\./", "");
-            Frame.Navigate(typeof(ComparePage), new List<Car> { car1, car2 });
-        }
-        else
-        {
-            // Người dùng nhấn Cancel
-        }
     }
 }

@@ -93,6 +93,26 @@
                 </StackPanel>
             </Grid>
 
+            <Grid Margin="10" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button  Style="{StaticResource AccentButtonStyle}" Click="Accept_btn_click"
+                         CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0"
+                         Content="OK" Grid.Column="0" HorizontalAlignment="Stretch"/>
+                <Button  Click="Cancel_btn_click" Content="Cancel" Margin="10 0"
+                         CornerRadius="{ThemeResource OverlayCornerRadius}" Grid.Column="1"
+                         HorizontalAlignment="Stretch"/>
+            </Grid>
+            <InfoBar x:Name="NotEnough"
+                     IsOpen="False"
+                     Severity="Error"
+                     Title="Lỗi"
+                     Message="Vui lòng chọn thêm 1 chiếc xe để so sánh!" />
+
+
             <AutoSuggestBox TextChanged="TextChanged" QueryIcon="Find"
                         QuerySubmitted="QuerySubmitted"
                         SuggestionChosen="CarChosen"

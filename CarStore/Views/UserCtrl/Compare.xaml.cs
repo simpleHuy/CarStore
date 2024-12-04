@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
+using CarStore.Contracts.Services;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
 using CarStore.Helpers;
@@ -28,6 +31,7 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
 {
     public readonly CarDetailViewModel ViewModel;
     private readonly IDao<Car> _carDao;
+    private readonly INavigationService _navigationService;
 
     public Car Car1 { get; set; }
 
@@ -58,6 +62,7 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
     public Compare(CarDetailViewModel VM)
     {
         _carDao = App.GetService<IDao<Car>>();
+        _navigationService = App.GetService<INavigationService>();
         ViewModel = VM;
 
         Task.Run(async() => Cars = await _carDao.GetAllAsync()).Wait();
@@ -111,6 +116,7 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
         }
         Car = car;
         sender.Text = car.Name;
+        NotEnough.IsOpen = true;
     }
 
     private void ChooseThisCar(object sender, ItemClickEventArgs e)
@@ -120,5 +126,34 @@ public sealed partial class Compare : UserControl, INotifyPropertyChanged
             return;
         
         Car = car;
+        NotEnough.IsOpen = false;
+    }
+
+    private async void Accept_btn_click(object sender, RoutedEventArgs e)
+    {
+        if(Car == null)
+        {
+            NotEnough.Message = "Vui lòng chọn thêm 1 chiếc xe để so sánh!";
+            NotEnough.IsOpen = true; // Hiển thị thông báo lỗi
+            return;
+        }
+
+        if (this.Parent is ContentDialog dialog)
+        {
+            dialog.Hide();
+        }
+        var car1 = ViewModel.SelectedCar;
+        var car2 = Car;
+        car1.DefautlImageLocation = Regex.Replace(car1.DefautlImageLocation, @"^\.\./", "");
+        car2.DefautlImageLocation = Regex.Replace(car2.DefautlImageLocation, @"^\.\./", "");
+        _navigationService.NavigateTo(typeof(CompareViewModel).FullName!, new List<Car> { car1, car2 });
+    }
+
+    private void Cancel_btn_click(object sender, RoutedEventArgs e)
+    {
+        if (this.Parent is ContentDialog dialog)
+        {
+            dialog.Hide();
+        }
     }
 }
