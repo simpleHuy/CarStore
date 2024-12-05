@@ -52,48 +52,19 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    private FullObservableCollection<Car>? _items = new();
-    public FullObservableCollection<Car>? Items
+    public List<TypeOfCar> Categories
     {
-        get => _items;
-        set
-        {
-            _items = value;
-            OnPropertyChanged();
-        }
+        get; set;
     }
 
-    private FullObservableCollection<TypeOfCar>? _categories = new();
-    public FullObservableCollection<TypeOfCar>? Categories
+    public List<Car>? PopularCars
     {
-        get => _categories;
-        set
-        {
-            _categories = value;
-            OnPropertyChanged();
-        }
+        get; set;
     }
 
-    private FullObservableCollection<Car>? _PopularCars = new();
-    public FullObservableCollection<Car>? PopularCars
+    public List<Car>? SuggestCars 
     {
-        get => _PopularCars;
-        set
-        {
-            _PopularCars = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private FullObservableCollection<Car>? _suggestCars = new();
-    public FullObservableCollection<Car>? SuggestCars 
-    {
-        get => _suggestCars;
-        set
-        {
-            _suggestCars = value;
-            OnPropertyChanged();
-        }
+        get; set;
     }
 
     public IRelayCommand NavigateToLoginCommand
@@ -120,12 +91,12 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         Task.Run(async() =>
         {
-            SuggestCars = new FullObservableCollection<Car>(await _car.GetAllAsync());
+            SuggestCars = await _car.GetAllAsync();
             foreach (var car in SuggestCars) 
             { 
                 car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
             }
-            Categories = new FullObservableCollection<TypeOfCar>(await _typeOfCar.GetAllAsync());
+            Categories = await _typeOfCar.GetAllAsync();
             PopularCars = SuggestCars; // Due to lack of data, we use the same data for both
         }).Wait();
         //LogoutCommand = new RelayCommand(() =>
@@ -147,14 +118,6 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-
-    public async Task ChangeColor(Car currentItem, VariantOfCar selectedVariant)
-    {
-        // Update ImageLocation based on selected Variant 
-        var variantCode = await _carRepository.GetVariantsCodeByName(selectedVariant.Name);
-        currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
     }
 }
 

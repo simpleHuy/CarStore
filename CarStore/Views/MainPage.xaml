@@ -43,7 +43,8 @@
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
                 <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
                         CornerRadius="2">
-                    <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="250" Height="300" Stretch="Uniform"/>
+                    <Image x:Name="CarImage" Source="{Binding DefautlImageLocation, Mode=OneWay}" 
+                           Width="250" Height="300" Stretch="Uniform"/>
                 </Border>
 
                 <StackPanel Orientation="Horizontal">
@@ -72,7 +73,7 @@
                 <ComboBox PlaceholderText="Màu sắc"
                           Margin="10 0 0 0" 
                           ItemTemplate="{StaticResource VariantTemplate}"
-                          ItemsSource="{x:Bind VariantOfCars, Mode=TwoWay}"
+                          ItemsSource="{x:Bind VariantOfCars}"
                           SelectionChanged="ComboBox_SelectionChanged"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

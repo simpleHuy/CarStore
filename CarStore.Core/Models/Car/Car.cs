@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,11 +37,19 @@ public class Car : INotifyPropertyChanged
         get; set;
     }
 
+    private string _defautlImageLocation;
     public string DefautlImageLocation
     {
-        get; set;
+        get => _defautlImageLocation;
+        set
+        {
+            if (_defautlImageLocation != value)
+            {
+                _defautlImageLocation = value;
+                OnPropertyChanged();
+            }
+        }
     }
-
 
     // Navigation properties
     public int ManufacturerId
@@ -71,4 +80,8 @@ public class Car : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

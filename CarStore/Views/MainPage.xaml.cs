@@ -12,6 +12,7 @@ using CarStore.Services.DataAccess;
 using CarStore.Core.Contracts.Services;
 using CarStore.Helpers;
 using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Media.Imaging;
 namespace CarStore.Views;
 
 public sealed partial class MainPage : Page
@@ -123,7 +124,9 @@ public sealed partial class MainPage : Page
         var comboBox = (ComboBox)sender;
         if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is VariantOfCar selectedVariant)
         {
-            await ViewModel.ChangeColor(currentItem, selectedVariant);
+            // Update ImageLocation based on selected Variant 
+            var variantCode = await ViewModel._carRepository.GetVariantsCodeByName(selectedVariant.Name);
+            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
         }
     }
 
