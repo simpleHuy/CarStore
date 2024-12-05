@@ -50,8 +50,8 @@
                     Orientation="Vertical" Spacing="20">
                     <!--Car info-->
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
-                        <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.SelectedCar.Name}" Foreground="black"/>
-                        <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}" Foreground="black">
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Text="{x:Bind ViewModel.SelectedCar.Name}"  />
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource BodyTextBlockStyle}"  >
                         <Run Text="Loại xe:"/> <Run Text="{x:Bind ViewModel.SelectedCar.TypeOfCarId, Converter={StaticResource TypeOfCar}}"/>, 
                         <Run Text="Động cơ: "/><Run Text="{x:Bind ViewModel.SelectedCar.EngineTypeId, Converter={StaticResource EngineType}}"/>, 
                         <Run Text="Hãng: "/><Run Text="{x:Bind ViewModel.SelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}"/>, 
@@ -75,12 +75,12 @@
 
                         <ComboBox.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding}" FontWeight="Bold" Foreground="Black"/>
+                                <TextBlock Text="{Binding}" FontWeight="Bold"  />
                             </DataTemplate>
                         </ComboBox.HeaderTemplate>
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="local2:VariantOfCar">
-                                <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold" Foreground="Black"/>
+                                <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold"  />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
@@ -128,8 +128,8 @@
                     Background="white">
                 <ScrollView Height="450">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="Thông tin chi tiết: " Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 20" Foreground="black"/>
-                        <TextBlock Text="{x:Bind ViewModel.SelectedCar.Description}" Style="{StaticResource BaseTextBlockStyle}" Foreground="black"/>
+                        <TextBlock Text="Thông tin chi tiết: " Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 20"  />
+                        <TextBlock Text="{x:Bind ViewModel.SelectedCar.Description}" Style="{StaticResource BaseTextBlockStyle}"  />
                     </StackPanel>
                 </ScrollView>
 
@@ -138,8 +138,8 @@
             <!--CompetitorCars-->
             <Border BorderBrush="Gray" BorderThickness="2" Margin="0 40" CornerRadius="{ThemeResource OverlayCornerRadius}"
                     Background="white">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Cùng phân khúc" Style="{StaticResource TitleTextBlockStyle}" Margin="30 5" Foreground="black"/>
+                <StackPanel Orientation="Vertical" Height="830">
+                    <TextBlock Text="Cùng phân khúc" Style="{StaticResource TitleTextBlockStyle}" Margin="30 5"  />
                     <!--Competitor Cars List-->
                     <Grid Padding="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                         <GridView ItemsSource="{x:Bind ViewModel.CompetitorCars}" IsItemClickEnabled="True" ItemClick="SeeThisCar"
@@ -162,38 +162,24 @@
                                                             Style="{ThemeResource BodyStrongTextBlockStyle}" Foreground="Wheat">
                                                 </TextBlock>
                                             </Border>
-                                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="black"/>
+                                            <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}"  />
 
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock x:Name="OldPrice" Text="{Binding Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}"
-                                                        Margin="10 5 10 2" TextDecorations="Strikethrough" Foreground="black"/>
+                                                        Margin="10 5 10 2" TextDecorations="Strikethrough"  />
                                             <Border Background="OrangeRed" CornerRadius="8">
-                                                <TextBlock Text="-20%" Margin="5 2 2 2" Foreground="Black" FontWeight="SemiBold"></TextBlock>
+                                                <TextBlock Text="-20%" Margin="5 2 2 2"   FontWeight="SemiBold"></TextBlock>
                                             </Border>
                                         </StackPanel>
 
                                         <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
-                                                    Margin="10 2 10 10" Foreground="black"/>
+                                                    Margin="10 2 10 10"  />
                                     </StackPanel>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
-
-                            <GridView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <ItemsWrapGrid Orientation="Horizontal"/>
-                                </ItemsPanelTemplate>
-                            </GridView.ItemsPanel>
                         </GridView>
                     </Grid>
-
-                    <!--View more button-->
-                    <Button  Style="{StaticResource AccentButtonStyle}" Width="150" Height="40"
-                            CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center"
-                            Click="SeeMoreCompetitor_btn_click" Margin="0 0 0 20">
-                        <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"/>
-                    </Button>
-
                 </StackPanel>
             </Border>
 
@@ -209,7 +195,7 @@
 
                     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
                         <Image Source="../Assets/ShowRoomAvatar.jpg" Height="230" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Các sản phẩm khác của Anycar.vn" FontSize="16" HorizontalAlignment="Center" Foreground="Black"/>
+                        <TextBlock Text="Các sản phẩm khác của Anycar.vn" FontSize="16" HorizontalAlignment="Center"  />
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Button Background="Transparent" BorderBrush="Transparent" Width="30" Height="30" Padding="0"
@@ -224,7 +210,7 @@
                             <Button Background="Transparent" BorderBrush="Transparent" Width="40" Height="40" Padding="0"
                                     Click="ClickHomePageButton" Margin="0 0 5 0">
                                 <Grid Margin="0">
-                                    <FontIcon Glyph="&#xE80F;" Foreground="Black"/>
+                                    <FontIcon Glyph="&#xE80F;"  />
                                 </Grid>
                             </Button>
                             <Button  Style="{StaticResource AccentButtonStyle}" Click="SeeMoreProduct_btn_click"
@@ -238,10 +224,10 @@
                             VerticalAlignment="Stretch" Width="2" />
 
                     <StackPanel  Background="white" Grid.Column="2">
-                        <TextBlock Text="Thông tin showroom:" Style="{StaticResource SubtitleTextBlockStyle}" Foreground="black"/>
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội" Foreground="black"/>
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh" Foreground="black"/>
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Foreground="black">
+                        <TextBlock Text="Thông tin showroom:" Style="{StaticResource SubtitleTextBlockStyle}"  />
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"  />
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"  />
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}"  >
                             <Run Text="     Hotline: " FontWeight="Bold"/> 18006216 - <Run Text="Email:" FontWeight="Bold"/> info@anycar.vn
                         </TextBlock>
 
