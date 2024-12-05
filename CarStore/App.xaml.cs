@@ -110,6 +110,8 @@ public partial class App : Application
             services.AddTransient<ComparePage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
+            services.AddTransient<MockAnyCarPageViewModel>();
+            services.AddTransient<MockAnyCarPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

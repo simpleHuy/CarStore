@@ -27,6 +27,7 @@ public class PageService : IPageService
         Configure<CompareViewModel, ComparePage>();
         Configure<AddItemPageViewModel, AddItemPage>();
         Configure<LoginViewModel, LoginPage>();
+        Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
     }
 
     public Type GetPageType(string key)
