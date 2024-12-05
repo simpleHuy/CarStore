@@ -118,17 +118,12 @@ public sealed partial class MainPage : Page
         }
     }
 
-    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var comboBox = (ComboBox)sender;
         if (comboBox?.DataContext is Car currentItem && comboBox.SelectedItem is VariantOfCar selectedVariant)
         {
-            // Update ImageLocation based on selected Variant 
-            var variantCode = "";
-            Task.Run(async () => { 
-                variantCode = await ViewModel._carRepository.GetVariantsCodeByName(selectedVariant.Name);
-            }).Wait();
-            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
+            await ViewModel.ChangeColor(currentItem, selectedVariant);
         }
     }
 

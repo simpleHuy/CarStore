@@ -66,15 +66,15 @@
                     </Border>
                 </StackPanel>
 
-                <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
+                <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" 
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
                            Margin="10 2 10 10"/>
                 <ComboBox PlaceholderText="Màu sắc"
                           Margin="10 0 0 0" 
                           ItemTemplate="{StaticResource VariantTemplate}"
-                          ItemsSource="{x:Bind VariantOfCars}"
-                          SelectionChanged="ComboBox_SelectionChanged">
+                          ItemsSource="{x:Bind VariantOfCars, Mode=TwoWay}"
+                          SelectionChanged="ComboBox_SelectionChanged"/>
 
-                </ComboBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="InfoBtn" Background="White"
                         Content="Xem chi tiết" Margin="10 0 0 5" Width="140"
@@ -230,8 +230,7 @@
                     <Border x:Name="Popular" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
-                        <StackPanel Orientation="Vertical"
-                                    >
+                        <StackPanel Orientation="Vertical">
                             <TextBlock Text="Thịnh hành" Style="{ThemeResource SubtitleTextBlockStyle}"
                                        Margin="20">
 
@@ -239,15 +238,14 @@
                             <GridView x:Name="PopularItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
                                 ItemsSource="{x:Bind ViewModel.PopularCars}"
-                                SelectionMode="None"
-/>
+                                SelectionMode="None"/>
                         </StackPanel>
-
-
                     </Border>
+                        
                     <Grid x:Name="LongBanner" Margin="20 10 20 10">
                         <Image Source="../Assets/Banner/long-banner.png"></Image>
                     </Grid>
+                        
                     <Border x:Name="Suggest" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
@@ -260,8 +258,7 @@
                             <GridView x:Name="SuggestItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
                                 ItemsSource="{x:Bind ViewModel.SuggestCars}"
-                                SelectionMode="None"
-/>
+                                SelectionMode="None"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

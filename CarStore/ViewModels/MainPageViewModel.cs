@@ -121,6 +121,10 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         Task.Run(async() =>
         {
             SuggestCars = new FullObservableCollection<Car>(await _car.GetAllAsync());
+            foreach (var car in SuggestCars) 
+            { 
+                car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
+            }
             Categories = new FullObservableCollection<TypeOfCar>(await _typeOfCar.GetAllAsync());
             PopularCars = SuggestCars; // Due to lack of data, we use the same data for both
         }).Wait();
@@ -143,6 +147,14 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+
+    public async Task ChangeColor(Car currentItem, VariantOfCar selectedVariant)
+    {
+        // Update ImageLocation based on selected Variant 
+        var variantCode = await _carRepository.GetVariantsCodeByName(selectedVariant.Name);
+        currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
     }
 }
 
