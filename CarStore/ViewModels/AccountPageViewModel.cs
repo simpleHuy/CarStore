@@ -18,7 +18,8 @@ namespace CarStore.ViewModels;
 public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
-    public readonly IDao<Car> _carDao;
+    private readonly IDao<Car> _carDao;
+    private readonly IDao<Variant> _variantDao;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     public IRelayCommand NavigateToLoginCommand
@@ -53,18 +54,27 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         get; set;
     }
 
-    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao)
+    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantdao)
     {
         _carDao = carDao;
         _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
+        _variantDao = variantdao;
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         Task.Run(async () =>
         {
             Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
+            foreach (var car in Wishlist)
+            {
+                car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
+                foreach (var variant in car.VariantOfCars)
+                {
+                    variant.Variant = await _variantDao.GetByIdAsync(variant.VariantId);
+                }
+            }
         }).Wait();
 
         CheckAuthenticationState();

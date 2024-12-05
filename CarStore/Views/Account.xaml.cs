@@ -33,8 +33,8 @@ public sealed partial class Account : Page
 
     public Account()
     {
-        InitializeComponent();
         ViewModel = App.GetService<AccountPageViewModel>();
+        InitializeComponent();
         DataContext = ViewModel;
     }
 
