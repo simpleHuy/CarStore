@@ -148,4 +148,9 @@ public sealed partial class MainPage : Page
     {
         Frame.Navigate(typeof(Account));
     }
+
+    private void FilterBtn_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(FilterPage));
+    }
 }
