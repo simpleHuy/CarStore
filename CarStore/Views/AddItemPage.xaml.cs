@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
@@ -156,4 +157,42 @@ public sealed partial class AddItemPage : Page
     {
         Frame.GoBack();
     }
+
+    private void CarPriceTxt_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            // Loại bỏ ký tự không phải số
+            string digitsOnly = Regex.Replace(textBox.Text, "[^0-9]", "");
+
+            if (string.IsNullOrEmpty(digitsOnly))
+            {
+                textBox.Text = ""; // Nếu rỗng, không làm gì thêm
+                return;
+            }
+
+            // Thêm dấu phẩy mỗi 3 chữ số
+            string formatted = string.Format("{0:N0}", long.Parse(digitsOnly));
+
+            if (formatted != textBox.Text)
+            {
+                textBox.Text = formatted; // Cập nhật giá trị với định dạng
+                textBox.SelectionStart = textBox.Text.Length; // Đặt con trỏ cuối văn bản
+            }
+        }
+    }
+
+    private void Number_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (sender is TextBox textBox)
+        {
+            string newText = Regex.Replace(textBox.Text, "[^0-9]", ""); // Loại bỏ ký tự không phải số
+            if (newText != textBox.Text)
+            {
+                textBox.Text = newText;
+                textBox.SelectionStart = newText.Length;
+            }
+        }
+    }
+
 }

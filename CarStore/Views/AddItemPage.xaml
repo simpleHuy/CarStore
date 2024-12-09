@@ -62,7 +62,10 @@
                     <ComboBox x:Name="EngineCbb" Header="Động cơ*" MinWidth="180" ItemTemplate="{StaticResource EngineType_Item}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="16 0 16 16" Spacing="8">
-                    <TextBox x:Name="CarPriceTxt" Header="Giá*" MinWidth="200"/>
+                    <TextBox x:Name="CarPriceTxt" Header="Giá*" MinWidth="200" TextChanged="CarPriceTxt_TextChanged"/>
+
+
+
                     <ComboBox x:Name="StatusCbb" Header="Tình trạng sử dụng*" MinWidth="200">
                         <ComboBoxItem Content="Xe mới"/>
                         <ComboBoxItem Content="Xe cũ"/>
@@ -72,11 +75,11 @@
 
             <StackPanel Grid.Column="1" Grid.Row="0">
                 <TextBlock Text="Thông tin chi tiết" Margin="40 32 40 0" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
-                <TextBox x:Name="NumOfSeatTxt" Header="Số ghế ngồi*" Margin="16 20 16 16"/>
-                <TextBox x:Name="YearTxt" Header="Năm sản xuất*" Margin="16 0 16 16"/>
+                <TextBox x:Name="NumOfSeatTxt" Header="Số ghế ngồi*" Margin="16 20 16 16" TextChanged="Number_TextChanged"/>
+                <TextBox x:Name="YearTxt" Header="Năm sản xuất*" Margin="16 0 16 16" TextChanged="Number_TextChanged"/>
                 <StackPanel Margin="16 0 16 16" Orientation="Horizontal" Spacing="8">
-                    <TextBox x:Name="TimeGet100Txt" Header="Thời gian để đạt đến 100km/h" MinWidth="180"/>
-                    <TextBox x:Name="LongestDistanceTxt" Header="Khoảng cách xa nhất" MinWidth="180"/>
+                    <TextBox x:Name="TimeGet100Txt" Header="Thời gian để đạt đến 100km/h" MinWidth="180" TextChanged="Number_TextChanged"/>
+                    <TextBox x:Name="LongestDistanceTxt" Header="Khoảng cách xa nhất" MinWidth="180" TextChanged="Number_TextChanged"/>
                 </StackPanel>
 
             </StackPanel>
