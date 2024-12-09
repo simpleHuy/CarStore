@@ -124,7 +124,7 @@
     <value>CarStore</value>
   </data>
   <data name="Shell_Main.Content" xml:space="preserve">
-    <value>Home</value>
+    <value>Trang chủ</value>
   </data>
   <data name="Settings_Personalization.Text" xml:space="preserve">
     <value>Personalization</value>
@@ -158,9 +158,9 @@
     <comment>Page title for SettingsPage</comment>
   </data>
   <data name="Shell_User.Content" xml:space="preserve">
-    <value>User</value>
+    <value>Trang cá nhân</value>
   </data>
   <data name="Shell_Login.Content" xml:space="preserve">
-    <value>Login</value>
+    <value>Đăng nhập</value>
   </data>
 </root>
