@@ -23,6 +23,7 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //configuring relationships
         modelBuilder.Entity<EngineType>().HasMany<Car>(c => c.cars)
                                          .WithOne(et => et.EngineType)
                                          .HasForeignKey(et => et.EngineTypeId)
@@ -67,7 +68,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Car>().HasMany<Schedule>(c => c.Schedules)
                                   .WithOne(s => s.Car)
                                   .HasForeignKey(s => s.CarId)
-                                  .OnDelete(DeleteBehavior.Cascade);
+                                  .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Schedule>().HasOne(s => s.Customer)
                                         .WithMany(u => u.CustommerSchedules)
@@ -77,6 +78,17 @@ public class ApplicationDbContext : DbContext
                                         .WithMany(u => u.MerchantSchedules)
                                         .HasForeignKey(s => s.MerchantId)
                                         .OnDelete(DeleteBehavior.SetNull);
+
+        //configuring generated id
+        modelBuilder.Entity<Car>().Property(c => c.CarId).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Variant>().Property(v => v.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<EngineType>().Property(et => et.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Manufacturer>().Property(m => m.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<TypeOfCar>().Property(t => t.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedNever();
+        modelBuilder.Entity<PriceOfCar>().Property(p => p.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
 
         //seeding data
         modelBuilder.Seed();
