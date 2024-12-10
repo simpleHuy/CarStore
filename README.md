@@ -56,9 +56,9 @@ This project is a part of the **Windows Programing** course at **University of S
    cd CarStore
    ```
 2. Create a `.env` file in the `CarStore.Core` directory and add the following environment variables in `.env.sample`
-  ```env.sample
-  CONNECTION_STRING=Host=; Database=; Port=; User Id=; Password=
-  ```
+    ```env.sample
+    CONNECTION_STRING=Host=; Database=; Port=; User Id=; Password=
+    ```
 
 3. Run all migration in CarStore.Core:
    - Open Project in [Visual Studio](https://visualstudio.microsoft.com/vs/)
