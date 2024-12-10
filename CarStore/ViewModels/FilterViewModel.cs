@@ -224,7 +224,7 @@ public partial class FilterViewModel : ObservableObject, INotifyPropertyChanged
 
     private readonly ICarRepository _carRepository;
 
-    private async Task LoadInitialDataAsync()
+    public async Task LoadInitialDataAsync()
     {
         var cars = await _carDao.GetAllAsync();
         var manufactures = await _manufacturerDao.GetAllAsync();
