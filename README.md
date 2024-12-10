@@ -34,8 +34,8 @@ This project is a part of the **Windows Programing** course at **University of S
 </div>
 
 - **C#:** Build all Bussiness logic.
-- **winui 3:** A modern UI framework for creating high-performance, visually appealing Windows desktop applications.
-- **.net:** A versatile framework for building scalable, cross-platform applications with rich libraries and seamless integration.
+- **Winui 3:** A modern UI framework for creating high-performance, visually appealing Windows desktop applications.
+- **.Net:** A versatile framework for building scalable, cross-platform applications with rich libraries and seamless integration.
 - **Postgres:** Store and manage data of the application.
 - **EF Core:** Build Table/Schema from model in project.
 
