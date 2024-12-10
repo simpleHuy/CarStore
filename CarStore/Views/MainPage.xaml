@@ -77,10 +77,10 @@
                           SelectionChanged="ComboBox_SelectionChanged"/>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="InfoBtn" Background="White"
+                    <Button x:Name="InfoBtn" Background="White" Foreground="Black"
                         Content="Xem chi tiết" Margin="10 0 0 5" Width="140"
                             Click="InfoBtn_Click"/>
-                    <Button x:Name="BuyBtn" Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                    <Button x:Name="BuyBtn" Style="{ThemeResource AccentButtonStyle}"
                         Content="Mua ngay" Margin="10 0 10 5" Width="140"
                             Click="BuyBtn_Click"/>
                 </StackPanel>
@@ -129,10 +129,11 @@
                                                 QuerySubmitted="Control2_QuerySubmitted"
                                                 SuggestionChosen="AutoSuggestBox_SuggestionChosen"
                                                 PlaceholderText="Tìm kiếm trên eCar"
-                                                Height="40" Width="500">
+                                                Height="40" Width="500"
+                                                VerticalAlignment="Center">
                             <AutoSuggestBox.ItemTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 5 0 0">
+                                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 0 0 0">
                                         <!-- Display Car Image -->
                                         <Image Source="{Binding DefautlImageLocation}" Width="60" Height="60" />
                                         <!-- Display Car Name -->
@@ -141,8 +142,8 @@
                                 </DataTemplate>
                             </AutoSuggestBox.ItemTemplate>
                         </AutoSuggestBox>
-                        <Button CornerRadius="{StaticResource OverlayCornerRadius}" Margin="20 0" Click="FilterBtn_Click">
-                            <ImageIcon Source="../Assets/Logo/filter.svg" Height="25"/>
+                        <Button CornerRadius="{StaticResource OverlayCornerRadius}" Margin="20 0" Click="FilterBtn_Click" Width="45" Height="45">
+                            <FontIcon Glyph="&#xE71C;" />
                         </Button>
                     </StackPanel>
 

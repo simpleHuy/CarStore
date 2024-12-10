@@ -72,5 +72,10 @@ namespace CarStore.Views
             var car = e.ClickedItem as Car;
             Frame.Navigate(typeof(CarDetailPage), car);
         }
+
+        private void BtnAccount_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(Account));
+        }
     }
 }
