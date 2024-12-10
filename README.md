@@ -60,7 +60,7 @@ This project is a part of the **Windows Programing** course at **University of S
   CONNECTION_STRING=Host=; Database=; Port=; User Id=; Password=
   ```
 
-3. Run the all migration in CarStore.Core:
+3. Run all migration in CarStore.Core:
    - Open Project in [Visual Studio](https://visualstudio.microsoft.com/vs/)
    - Open Package Manage Console, [Click to view instructions](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)
    - Choose Default project is CarStore.Core
