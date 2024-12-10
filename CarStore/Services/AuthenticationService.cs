@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using CarStore.Contracts.Services;
+using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CarStore.ViewModels;
@@ -16,7 +17,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly string _userDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "userData.json");
     private Dictionary<string, User> _users;
     private User? _currentUser;
-    private readonly IDao dao;
+    private IDao<User> _UserDao;
 
     private const int MIN_PASSWORD_LENGTH = 8;
     private const int MAX_NAME_LENGTH = 50;
@@ -27,19 +28,17 @@ public class AuthenticationService : IAuthenticationService
     {
         _users = new Dictionary<string, User>();
         _currentUser = null;
-        dao = new MockDao();
         LoadUsers();
 
     }
 
     private readonly User _userDefault = new()
     {
-        Username = "admin",
-        Password = "1234",
-        Email = "hashdawsd",
-        firstName = "hashdawsd",
-        lastName = "hashdawsd",
-        Telephone = "hashdawsd"
+        Email = "example@gmail.com",
+        Telephone = "0333601234",
+        AccountType = "Hội viên tiềm năng",
+        firstName = "Admin",
+        lastName = "Nguyễn",
     };
 
     public event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
@@ -204,7 +203,7 @@ public class AuthenticationService : IAuthenticationService
             // Or use the existing user storage system:
             if (username == "admin" && password == "1234")
             {
-                _currentUser = dao.GetUser();
+                _currentUser = _userDefault;
                 return true;
             }
 
