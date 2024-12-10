@@ -3,10 +3,12 @@ using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using CarStore.Contracts.Services;
+using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CarStore.ViewModels;
+using Windows.Networking.Sockets;
 using Windows.Storage;
 
 namespace CarStore.Services;
@@ -15,21 +17,21 @@ namespace CarStore.Services;
 public class AuthenticationService : IAuthenticationService
 {
     private readonly string _userDataPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "userData.json");
-    private Dictionary<string, User> _users;
     private User? _currentUser;
-    private IDao<User> _UserDao;
+    private readonly IDao<User> userDao;
+    private readonly IUserRepository userRepository;
 
     private const int MIN_PASSWORD_LENGTH = 8;
     private const int MAX_NAME_LENGTH = 50;
     private const string EMAIL_PATTERN = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
     private const string PHONE_PATTERN = @"^(0|\+84)[0-9]{9}$";
     private const string PASSWORD_PATTERN = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$";
-    public AuthenticationService()
+    public AuthenticationService(IDao<User>userDao, IUserRepository userRepository)
     {
-        _users = new Dictionary<string, User>();
         _currentUser = null;
-        LoadUsers();
-
+        this.userDao = userDao;
+        this.userRepository = userRepository;
+        AuthStateChanged = delegate { };
     }
 
     private readonly User _userDefault = new()
@@ -64,35 +66,13 @@ public class AuthenticationService : IAuthenticationService
     public void Logout()
     {
         IsAuthenticated = false;
-
         // Clear the current user
-        _users.Clear();
         _currentUser = null;
-        SaveUsers();
     }
 
-    public User? GetCurrentUser()
+    public User GetCurrentUser()
     {
         return _currentUser;
-    }
-
-    private void LoadUsers()
-    {
-        if (File.Exists(_userDataPath))
-        {
-            var json = File.ReadAllText(_userDataPath);
-            _users = JsonSerializer.Deserialize<Dictionary<string, User>>(json) ?? new Dictionary<string, User>();
-        }
-        else
-        {
-            _users = new Dictionary<string, User>();
-        }
-    }
-
-    private void SaveUsers()
-    {
-        var json = JsonSerializer.Serialize(_users);
-        File.WriteAllText(_userDataPath, json);
     }
 
     public async Task SaveCredentialsAsync(string username, string password)
@@ -184,14 +164,15 @@ public class AuthenticationService : IAuthenticationService
     }
     public bool VerifyEmail(string email)
     {
-        return _users.Values.Any(user => user.Email == email);
+        // 
+        return Regex.IsMatch(email, EMAIL_PATTERN);
     }
 
     public async Task<bool> LoginAsync(string username, string password)
     {
         IsAuthenticated = true;
 
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             // For demo purposes - replace with your actual authentication logic
             //if (username == "admin" && password == "1234")
@@ -207,24 +188,28 @@ public class AuthenticationService : IAuthenticationService
                 return true;
             }
 
-            if (!_users.ContainsKey(username))
+            var userData = await userRepository.GetUserByUsername(username);
+            if (userData == null)
                 return false;
-
-            var userData = _users[username];
+           
             var hashedPassword = HashPassword(password, userData.Salt);
-            _currentUser = _users[username];
-            return hashedPassword == userData.PasswordHash;
+            if (hashedPassword == userData.PasswordHash)
+            {
+                _currentUser = userData;
+                return true;
+            }
 
+            return false;
         });
     }
     public ValidationResult ValidateRegistrationData(
-    string firstName,
-    string lastName,
-    string email,
-    string phoneNumber,
-    string username,
-    string password,
-    string confirmPassword)
+        string firstName,
+        string lastName,
+        string email,
+        string phoneNumber,
+        string username,
+        string password,
+        string confirmPassword)
     {
         // Check for empty fields
         if (string.IsNullOrWhiteSpace(firstName) ||
@@ -281,11 +266,25 @@ public class AuthenticationService : IAuthenticationService
                 ErrorMessage = "Tên đăng nhập phải từ 3 đến 20 ký tự."
             };
 
-        if (_users.ContainsKey(username))
+        var existingUsername = new User();
+        var existingEmail = new User();
+        Task.Run(async () =>
+        {
+            existingUsername = await userRepository.GetUserByUsername(username);
+            existingEmail = await userRepository.GetUserByEmail(email);
+        }).Wait();
+
+        if (existingUsername != null)
             return new ValidationResult
             {
                 IsValid = false,
                 ErrorMessage = "Tên đăng nhập đã tồn tại."
+            };
+        if (existingEmail != null)
+            return new ValidationResult
+            {
+                IsValid = false,
+                ErrorMessage = "Email đã tồn tại."
             };
 
         // Validate password
@@ -346,7 +345,7 @@ public class AuthenticationService : IAuthenticationService
         var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
         var hashedPassword = HashPassword(password, salt);
 
-        _users[username] = new User
+        var newUser = new User()
         {
             Username = username,
             PasswordHash = hashedPassword,
@@ -357,13 +356,14 @@ public class AuthenticationService : IAuthenticationService
             Telephone = phoneNumber
         };
 
-        SaveUsers();
+        await userDao.InsertById(newUser);
+
         return await Task.FromResult(true);
     }
 
     public async Task<bool> ResetPasswordAsync(string email)
     {
-        var user = await Task.Run(() => _users.Values.FirstOrDefault(u => u.Email == email));
+        var user = await userRepository.GetUserByEmail(email);
         if (user == null)
             return false;
 
@@ -382,10 +382,12 @@ public class AuthenticationService : IAuthenticationService
         var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(16));
         var hashedPassword = HashPassword(newPassword, salt);
 
-        _users[username].PasswordHash = hashedPassword;
-        _users[username].Salt = salt;
+        var user = await userRepository.GetUserByUsername(username);
 
-        SaveUsers();
+        user.PasswordHash = hashedPassword;
+        user.Salt = salt;
+
+        await userDao.UpdateById(user);
         return true;
     }
 
@@ -399,7 +401,8 @@ public class AuthenticationService : IAuthenticationService
     //----------------------------------------------------------------------------
     public async Task<bool> ValidateUsernameExistsAsync(string username)
     {
-        return await Task.FromResult(_users.ContainsKey(username));
+        var user = await userRepository.GetUserByUsername(username);
+        return user != null;
     }
 
     // New method to validate password reset data
@@ -416,18 +419,21 @@ public class AuthenticationService : IAuthenticationService
                 return false;
             }
 
-            return await Task.Run(() =>
+            return await Task.Run(async () =>
             {
-                if (!_users.ContainsKey(username))
+                var user = await userRepository.GetUserByUsername(username);
+
+                if (user == null)
                     return false;
 
                 var salt = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
                 var hashedPassword = HashPassword(newPassword, salt);
 
-                _users[username].PasswordHash = hashedPassword;
-                _users[username].Salt = salt;
+                user.PasswordHash = hashedPassword;
+                user.Salt = salt;
 
-                SaveUsers();
+                await userDao.UpdateById(user);
+
                 return true;
             });
         }
@@ -477,7 +483,12 @@ public class AuthenticationService : IAuthenticationService
         }
 
         // Check if user exists
-        if (!_users.ContainsKey(username))
+        var user = new User();
+        Task.Run(async () =>
+        {
+            user = await userRepository.GetUserByUsername(username);
+        }).Wait();
+        if (user == null)
         {
             return new PasswordResetValidationResult
             {

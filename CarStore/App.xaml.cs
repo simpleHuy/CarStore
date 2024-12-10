@@ -116,11 +116,11 @@ public partial class App : Application
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
 
-            //var envFile = "D:\\Study\\timeForCoding\\GitHub\\CarStore\\CarStore.Core\\.env";
             var basePath = AppContext.BaseDirectory;
             var curDir = new DirectoryInfo(basePath);
             var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
             var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
+            // Get the directory containing the current source file
             DotNetEnv.Env.Load(envFile);
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -130,9 +130,8 @@ public partial class App : Application
 
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
+            services.AddScoped<IUserRepository, EfCoreUserRepository>();
             services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
-
-            //services.AddScoped<IDao<>, EfCoreDao<>>();
         }).
         Build();
 
@@ -150,5 +149,4 @@ public partial class App : Application
         base.OnLaunched(args);
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
-
 }

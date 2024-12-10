@@ -79,13 +79,17 @@ public class ApplicationDbContext : DbContext
                                         .HasForeignKey(s => s.MerchantId)
                                         .OnDelete(DeleteBehavior.SetNull);
 
+        //confuguring unique constraints
+        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+        modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+
         //configuring generated id
         modelBuilder.Entity<Car>().Property(c => c.CarId).ValueGeneratedOnAdd();
         modelBuilder.Entity<Variant>().Property(v => v.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<EngineType>().Property(et => et.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Manufacturer>().Property(m => m.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<TypeOfCar>().Property(t => t.Id).ValueGeneratedOnAdd();
-        modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedNever();
+        modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<PriceOfCar>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
