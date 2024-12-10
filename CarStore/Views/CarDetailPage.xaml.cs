@@ -174,8 +174,10 @@ public sealed partial class CarDetailPage : Page
             Title = "So sánh xe",
             Content = compareControl,
             DefaultButton = ContentDialogButton.Primary,
-            XamlRoot = this.XamlRoot
+            XamlRoot = this.XamlRoot,
         };
+
+        dialog.Resources["ContentDialogMaxWidth"] = 1080;
 
         var result = await dialog.ShowAsync();
     }
