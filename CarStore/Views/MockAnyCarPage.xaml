@@ -93,11 +93,12 @@
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
-                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
+                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single"
+                          ItemClick="GridView_ItemClick">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Car">
                             <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"
-                               Margin="80 10">
+                                  Margin="80 10">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="800"/>
@@ -107,32 +108,36 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                     Margin="20 10">
+                                        Margin="20 10">
                                     <Image x:Name="Big_Image" Source="{x:Bind DefautlImageLocation, Mode=OneWay}"
-                                        Width="400" Height="400" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                           Width="400" Height="400" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
 
                                 <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="40 10">
                                     <StackPanel Orientation="Horizontal">
                                         <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
-                                             HorizontalAlignment="Center" VerticalAlignment="Center"
-                                             Margin="10 5 5 5">
+                                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                Margin="10 5 5 5">
                                             <TextBlock Text="{x:Bind ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
-                                                     Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                                        Style="{ThemeResource BodyStrongTextBlockStyle}">
                                             </TextBlock>
                                         </Border>
-                                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>  
+                                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>
+                                        <Button BorderThickness="0">
+                                            <FontIcon Glyph="&#xE70F;" />
+                                        </Button>
                                     </StackPanel>
                                     <TextBlock Text="{x:Bind Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Red" TextDecorations="Strikethrough" Margin="10 5 10 2"/>
                                     <TextBlock Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="10 2 10 10"/>
                                     <!--Color grid view here-->
                                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <GridView ItemsSource="{x:Bind VariantOfCars}" IsItemClickEnabled="True" Name="ColorGridView" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" 
-                                               ItemClick="ColorGridView_ItemClick" SelectionMode="None">
+                                                  ItemClick="ColorGridView_ItemClick" SelectionMode="None">
                                             <GridView.ItemTemplate>
-                                                <DataTemplate x:DataType="local2:Variant">
+                                                <DataTemplate x:DataType="local2:VariantOfCar">
                                                     <StackPanel Orientation="Vertical" Margin="5">
-                                                        <Border Background="{Binding Code}" Width="20" Height="20" CornerRadius="10" BorderBrush="Wheat" BorderThickness="0.5"/>
+                                                        <Border Width="20" Height="20" CornerRadius="10" BorderBrush="Wheat" BorderThickness="0.5"
+                                                                Background="{Binding Variant.Code, Mode=OneWay}"/>
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </GridView.ItemTemplate>
@@ -153,8 +158,8 @@
                             </Grid>
                         </DataTemplate>
                     </GridView.ItemTemplate>
-
                 </GridView>
+
             </StackPanel>
         </StackPanel>
     </ScrollView>

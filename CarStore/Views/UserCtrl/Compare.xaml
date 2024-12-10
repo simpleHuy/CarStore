@@ -20,8 +20,9 @@
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
         <helpers:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
     </UserControl.Resources>
-    <ScrollView Padding="20 5">
-        <StackPanel Background="White" CornerRadius="10" Orientation="Vertical">
+    
+    <ScrollView Padding="40 5">
+        <StackPanel Background="White" CornerRadius="{StaticResource OverlayCornerRadius}" Orientation="Vertical">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>

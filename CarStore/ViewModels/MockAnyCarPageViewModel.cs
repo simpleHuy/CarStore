@@ -12,68 +12,67 @@ using CarStore.Core.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace CarStore.ViewModels
-{
-    class MockAnyCarPageViewModel: ObservableObject, INotifyPropertyChanged
-    {
-        public readonly ICarRepository _carRepository;
-        public readonly IDao<Car> _carDao;
-        public readonly INavigationService _navigateService;
-        public readonly IAuthenticationService _authenticationService;
-        public IRelayCommand NavigateToLoginCommand
-        {
-            get;
-        }
-        public IRelayCommand NavigateToSignupCommand
-        {
-            get;
-        }
-        public ObservableCollection<Car>? Wishlist
-        {
-            get; set;
-        }
+namespace CarStore.ViewModels;
 
-        private User? _currentUser;
-        public User? CurrentUser
+public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
+{
+    public readonly ICarRepository _carRepository;
+    public readonly IDao<Car> _carDao;
+    public readonly IDao<Variant> _variantDao;
+    public readonly INavigationService _navigateService;
+    public readonly IAuthenticationService _authenticationService;
+    public ObservableCollection<Car>? Wishlist
+    {
+        get; set;
+    }
+
+    private User? _currentUser;
+    public User? CurrentUser
+    {
+        get => _currentUser;
+        set
         {
-            get => _currentUser;
-            set
+            if (_currentUser != value)
             {
-                if (_currentUser != value)
-                {
-                    _currentUser = value;
-                    OnPropertyChanged(nameof(CurrentUser));
-                }
+                _currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
             }
         }
+    }
 
-        public User? ViewedUser
+    public User? ViewedUser
+    {
+        get; set;
+    }
+
+    public MockAnyCarPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantDao)
+    {
+        _carDao = carDao;
+        _carRepository = carRepository;
+        _navigateService = navigationService;
+        _authenticationService = authService;
+        _variantDao = variantDao;
+
+        Task.Run(async () =>
         {
-            get; set;
-        }
-
-        public MockAnyCarPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao)
-        {
-            _carDao = carDao;
-            _carRepository = carRepository;
-            _navigateService = navigationService;
-            _authenticationService = authService;
-
-            NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
-            NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
-            Task.Run(async () =>
+            Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
+            foreach (var car in Wishlist)
             {
-                Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
-            }).Wait();
+                car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
+                foreach (var variant in car.VariantOfCars)
+                {
+                    variant.Variant = await _variantDao.GetByIdAsync(variant.VariantId);
+                }
+            }
+        }).Wait();
 
-            CheckAuthenticationState();
-        }
+        CheckAuthenticationState();
+    }
 
-        private void CheckAuthenticationState()
-        {
-            var user = _authenticationService.GetCurrentUser();
-            CurrentUser = user;
-            ViewedUser = user;
-        }
+    private void CheckAuthenticationState()
+    {
+        var user = _authenticationService.GetCurrentUser();
+        CurrentUser = user;
+        ViewedUser = user;
     }
 }

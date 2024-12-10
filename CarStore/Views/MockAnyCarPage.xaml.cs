@@ -28,11 +28,11 @@ namespace CarStore.Views
         public MockAnyCarPage()
         {
             this.InitializeComponent();
-            ViewModel = App.GetService<AccountPageViewModel>();
+            ViewModel = App.GetService<MockAnyCarPageViewModel>();
             DataContext = ViewModel;
         }
 
-        public AccountPageViewModel ViewModel
+        public MockAnyCarPageViewModel ViewModel
         {
             get; set;
         }
