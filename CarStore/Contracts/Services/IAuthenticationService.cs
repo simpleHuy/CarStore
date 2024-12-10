@@ -1,11 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
-using System.IO;
-using System.Collections.Generic;
-using CarStore.Models;
+﻿using CarStore.Core.Models;
 using CarStore.Services;
 
 namespace CarStore.Contracts.Services;
@@ -51,7 +44,6 @@ public interface IAuthenticationService
 
     bool VerifyEmail(string email);
     void Logout();
-
     User GetCurrentUser();
     event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
 }

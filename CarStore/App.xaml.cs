@@ -1,19 +1,24 @@
-﻿using CarStore.Activation;
+﻿using System.Net.WebSockets;
+
+using CarStore.Activation;
 using CarStore.Contracts.Services;
+using CarStore.Core;
+using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
+using CarStore.Core.Daos;
+using CarStore.Core.Data;
+using CarStore.Core.Models;
+using CarStore.Core.Repository;
 using CarStore.Core.Services;
+using CarStore.Models;
 using CarStore.Services;
 using CarStore.ViewModels;
 using CarStore.Views;
-using CarStore.Models;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.System;
-using Windows.UI.Core;
 
 namespace CarStore;
 
@@ -42,6 +47,10 @@ public partial class App : Application
     }
 
     public static WindowEx MainWindow { get; } = new MainWindow();
+    public static Window? Window
+    {
+        get; private set;
+    }
 
     public static UIElement? AppTitlebar
     {
@@ -67,6 +76,10 @@ public partial class App : Application
             services.AddSingleton<IPageService, PageService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+            services.AddTransient<INavigationViewService, NavigationViewService>();
+
             // Core Services
             services.AddSingleton<IFileService, FileService>();
 
@@ -83,15 +96,44 @@ public partial class App : Application
             services.AddTransient<ShellViewModel>();
             services.AddTransient<ForgotPasswordViewModel>();
             services.AddTransient<ForgotPasswordPage>();
-            services.AddTransient<MainPageViewModel>();
+            services.AddTransient<ScheduleForm>();
             services.AddTransient<ScheduleFormViewModel>();
             services.AddTransient<VerifyViewModel>();
             services.AddTransient<VerifyPage>();
+            services.AddTransient<AccountPageViewModel>();
+            services.AddTransient<Account>();
             services.AddTransient<CarDetailViewModel>();
             services.AddTransient<CarDetailPage>();
+            services.AddTransient<SearchingViewModel>();
+            services.AddTransient<SearchingPage>();
+            services.AddTransient<CompareViewModel>();
+            services.AddTransient<ComparePage>();
+            services.AddTransient<AddItemPageViewModel>();
+            services.AddTransient<AddItemPage>();
+            services.AddTransient<MockAnyCarPageViewModel>();
+            services.AddTransient<MockAnyCarPage>();
+            services.AddTransient<AddItemPageViewModel>();
+            services.AddTransient<AddItemPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+
+            var basePath = AppContext.BaseDirectory;
+            var curDir = new DirectoryInfo(basePath);
+            var corePath = curDir.Parent.Parent.Parent.Parent.Parent.Parent.FullName;
+            var envFile = Path.Combine(corePath, "CarStore.Core", ".env");
+            // Get the directory containing the current source file
+            DotNetEnv.Env.Load(envFile);
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
+
+            // add repository, dao
+            services.AddScoped<ICarRepository, EfCoreCarRepository>();
+            services.AddScoped<IUserRepository, EfCoreUserRepository>();
+            services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
         }).
         Build();
 
@@ -109,5 +151,4 @@ public partial class App : Application
         base.OnLaunched(args);
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
-
 }

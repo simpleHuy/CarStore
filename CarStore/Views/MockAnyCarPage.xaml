@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="CarStore.Views.MockAnyCarPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+     xmlns:local="using:CarStore.ViewModels"
+     xmlns:local2="using:CarStore.Core.Models"
+     xmlns:helpers="using:CarStore.Helpers"
+     xmlns:services="using:CarStore.Services"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+     Background="{ThemeResource GradientPageBackground}">
+    <Page.Resources>
+        <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
+        <services:LongToVNCurrencyConverter x:Key="currency"/>
+        <services:IdToManufaturerConverter x:Key="Manufacturer"/>
+
+    </Page.Resources>
+    <ScrollView>
+        <StackPanel>
+            <Grid  x:Name="Header" 
+                   Background="Transparent"
+                   HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Name="Header_LeftSection" Grid.Row="0" Grid.Column="0" 
+           Margin="10 5 20 5"
+           HorizontalAlignment="Left">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image 
+                         Grid.Column="1" Grid.Row="0"
+                         Source="../Assets/Logo/logo.png"
+                         Height="40"/>
+                </Grid>
+                <AutoSuggestBox x:Name="Header_SearchSection"
+                             HorizontalContentAlignment="Left"
+                             VerticalContentAlignment="Center"
+                             Grid.Column="1" Grid.Row="0" 
+                             PlaceholderText="Tìm kiếm trên eCar"
+                             Height="40" Width="500"/>
+                <Grid x:Name="Header_AccountSection" 
+                     Grid.Column="2" Grid.Row="0"
+                     HorizontalAlignment="Right">
+                    <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal">
+                        <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel Orientation="Vertical" Margin="0 0 10 0">
+                                    <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.firstName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                    <TextBlock x:Name="UserType" Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
+                                </StackPanel>
+                                <Image Source="../Assets/Avatars/1.png" Height="50"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+            <StackPanel>
+                <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="120"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="../Assets/ShowRoomAvatar.jpg" Height="100" Margin="20"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="anyCar.vn" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="Showroom" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
+                        <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200" Visibility="Collapsed"/>
+                        <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
+                    </StackPanel>
+                </Grid>
+                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None" ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
+                    <GridView.ItemTemplate>
+                        <DataTemplate x:DataType="local2:Car">
+                            <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"
+                               Margin="80 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="800"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="400" Height="400" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                     Margin="20 10">
+                                    <Image x:Name="Big_Image" Source="{x:Bind DefautlImageLocation, Mode=OneWay}"
+                                        Width="400" Height="400" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical" Margin="40 10">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             Margin="10 5 5 5">
+                                            <TextBlock Text="{x:Bind ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 2"
+                                                     Style="{ThemeResource BodyStrongTextBlockStyle}">
+                                            </TextBlock>
+                                        </Border>
+                                        <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>  
+                                    </StackPanel>
+                                    <TextBlock Text="{x:Bind Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Red" TextDecorations="Strikethrough" Margin="10 5 10 2"/>
+                                    <TextBlock Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="10 2 10 10"/>
+                                    <!--Color grid view here-->
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                        <GridView ItemsSource="{x:Bind VariantOfCars}" IsItemClickEnabled="True" Name="ColorGridView" ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" 
+                                               ItemClick="ColorGridView_ItemClick" SelectionMode="None">
+                                            <GridView.ItemTemplate>
+                                                <DataTemplate x:DataType="local2:Variant">
+                                                    <StackPanel Orientation="Vertical" Margin="5">
+                                                        <Border Background="{Binding Code}" Width="20" Height="20" CornerRadius="10" BorderBrush="Wheat" BorderThickness="0.5"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </GridView.ItemTemplate>
+                                            <GridView.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <ItemsWrapGrid Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </GridView.ItemsPanel>
+                                        </GridView>
+                                    </ScrollViewer>
+                                </StackPanel>
+                                <StackPanel  Grid.Column="1" Grid.Row="1" Margin="20 0 20 10">
+                                    <TextBlock Text="Mô tả" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="40 0"/>
+                                    <ScrollView Height="200" BorderBrush="Wheat" BorderThickness="0.5" Width="700">
+                                        <TextBlock Text="{x:Bind Description}" Margin="20 0" Width="700"/>
+                                    </ScrollView>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+
+                </GridView>
+            </StackPanel>
+        </StackPanel>
+    </ScrollView>
+</Page>

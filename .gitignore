@@ -9,6 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.env
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -265,6 +266,7 @@ ServiceFabricBackup/
 *.mdf
 *.ldf
 *.ndf
+*.env
 
 # Business Intelligence projects
 *.rdl.data
@@ -361,3 +363,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CarStore.sln

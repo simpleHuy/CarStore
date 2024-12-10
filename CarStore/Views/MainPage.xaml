@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:CarStore.ViewModels"
-    xmlns:local="using:CarStore.Models"
+    xmlns:local="using:CarStore.Core.Models"
     xmlns:local1="using:CarStore.Services"
     xmlns:helpers="using:CarStore.Helpers"
     Background="{ThemeResource GradientPageBackground}"
@@ -18,25 +18,23 @@
         <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
         <local1:IdToManufaturerConverter x:Key="IdToManufaturerConverter"/>
-        <DataTemplate x:Name="VariantTemplate" x:DataType="local:Color">
+        <DataTemplate x:Name="VariantTemplate" x:DataType="local:VariantOfCar">
             <StackPanel Orientation="Horizontal">
-                <Border Background="{Binding Code}" Width="10" Height="10"></Border>
+                <!--<Border Background="{Binding Name}" Width="10" Height="10"></Border>-->
                 <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>
             </StackPanel>
         </DataTemplate>
 
         <DataTemplate x:Name="CategoryTemplate" x:DataType="local:TypeOfCar">
-            <Button Margin="5" Background="{Binding ImageLocation}">
-                <Grid VerticalAlignment="Bottom">
-                    <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="UniformToFill"
+            <Grid VerticalAlignment="Bottom" Margin="5">
+                <Image Source="{Binding ImageLocation}" Width="270" Height="100" Stretch="UniformToFill"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
                             Opacity="1"/>
-                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
                                Style="{ThemeResource SubtitleTextBlockStyle}"
                                HorizontalAlignment="Center">
-                    </TextBlock>
-                </Grid>
-            </Button>
+                </TextBlock>
+            </Grid>
         </DataTemplate>
 
         <DataTemplate x:Name="ItemTemplate"  x:DataType="local:Car">
@@ -45,14 +43,15 @@
                         CornerRadius="{ThemeResource OverlayCornerRadius}">
                 <Border BorderBrush="Wheat" BorderThickness="0.5" Margin="10 10 10 5"
                         CornerRadius="2">
-                    <Image  Source="{Binding DefautlImageLocation, Mode=OneWay}" Width="250" Height="300" Stretch="Uniform"/>
+                    <Image x:Name="CarImage" Source="{Binding DefautlImageLocation, Mode=OneWay}" 
+                           Width="250" Height="300" Stretch="Uniform"/>
                 </Border>
 
                 <StackPanel Orientation="Horizontal">
                     <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="10 5 5 5">
-                        <TextBlock Text="{Binding Path=Manufacturer, Converter={StaticResource IdToManufaturerConverter}}" Foreground="Wheat" Margin="4 2 4 2"
+                        <TextBlock Text="{Binding Path=ManufacturerId, Converter={StaticResource IdToManufaturerConverter}}" Foreground="Wheat" Margin="4 2 4 2"
                                    Style="{ThemeResource BodyStrongTextBlockStyle}">
                         </TextBlock>
                     </Border>
@@ -68,25 +67,23 @@
                     </Border>
                 </StackPanel>
 
-                <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}"
+                <TextBlock x:Name="Price" Text="{x:Bind Price, Converter={StaticResource currency}}" 
+                           Style="{ThemeResource SubtitleTextBlockStyle}"
                            Margin="10 2 10 10"/>
                 <ComboBox PlaceholderText="Màu sắc"
                           Margin="10 0 0 0" 
                           ItemTemplate="{StaticResource VariantTemplate}"
-                          ItemsSource="{x:Bind Variant}"
-                          SelectionChanged="ComboBox_SelectionChanged">
+                          ItemsSource="{x:Bind VariantOfCars}"
+                          SelectionChanged="ComboBox_SelectionChanged"/>
 
-                </ComboBox>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="InfoBtn" Background="White"
+                    <Button x:Name="InfoBtn" Background="White" Foreground="Black"
                         Content="Xem chi tiết" Margin="10 0 0 5" Width="140"
                             Click="InfoBtn_Click"/>
-                    <Button x:Name="BuyBtn" Background="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                    <Button x:Name="BuyBtn" Style="{ThemeResource AccentButtonStyle}"
                         Content="Mua ngay" Margin="10 0 10 5" Width="140"
                             Click="BuyBtn_Click"/>
                 </StackPanel>
-
-
             </StackPanel>
 
         </DataTemplate>
@@ -114,7 +111,7 @@
                   Margin="20 5 20 5"
                   HorizontalAlignment="Left"
                   >
-                        <Grid.RowDefinitions>
+                        <Grid.RowDefinitions>   
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
@@ -127,14 +124,29 @@
                 />
 
                     </Grid>
-                    <AutoSuggestBox x:Name="Header_SearchSection"
-                HorizontalContentAlignment="Left"
-                VerticalContentAlignment="Center"
-                Grid.Column="1" Grid.Row="0" 
-                PlaceholderText="Tìm kiếm trên eCar"
-                Height="40" Width="500"
-                            
-            />
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <AutoSuggestBox x:Name="Header_SearchSection" TextChanged="AutoSuggestBox_TextChanged" QueryIcon="Find"
+                                                QuerySubmitted="Control2_QuerySubmitted"
+                                                SuggestionChosen="AutoSuggestBox_SuggestionChosen"
+                                                PlaceholderText="Tìm kiếm trên eCar"
+                                                Height="40" Width="500"
+                                                VerticalAlignment="Center">
+                            <AutoSuggestBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" Spacing="10" Margin="0 0 0 0">
+                                        <!-- Display Car Image -->
+                                        <Image Source="{Binding DefautlImageLocation}" Width="60" Height="60" />
+                                        <!-- Display Car Name -->
+                                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </AutoSuggestBox.ItemTemplate>
+                        </AutoSuggestBox>
+                        <Button CornerRadius="{StaticResource OverlayCornerRadius}" Margin="20 0" Click="FilterBtn_Click" Width="45" Height="45">
+                            <FontIcon Glyph="&#xE71C;" />
+                        </Button>
+                    </StackPanel>
+
                     <Grid x:Name="Header_AccountSection" 
                         Grid.Column="2" Grid.Row="0"
                         HorizontalAlignment="Right">
@@ -161,7 +173,7 @@
 
                         <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
                             Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
+                            <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical" Margin="0 0 10 0">
                                         <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.lastName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
@@ -214,16 +226,15 @@
 
 
                     </Grid>
-                    <GridView x:Name="CategoriesSection" HorizontalAlignment="Center"
+                    <GridView x:Name="CategoriesSection" HorizontalAlignment="Center" Width="1200"
                         ItemTemplate="{StaticResource CategoryTemplate}"
                         ItemsSource="{x:Bind ViewModel.Categories}"
-                        SelectionMode="None"
-                              Margin="20 10 20 0"/>
+                        IsItemClickEnabled="True" ItemClick="Categories_btn_click"
+                        Margin="20 10 20 0"/>
                     <Border x:Name="Popular" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
-                        <StackPanel Orientation="Vertical"
-                                    >
+                        <StackPanel Orientation="Vertical">
                             <TextBlock Text="Thịnh hành" Style="{ThemeResource SubtitleTextBlockStyle}"
                                        Margin="20">
 
@@ -231,15 +242,14 @@
                             <GridView x:Name="PopularItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
                                 ItemsSource="{x:Bind ViewModel.PopularCars}"
-                                SelectionMode="None"
-/>
+                                SelectionMode="None"/>
                         </StackPanel>
-
-
                     </Border>
+                        
                     <Grid x:Name="LongBanner" Margin="20 10 20 10">
                         <Image Source="../Assets/Banner/long-banner.png"></Image>
                     </Grid>
+                        
                     <Border x:Name="Suggest" Background="White"
                             Margin="20 10 20 0"
                             CornerRadius="{ThemeResource OverlayCornerRadius}">
@@ -252,18 +262,12 @@
                             <GridView x:Name="SuggestItems" HorizontalAlignment="Center"
                                 ItemTemplate="{StaticResource ItemTemplate}"
                                 ItemsSource="{x:Bind ViewModel.SuggestCars}"
-                                SelectionMode="None"
-/>
+                                SelectionMode="None"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>
 
             </Grid>
-            <Button x:Name="BackButton" Click="BackButton_Click"
-                Style="{StaticResource NavigationBackButtonNormalStyle}"
-                IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
-                ToolTipService.ToolTip="Back" Width="100" 
-                Visibility="Collapsed"/>
         </StackPanel>
     </ScrollViewer>
 </Page>

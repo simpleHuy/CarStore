@@ -2,6 +2,8 @@ using CarStore.ViewModels;
 using CarStore.Services.DataAccess;
 using CarStore.Services;
 using CarStore.Models;
+using CarStore.Core.Models;
+using CarStore.Contracts.Services;
 
 
 namespace CarStore.Tests; 
@@ -60,7 +62,7 @@ public class UnitTest1
     public async Task TestLoginAsync()
     {
         // Arrange
-        AuthenticationService authenticationService = new AuthenticationService();
+        IAuthenticationService authenticationService = App.GetService<IAuthenticationService>();
         var username = "admin";
         var password = "1234";
 
@@ -75,7 +77,7 @@ public class UnitTest1
     public async Task TestRegisterAsync()
     {
         // Arrange
-        AuthenticationService authenticationService = new AuthenticationService();
+        IAuthenticationService authenticationService = App.GetService<IAuthenticationService>();
         var firstName = "John";
         var lastName = "Doe";
         var email = "john.doe@gmail.com";
@@ -94,7 +96,7 @@ public class UnitTest1
     public void TestLogout()
     {
         // Arrange
-        AuthenticationService authenticationService = new AuthenticationService();
+        IAuthenticationService authenticationService = App.GetService<IAuthenticationService>();
         _ = authenticationService.LoginAsync("admin", "1234");
 
         // Act
@@ -107,7 +109,7 @@ public class UnitTest1
     public async Task TestValidateDataAsync()
     {
         // Arrange
-        AuthenticationService authenticationService = new AuthenticationService();
+        IAuthenticationService authenticationService = App.GetService<IAuthenticationService>();
         var firstName = "John";
         var lastName = "Doe";
         var email = "john.doe@example.com";

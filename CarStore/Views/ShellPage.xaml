@@ -10,9 +10,13 @@
     xmlns:behaviors="using:CarStore.Behaviors"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d" 
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource GradientPageBackground}"
     Loaded="OnLoaded">
 
+    <Page.Resources>
+        <helpers:BooleanToVisibilityConverter x:Key="Visibility"/>
+    </Page.Resources>
+    
     <Grid>
         <Grid x:Name="AppTitleBar"
           Canvas.ZIndex="1"
@@ -30,15 +34,17 @@
                    Margin="28,0,0,0"/>
         </Grid>
         <NavigationView
-        x:Name="NavigationViewControl"
-        Canvas.ZIndex="0"
-        IsBackButtonVisible="Visible"
-        IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
-        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
-        IsSettingsVisible="False"
-        ExpandedModeThresholdWidth="1280"
-        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-        Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                x:Name="NavigationViewControl"
+                Canvas.ZIndex="0"
+                IsBackButtonVisible="Visible"
+                IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+                IsSettingsVisible="False"
+                ExpandedModeThresholdWidth="1280"
+                DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
+                IsPaneOpen="False"
+                OpenPaneLength="200">
             <NavigationView.MenuItems>
                 <!--
             TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -47,9 +53,24 @@
             TODO: Update item icons by updating FontIcon.Glyph properties.
             https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
             -->
-                <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainViewModel">
+                <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+            <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel"
+                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, 
+                                            ConverterParameter='Inverse', Mode=OneWay}">
+                <NavigationViewItem.Icon>
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
+                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -63,20 +84,15 @@
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
             <i:Interaction.Behaviors>
-                <behaviors:NavigationViewHeaderBehavior
-                DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                <behaviors:NavigationViewHeaderBehavior>
+                    <!--DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">-->
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
-                            <Grid>
-                                <TextBlock
-                                Text="{Binding}"
-                                Style="{ThemeResource TitleTextBlockStyle}" />
-                            </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+            <Grid>
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>

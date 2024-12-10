@@ -1,12 +1,9 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Net.Mail;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
-using System.Collections.Concurrent;
-using System.Linq;
 
 namespace CarStore.Services;
-  
+
 public class EmailVerificationService
 {
     private readonly SmtpClient _smtpClient;

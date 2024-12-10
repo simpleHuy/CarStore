@@ -18,4 +18,18 @@ public class NavigationHelper
 
     public static readonly DependencyProperty NavigateToProperty =
         DependencyProperty.RegisterAttached("NavigateTo", typeof(string), typeof(NavigationHelper), new PropertyMetadata(null));
+
+    // Hàm để lưu trữ tham số cho NavigationViewItem
+    public static void SetNavigationParameter(NavigationViewItem item, object parameter)
+    {
+        item.SetValue(NavigationParameterProperty, parameter);
+    }
+
+    public static object GetNavigationParameter(NavigationViewItem item)
+    {
+        return item.GetValue(NavigationParameterProperty);
+    }
+
+    public static readonly DependencyProperty NavigationParameterProperty =
+        DependencyProperty.RegisterAttached("NavigationParameter", typeof(object), typeof(NavigationHelper), new PropertyMetadata(null));
 }

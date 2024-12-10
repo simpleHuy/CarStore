@@ -9,19 +9,22 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CarStore.Helpers;
-using CarStore.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CarStore.Core.Models;
+using CarStore.Core.Daos;
+using CarStore.Core.Contracts.Services;
+using CarStore.Core.Contracts.Repository;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Xaml.Controls;
+using CarStore.Contracts.Services;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
-
-    //private FullObservableCollection<Car>? _competitorModels;
-
     // Car will be binded
     private Car? _selectedCar;
-    public FullObservableCollection<Car>? Cars
+    public List<Car>? Cars
     {
         get; set;
     }
@@ -49,11 +52,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    //public int Max_Item
-    //{
-    //    get; set;
-    //}
-
     private string _selectedCarColor;
     public string SelectedCarColor
     {
@@ -78,12 +76,18 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
         if (SelectedCarColor == null)
         {
-            path += "\\" + SelectedCar.DefaultColor;
-            SelectedCarColor = SelectedCar.DefaultColor;
+            List<VariantOfCar> variantOfCars = new List<VariantOfCar>();
+            string variantsCode = "";
+            Task.Run(async() => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
+            Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(variantOfCars[0].Name)).Wait();
+            SelectedCar.VariantOfCars = variantOfCars;
+            path += "\\" + variantsCode;
         }
         else
         {
-            path += "\\" + SelectedCarColor;
+            string variantsCode = "";
+            Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(SelectedCarColor)).Wait();
+            path += "\\" + variantsCode;
         }
 
         if (Directory.Exists(path))
@@ -107,31 +111,16 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     }
 
     // get all competitor Cars
-    public ObservableCollection<Car>? CompetitorCars
+    public List<Car>? CompetitorCars
     {
         get; set;
     }
-    //private void LoadCompetitorCars()
-    //{
-    //    var delta = 0.2;
-    //    var minPrice = SelectedCar.Price * (1.0 - delta);
-    //    var maxPrice = SelectedCar.Price * (1.0 + delta);
-    //    CompetitorCars = new ObservableCollection<Car>();
-    //    foreach (var car in Cars)
-    //    {
-    //        if((car.Price > minPrice || /*&&*/ car.Price < maxPrice))// && car.CarId != SelectedCar.CarId)
-    //        {
-    //            CompetitorCars.Add(car);
-    //        }
-    //    }
-    //}
-
     private void GetTopCompetitorCars()
     {
         var delta = 0.2;
         var minPrice = SelectedCar.Price * (1.0 - delta);
         var maxPrice = SelectedCar.Price * (1.0 + delta);
-        CompetitorCars = new ObservableCollection<Car>();
+        CompetitorCars = new List<Car>();
         foreach (var car in Cars)
         {
             if (CompetitorCars.Count > 9)
@@ -156,10 +145,30 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    public CarDetailViewModel()
+    private readonly IDao<Car> _carDao;
+    private readonly ICarRepository _carRepository;
+    private readonly IAuthenticationService authentication;
+
+    public bool IsLogin
     {
-        IDao dao = new MockDao();
-        Cars = new FullObservableCollection<Car>(dao.getAllCars());
+        get
+        {
+            var user = authentication.GetCurrentUser();
+            return user != null;
+        }
+    }
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication)
+    {
+        _carDao = car;
+        _carRepository = carRepository;
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+        this.authentication = authentication;
+    }
+
+    private async Task LoadInitialDataAsync()
+    {
+        var cars = await _carDao.GetAllAsync();
+        Cars = new List<Car>(cars);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -167,5 +176,8 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
+    public IRelayCommand NavigateToScheduleCommand
+    {
+        get;
+    }
 }

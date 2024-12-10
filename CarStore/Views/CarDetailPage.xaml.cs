@@ -16,9 +16,11 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using CarStore.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
-using CarStore.Models;
 using Windows.System;
 using System.Diagnostics;
+using CarStore.Core.Models;
+using Microsoft.UI.Xaml.Shapes;
+using System.Text.RegularExpressions;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -34,42 +36,13 @@ public sealed partial class CarDetailPage : Page
         get; set;
     }
 
-    public MainPageViewModel? MainViewModel { get; set; }
-
     public CarDetailPage()
     {
+        ViewModel = App.GetService<CarDetailViewModel>();
         this.InitializeComponent();
-        ViewModel = new CarDetailViewModel();
-        this.DataContext = ViewModel;
-        MainViewModel = App.GetService<MainPageViewModel>();
+        DataContext = ViewModel;
+
     }
-
-    //private void CarDetailPage_SizeChanged(object sender, SizeChangedEventArgs e)
-    //{
-    //    var width = e.NewSize.Width;
-
-    //    if (width >= 1920) // Màn hình 24 inch
-    //    {
-    //        ViewModel.Max_Item=8;
-    //    }
-    //    else // Màn hình nhỏ hơn, ví dụ 16 inch
-    //    {
-    //        ViewModel.Max_Item = 6;
-    //    }
-    //}
-
-    //private void UpdateGridViewHeight()
-    //{
-    //    if (ListCompettorCars.Height > 600)
-    //    {
-    //        ListCompettorCars.Height = 600;
-    //        SeeMoreCompitetorText.Visibility = Visibility.Visible;
-    //    }
-    //    else
-    //    {
-    //        SeeMoreCompitetorText.Visibility = Visibility.Collapsed;
-    //    }
-    //}
 
     private void SeeThisCar(object sender, ItemClickEventArgs e)
     {
@@ -120,12 +93,11 @@ public sealed partial class CarDetailPage : Page
     {
         var comboBox = sender as ComboBox;
 
-        // Lấy giá trị màu sắc đang chọn
         if (comboBox != null && comboBox.SelectedItem != null)
         {
-            string selectedColor = comboBox.SelectedValue.ToString();
+            var selectedColor = comboBox.SelectedValue as VariantOfCar;
 
-            ViewModel.SelectedCarColor = selectedColor;
+            ViewModel.SelectedCarColor = selectedColor.Name;
         }
     }
 
@@ -138,17 +110,9 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void BackButton_Click(object sender, RoutedEventArgs e)
+    private async void Schedule_btn_click(object sender, RoutedEventArgs e)
     {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
-        }
-    }
-
-    private async void Schudele_btn_click(object sender, RoutedEventArgs e)
-    {
-        if (!MainViewModel.IsLogin)
+        if (!ViewModel.IsLogin)
         {
             await new ContentDialog()
             {
@@ -160,7 +124,8 @@ public sealed partial class CarDetailPage : Page
 
             return;
         }
-        Frame.Navigate(typeof(ScheduleForm));
+
+        Frame.Navigate(typeof(ScheduleForm), ViewModel.SelectedCar);
     }
 
     private async void Contact_btn_click(object sender, RoutedEventArgs e)
@@ -198,12 +163,20 @@ public sealed partial class CarDetailPage : Page
 
     private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
     {
-        await new ContentDialog()
+        Frame.Navigate(typeof(MockAnyCarPage));
+    }
+
+    private async void Compare_btn_click(object sender, RoutedEventArgs e)
+    {
+        var compareControl = new Compare(ViewModel);
+        var dialog = new ContentDialog
         {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
+            Title = "So sánh xe",
+            Content = compareControl,
+            DefaultButton = ContentDialogButton.Primary,
+            XamlRoot = this.XamlRoot
+        };
+
+        var result = await dialog.ShowAsync();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using CarStore.Core.Models;
 using CarStore.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -34,17 +35,9 @@ public sealed partial class ScheduleForm : Page
     }
     public ScheduleForm()
     {
-        this.InitializeComponent();
         ViewModel = App.GetService<ScheduleFormViewModel>();
         mainPageViewModel = App.GetService<MainPageViewModel>();
-    }
-
-    private void BackButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (Frame.CanGoBack)
-        {
-            Frame.GoBack();
-        }
+        this.InitializeComponent();
     }
 
     private async void Summit_btn_click(object sender, RoutedEventArgs e)
@@ -62,16 +55,6 @@ public sealed partial class ScheduleForm : Page
             }.ShowAsync();
 
         }
-        else if (!mainPageViewModel.IsLogin)
-        {
-            await new ContentDialog()
-            {
-                XamlRoot = this.Content.XamlRoot,
-                Title = "Đặt lịch hẹn",
-                Content = "Vui lòng đăng nhập để đặt lịch hẹn!",
-                CloseButtonText = "Quay lại",
-            }.ShowAsync();
-        }
         else
         {
             await new ContentDialog()
@@ -88,5 +71,20 @@ public sealed partial class ScheduleForm : Page
             }
         }
 
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is Car selectedCar)
+        {
+            ViewModel.CurrentSelectedCar = selectedCar;
+        }
+    }
+
+    private void Back_HomePage(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MainPage));
     }
 }

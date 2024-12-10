@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarStore.Contracts.Services;
-using CarStore.Models;
+using CarStore.Core.Contracts.Services;
+using CarStore.Core.Models;
 using CarStore.Services;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,6 +16,7 @@ using CommunityToolkit.Mvvm.Input;
 namespace CarStore.ViewModels;
 public class ScheduleFormViewModel:ObservableObject, INotifyPropertyChanged
 {
+    private readonly IDao<Car> _carDao;
     public readonly IAuthenticationService _authenticationService;
     public bool isLogin
     {
@@ -31,16 +33,14 @@ public class ScheduleFormViewModel:ObservableObject, INotifyPropertyChanged
         _navigateService = navigationService;
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
-        CurrentSelectedCar = dao.getAllCars().FirstOrDefault() ?? new Car();
     }
 
-    private readonly IDao dao = new MockDao();
     public event PropertyChangedEventHandler? PropertyChanged;
     public readonly INavigationService _navigateService;
     public IRelayCommand NavigateToLoginCommand{get;}
     public IRelayCommand NavigateToSignupCommand{get;}
     public Car CurrentSelectedCar{get; set;}
     public List<string?> SelectedCarImages{get; set;}
-    public Color SelectedCarColor{get; set;}
+    public Variant SelectedCarColor{get; set;}
     
 }

@@ -8,7 +8,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helpers="using:CarStore.Helpers" d:DataContext="{d:DesignInstance Type=vm:ScheduleFormViewModel}"
-    xmlns:md="using:CarStore.Models"
+    xmlns:md="using:CarStore.Core.Models"
     xmlns:services="using:CarStore.Services"
     mc:Ignorable="d"
     Background="{ThemeResource GradientPageBackground}">
@@ -16,9 +16,9 @@
     <Page.Resources>
         <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
-        <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
+        <services:IdToManufaturerConverter x:Key="Manufacturer"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
-        <DataTemplate x:Name="VariantTemplate" x:DataType="md:Color">
+        <DataTemplate x:Name="VariantTemplate" x:DataType="md:Variant">
             <StackPanel Orientation="Horizontal">
                 <Border Background="{Binding Code}" Width="10" Height="10"></Border>
                 <TextBlock Text="{Binding Name}" Margin="5 0 5 0"/>
@@ -58,15 +58,12 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="BackButton" Click="BackButton_Click"
-                        Style="{StaticResource NavigationBackButtonNormalStyle}"
-                        IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
-                        ToolTipService.ToolTip="Back" Width="100" 
-                        FontWeight="Bold" Foreground="Black"/>
-                <Image 
+                <Button Background="Transparent" Click="Back_HomePage" BorderThickness="0">
+                    <Image 
                     Grid.Column="1" Grid.Row="0"
                     Source="../Assets/Logo/logo.png"
                     Height="40"/>
+                </Button>
             </Grid>
             <AutoSuggestBox x:Name="Header_SearchSection"
                 HorizontalContentAlignment="Left"
@@ -122,7 +119,7 @@
                     <Border x:Name="Badge" Background="{ThemeResource AccentAAFillColorSecondaryBrush}" CornerRadius="8"
                             HorizontalAlignment="Center" VerticalAlignment="Center"
                             Margin="10 5 5 5">  
-                        <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.Manufacturer, Converter={StaticResource ManufactureConverter}}" Foreground="Wheat" Margin="4 2 4 4"
+                        <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.ManufacturerId, Converter={StaticResource Manufacturer}}" Foreground="Wheat" Margin="4 2 4 4"
                    Style="{ThemeResource SubtitleTextBlockStyle}">
                         </TextBlock>
                     </Border>
@@ -134,10 +131,10 @@
                             Stretch="UniformToFill"/>
                 </Border>
                 
-                <ComboBox x:Name="Variant" ItemsSource="{x:Bind ViewModel.CurrentSelectedCar.Variant}"
+                <!--<ComboBox x:Name="Variant" ItemsSource="{x:Bind ViewModel.CurrentSelectedCar.Variant}"
                           ItemTemplate="{StaticResource VariantTemplate}"
                           PlaceholderText="Màu sắc"
-                          Margin="20 0 10 5"/>
+                          Margin="20 0 10 5"/>-->
                 <StackPanel Orientation="Horizontal" Margin="20 5 20 20" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.Price, Converter={StaticResource currency}}" Style="{ThemeResource TitleTextBlockStyle}"
                                Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"/>

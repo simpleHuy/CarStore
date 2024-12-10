@@ -2,7 +2,6 @@
 
 using CarStore.Contracts.Services;
 using CarStore.Helpers;
-using CarStore.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 
 namespace CarStore.Services;
@@ -66,7 +65,15 @@ public class NavigationViewService : INavigationViewService
 
             if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
             {
-                _navigationService.NavigateTo(pageKey);
+                var parameter = NavigationHelper.GetNavigationParameter(selectedItem);
+                if(parameter != null)
+                {
+                    _navigationService.NavigateTo(pageKey, parameter);
+                }
+                else
+                {
+                    _navigationService.NavigateTo(pageKey);
+                }
             }
         }
     }
