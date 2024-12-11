@@ -25,6 +25,7 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
     {
         get; set;
     }
+    public bool isLoggedIn = false;
 
     private User? _currentUser;
     public User? CurrentUser
@@ -72,7 +73,11 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
     private void CheckAuthenticationState()
     {
         var user = _authenticationService.GetCurrentUser();
-        CurrentUser = user;
+        if (user != null)
+        {
+            isLoggedIn = true;
+            CurrentUser = user;
+        }
         ViewedUser = user;
     }
 }

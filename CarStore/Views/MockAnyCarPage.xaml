@@ -15,7 +15,7 @@
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
         <services:IdToManufaturerConverter x:Key="Manufacturer"/>
-
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
     <ScrollView>
         <StackPanel>
@@ -55,7 +55,7 @@
                 <Grid x:Name="Header_AccountSection" 
                      Grid.Column="2" Grid.Row="0"
                      HorizontalAlignment="Right">
-                    <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal">
+                    <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" Visibility="{x:Bind ViewModel.isLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel Orientation="Vertical" Margin="0 0 10 0">
@@ -93,8 +93,8 @@
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
-                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="Single"
-                          ItemClick="GridView_ItemClick">
+                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None"
+                          ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Car">
                             <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"
@@ -123,9 +123,6 @@
                                             </TextBlock>
                                         </Border>
                                         <TextBlock Text="{x:Bind Name}" Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords"/>
-                                        <Button BorderThickness="0">
-                                            <FontIcon Glyph="&#xE70F;" />
-                                        </Button>
                                     </StackPanel>
                                     <TextBlock Text="{x:Bind Price, Converter={StaticResource ConvertPriceToOldPrice}}" Style="{ThemeResource BodyTextBlockStyle}" Foreground="Red" TextDecorations="Strikethrough" Margin="10 5 10 2"/>
                                     <TextBlock Text="{x:Bind Price, Converter={StaticResource currency}}" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="10 2 10 10"/>
