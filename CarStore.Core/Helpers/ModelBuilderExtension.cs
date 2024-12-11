@@ -111,7 +111,7 @@ public static class ModelBuilderExtension
 
         modelBuilder.Entity<Variant>().HasData(
             new Variant { Id = 1, Code = "White" },
-            new Variant { Id = 2, Code = "Grey" },
+            new Variant { Id = 2, Code = "Gray" },
             new Variant { Id = 3, Code = "Black" },
             new Variant { Id = 4, Code = "Blue" },
             new Variant { Id = 5, Code = "Green" },
