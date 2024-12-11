@@ -1,10 +1,11 @@
 <div align="center">
   
-  <h1>Car Store</h1>
+# ![carstore](https://github.com/user-attachments/assets/318ca008-e92f-4561-b5f8-8f1de04f3466)  Car Store
 
   <p>A Windows desktop app for a Car Store using Winui 3</p> 
   
 </div>
+
 
 ## 📘 Table of Contents
 1. [Introduction](#introduction) 🌟
@@ -19,6 +20,8 @@
 **Car Store** is a Windows application for Buying, Selling, Auctioning Cars. It is built using winui3, dotnet and C#. The application allows users to inspect car, sell a car, auction car.
 
 This project is a part of the **Windows Programing** course at **University of Science**. The project is developed by a team of **3 students**.
+
+Demo video: 
 
 ## 🤝 <a name="team-members">Team Members</a>
 
@@ -40,6 +43,20 @@ This project is a part of the **Windows Programing** course at **University of S
 - **EF Core:** Build Table/Schema from model in project.
 
 ## 🔎 <a name="features">Features</a>
+
+**🔷 Home:**
+
+**🔷 Inspect Car Detail:** 
+
+**🔷 Compare Car:** 
+
+**🔷 Create Schedule to inspect Car:** 
+
+**🔷 Sell:** 
+
+**🔷 Chat with Merchant:**
+
+**🔷 Auction:**
 
 ## ✈️ <a name="development">Development</a>
 
