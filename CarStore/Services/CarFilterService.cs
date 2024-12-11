@@ -92,7 +92,7 @@ public class CarFilterService : ObservableObject
         ApplyFilters();
     }
 
-    private void ApplyFilters()
+    public void ApplyFilters()
     {
         if (_allCars == null || !_allCars.Any())
         {

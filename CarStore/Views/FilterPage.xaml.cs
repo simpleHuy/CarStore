@@ -307,4 +307,9 @@ public sealed partial class FilterPage : Page
     {
         Frame.Navigate(typeof(MainPage));
     }
+
+    public void CheckBox_Checked(CheckBox checkBox, RoutedEventArgs routedEventArgs) => throw new NotImplementedException();
+    public void CheckBox_Unchecked(CheckBox checkBox, RoutedEventArgs routedEventArgs) => throw new NotImplementedException();
+    public void RemoveAllFilters_Click(Button button, RoutedEventArgs routedEventArgs) => throw new NotImplementedException();
+    public void RemoveFilter_Click(Button button, RoutedEventArgs routedEventArgs) => throw new NotImplementedException();
 }
