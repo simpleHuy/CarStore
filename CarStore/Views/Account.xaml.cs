@@ -67,4 +67,9 @@ public sealed partial class Account : Page
     {
         Frame.Navigate(typeof(AddItemPage));
     }
+
+    private void ExploreButton(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MainPage));
+    }
 }

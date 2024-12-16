@@ -65,7 +65,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    
+
     // load all images of the car
     private void LoadPictureOfCar()
     {
@@ -78,7 +78,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         {
             List<VariantOfCar> variantOfCars = new List<VariantOfCar>();
             string variantsCode = "";
-            Task.Run(async() => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
+            Task.Run(async () => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
             Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(variantOfCars[0].Name)).Wait();
             SelectedCar.VariantOfCars = variantOfCars;
             path += "\\" + variantsCode;
@@ -148,6 +148,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
     private readonly IAuthenticationService authentication;
+    private readonly IUserRepository userRepository;
 
     public bool IsLogin
     {
@@ -157,8 +158,9 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             return user != null;
         }
     }
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication)
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication, IUserRepository userRepository)
     {
+        this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;
         Task.Run(async () => await LoadInitialDataAsync()).Wait();
@@ -179,5 +181,17 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     public IRelayCommand NavigateToScheduleCommand
     {
         get;
+    }
+
+    public void AddToWishlist()
+    {
+        Task.Run(async () =>
+        {
+            var user = authentication.GetCurrentUser();
+            if (user != null)
+            {
+                await userRepository.AddCarToWishlist(user.Id, SelectedCar!.CarId);
+            }
+        }).Wait();
     }
 }

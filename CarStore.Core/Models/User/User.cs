@@ -56,4 +56,8 @@ public class User
 
     public ICollection<Schedule> CustommerSchedules { get; set; }
     public ICollection<Schedule> MerchantSchedules { get; set; }
+    public ICollection<Wishlist> Wishlists
+    {
+        get; set;
+    }
 }

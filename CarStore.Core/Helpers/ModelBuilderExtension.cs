@@ -11,6 +11,15 @@ public static class ModelBuilderExtension
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 1,
+                Username = "admin",
+                Email = "admin@gmail.com",
+            }
+        );
+
         modelBuilder.Entity<EngineType>().HasData(
             new EngineType { Id = 1, Name = "Xăng" },
             new EngineType { Id = 2, Name = "Điện" },

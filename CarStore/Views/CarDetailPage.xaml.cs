@@ -141,11 +141,26 @@ public sealed partial class CarDetailPage : Page
 
     private async void AddWishlist_btn_click(object sender, RoutedEventArgs e)
     {
+        if(!ViewModel.IsLogin)
+        {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Bạn chưa đăng nhập",
+                Content = "Vui lòng đăng nhập để thêm vào Wishlist!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            return;
+        }
+
+        ViewModel.AddToWishlist();
+
         await new ContentDialog()
         {
             XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            Title = "Thành công",
+            Content = "Đã thêm vào Wishlist",
             CloseButtonText = "OK",
         }.ShowAsync();
     }

@@ -13,11 +13,13 @@ using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Windows.Graphics.Printing3D;
 
 namespace CarStore.ViewModels;
 public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
+    private readonly IUserRepository userRepository;
     private readonly IDao<Car> _carDao;
     private readonly IDao<Variant> _variantDao;
     public readonly INavigationService _navigateService;
@@ -30,7 +32,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         get;
     }
-    public ObservableCollection<Car>? Wishlist
+    public List<Car>? Wishlist
     {
         get; set;
     }
@@ -54,8 +56,10 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         get; set;
     }
 
-    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantdao)
+    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository,
+        ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantdao)
     {
+        this.userRepository = userRepository;
         _carDao = carDao;
         _carRepository = carRepository;
         _navigateService = navigationService;
@@ -66,7 +70,8 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         Task.Run(async () =>
         {
-            Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
+            var curUserId = _authenticationService.GetCurrentUser().Id;
+            Wishlist = await userRepository.GetWishlist(curUserId);
             foreach (var car in Wishlist)
             {
                 car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);

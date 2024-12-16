@@ -36,6 +36,7 @@ public class AuthenticationService : IAuthenticationService
 
     private readonly User _userDefault = new()
     {
+        Id = 1,
         Email = "example@gmail.com",
         Telephone = "0333601234",
         AccountType = "Hội viên tiềm năng",

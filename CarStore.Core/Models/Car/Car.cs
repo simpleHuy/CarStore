@@ -86,4 +86,9 @@ public class Car : INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    public ICollection<Wishlist> wishlists
+    {
+        get; set;
+    }
 }

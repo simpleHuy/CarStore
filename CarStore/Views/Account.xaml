@@ -13,6 +13,7 @@
     Background="{ThemeResource GradientPageBackground}">
     <Page.Resources>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
+        <helpers:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
         <services:IdToManufaturerConverter x:Key="Manufacturer"/>
         
@@ -90,7 +91,8 @@
                 </Grid>
                 <StackPanel Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
                     <TextBlock Text="Wishlist" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20 2"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Width="Auto" Margin="20 0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Width="Auto" Margin="20 0"
+                                  Visibility="{x:Bind ViewModel.Wishlist.Count, Converter={StaticResource CountToVisibilityConverter}}">
                         <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" IsItemClickEnabled="True" Name="ListCompettorCars" ItemClick="ListCompettorCars_ItemClick"
                   ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" SelectionMode="None">
                             <GridView.ItemTemplate>
@@ -124,7 +126,11 @@
                             </GridView.ItemsPanel>
                         </GridView>
                     </ScrollViewer>
-                
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20"
+                                Visibility="{x:Bind ViewModel.Wishlist.Count, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=Inverse}">
+                        <TextBlock Text="Wishlist hiện đang trống" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        <Button Content="Khám phá ngay" HorizontalAlignment="Center" Click="ExploreButton"/>
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="80 5" Spacing="8">
                     <Button x:Name="AddItemBtn" Background="Transparent" BorderThickness="0" Click="AddItemBtn_Click">

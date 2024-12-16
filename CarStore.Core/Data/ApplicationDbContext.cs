@@ -79,6 +79,16 @@ public class ApplicationDbContext : DbContext
                                         .HasForeignKey(s => s.MerchantId)
                                         .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<Wishlist>().HasKey(w => w.Id);
+        modelBuilder.Entity<Wishlist>().HasOne<Car>(vc => vc.Car)
+                                        .WithMany(c => c.wishlists)
+                                        .HasForeignKey(vc => vc.CarId)
+                                        .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<Wishlist>().HasOne<User>(vc => vc.User)
+                                        .WithMany(c => c.Wishlists)
+                                        .HasForeignKey(vc => vc.UserId)
+                                        .OnDelete(DeleteBehavior.SetNull);
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
@@ -93,6 +103,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<PriceOfCar>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Wishlist>().Property(w => w.Id).ValueGeneratedOnAdd();
 
         //seeding data
         modelBuilder.Seed();
@@ -110,4 +121,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<NumberSeat> numberSeats { get; set; }
     public DbSet<User> users { get; set; }
     public DbSet<Schedule> schedules { get; set; }
+    public DbSet<Wishlist> wishlists
+    {
+        get; set;
+    }
 }
