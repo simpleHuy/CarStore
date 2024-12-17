@@ -17,67 +17,47 @@ namespace CarStore.ViewModels;
 public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
-    public readonly IDao<Car> _carDao;
-    public readonly IDao<Variant> _variantDao;
-    public readonly INavigationService _navigateService;
-    public readonly IAuthenticationService _authenticationService;
-    public ObservableCollection<Car>? Wishlist
+    private readonly IShowroomRepository showroomRepository;
+    private readonly IDao<Car> _carDao;
+    private readonly IDao<Variant> _variantDao;
+    public List<Car>? Cars
     {
         get; set;
     }
     public bool isLoggedIn = false;
-
-    private User? _currentUser;
-    public User? CurrentUser
-    {
-        get => _currentUser;
-        set
-        {
-            if (_currentUser != value)
-            {
-                _currentUser = value;
-                OnPropertyChanged(nameof(CurrentUser));
-            }
-        }
-    }
 
     public User? ViewedUser
     {
         get; set;
     }
 
-    public MockAnyCarPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantDao)
+    private Showroom? _showroom;
+    public Showroom? Showroom
+    {
+        get => _showroom;
+        set
+        {
+            _showroom = value;
+            Task.Run(async() =>
+            {
+                Cars = await showroomRepository.GetCarsOfShowroom(Showroom);
+                foreach (var car in Cars)
+                {
+                    car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
+                    foreach (var variant in car.VariantOfCars)
+                    {
+                        variant.Variant = await _variantDao.GetByIdAsync(variant.VariantId);
+                    }
+                }
+            }).Wait();
+        }
+    }
+
+    public MockAnyCarPageViewModel(ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantDao, IShowroomRepository showroomRepository)
     {
         _carDao = carDao;
         _carRepository = carRepository;
-        _navigateService = navigationService;
-        _authenticationService = authService;
         _variantDao = variantDao;
-
-        Task.Run(async () =>
-        {
-            Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
-            foreach (var car in Wishlist)
-            {
-                car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
-                foreach (var variant in car.VariantOfCars)
-                {
-                    variant.Variant = await _variantDao.GetByIdAsync(variant.VariantId);
-                }
-            }
-        }).Wait();
-
-        CheckAuthenticationState();
-    }
-
-    private void CheckAuthenticationState()
-    {
-        var user = _authenticationService.GetCurrentUser();
-        if (user != null)
-        {
-            isLoggedIn = true;
-            CurrentUser = user;
-        }
-        ViewedUser = user;
+        this.showroomRepository = showroomRepository;
     }
 }

@@ -70,6 +70,15 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
+    public int OwnerId
+    {
+        get; set;
+    }
+
+    public User owner
+    {
+        get; set;
+    }
     public Manufacturer Manufacturer { get; set; }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }

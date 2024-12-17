@@ -17,6 +17,72 @@ public static class ModelBuilderExtension
                 Id = 1,
                 Username = "admin",
                 Email = "admin@gmail.com",
+                IsShowroom = false,
+            },
+
+            new User
+            {
+                Id = 2,
+                Username = "anycar",
+                Email = "anycar@gmail.com",
+                IsShowroom = true,
+            },
+
+            new User
+            {
+                Id = 3,
+                Username = "StarupShow",
+                Email = "StarupShow@gmail.com",
+                IsShowroom = true,
+            }
+        );
+
+        modelBuilder.Entity<Showroom>().HasData(
+            new Showroom
+            {
+                Id = 1,
+                UserId = 2,
+                Hotline = "18006216",
+                Email = "info@anycar.vn",
+                IsReputation = true,
+                Facebook = "https://www.facebook.com/anycar.vn/",
+                Home = "https://anycar.vn/",
+                Name = "Anycar.vn",
+                Img = "../Assets/ShowRoomAvatar.jpg"
+            },
+
+            new Showroom
+            {
+                Id = 2,
+                UserId = 3,
+                Hotline = "18006215",
+                Email = "info@StarupShow.vn",
+                Name = "Star-up Show",
+                Img = "../Assets/ShowRoom2.png"
+            }
+        );
+
+        modelBuilder.Entity<Address>().HasData(
+            new Address
+            {
+                Id=1,
+                ShowroomId = 1,
+                Street = "Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội",
+                City = "Hà Nội"
+            },
+            new Address
+            {
+                Id = 2,
+                ShowroomId = 1,
+                Street = "Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh",
+                City = "Hồ Chí Minh"
+            },
+            new Address
+            {
+                Id = 3,
+                ShowroomId = 2,
+                Street = "Vành đài ktx B, TP. Thủ Đức, TP Hồ Chí Minh",
+                City = "Hồ Chí Minh"
             }
         );
 
@@ -141,6 +207,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Accord",
                 DefautlImageLocation = "../Assets/Cars/Honda Accord/White/1.png",
                 PriceOfCarId = 3,
+                OwnerId = 2,
             },
             new()
             {
@@ -155,6 +222,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Civic City Rs",
                 DefautlImageLocation = "../Assets/Cars/Honda Civic City Rs/Black/1.png",
                 PriceOfCarId = 2,
+                OwnerId = 2,
             },
             new()
             {
@@ -169,6 +237,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Type R",
                 DefautlImageLocation = "../Assets/Cars/Honda Type R/Black/2.png",
                 PriceOfCarId = 4,
+                OwnerId = 3,
             },
             new()
             {
@@ -183,6 +252,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera Cabriolet",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera Cabriolet/Red/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 3,
             },
             new()
             {
@@ -197,6 +267,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 718 Cayman S",
                 DefautlImageLocation = "../Assets/Cars/Porche 718 Cayman S/Blue/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -211,6 +282,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera GTS",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera GTS/Red/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -225,6 +297,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera T",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera T/Green/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -239,6 +312,7 @@ public static class ModelBuilderExtension
                 Images = "Porche Taycan J1II",
                 DefautlImageLocation = "../Assets/Cars/Porche Taycan J1II/Blue/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -253,6 +327,7 @@ public static class ModelBuilderExtension
                 Images = "Toyota Corolla Altis 1.8G",
                 DefautlImageLocation = "../Assets/Cars/Toyota Corolla Altis 1.8G/Black/1.jpg",
                 PriceOfCarId = 2,
+                OwnerId = 3,
             },
             new()
             {
@@ -267,6 +342,7 @@ public static class ModelBuilderExtension
                 Images = "Vinfast VF7",
                 DefautlImageLocation = "../Assets/Cars/Vinfast VF7/Blue/1.png",
                 PriceOfCarId = 2,
+                OwnerId = 2,
             }
         );
 

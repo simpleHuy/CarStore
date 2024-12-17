@@ -79,13 +79,23 @@ public sealed partial class CarDetailPage : Page
 
     private async void ClickHomePageButton(object sender, RoutedEventArgs e)
     {
-        var uri = new Uri("https://anycar.vn/");
+        var homeUrl = ViewModel!.Showroom?.Home;
+        if (homeUrl == null)
+        {
+            return;
+        }
+        var uri = new Uri(homeUrl);
         await Launcher.LaunchUriAsync(uri);
     }
 
     private async void ClickFacebookButton(object sender, RoutedEventArgs e)
     {
-        var uri = new Uri("https://www.facebook.com/anycar.vn/");
+        var facebookUrl = ViewModel!.Showroom?.Facebook;
+        if (facebookUrl == null)
+        {
+            return;
+        }
+        var uri = new Uri(facebookUrl);
         await Launcher.LaunchUriAsync(uri);
     }
 
@@ -165,20 +175,9 @@ public sealed partial class CarDetailPage : Page
         }.ShowAsync();
     }
 
-    private async void SeeMoreCompetitor_btn_click(object sender, RoutedEventArgs e)
-    {
-        await new ContentDialog()
-        {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
-    }
-
     private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(MockAnyCarPage));
+        Frame.Navigate(typeof(MockAnyCarPage), ViewModel.Showroom);
     }
 
     private async void Compare_btn_click(object sender, RoutedEventArgs e)

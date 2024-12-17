@@ -37,6 +37,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             OnPropertyChanged(nameof(SelectedCar));
             LoadPictureOfCar();
             GetTopCompetitorCars();
+            Task.Run(async () => Showroom = await _carRepository.GetShowroomByCarId(SelectedCar.CarId)).Wait();
         }
     }
 
@@ -158,12 +159,16 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             return user != null;
         }
     }
+    public Showroom Showroom
+    {
+        get; set;
+    }
     public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication, IUserRepository userRepository)
     {
         this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;
-        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+        Task.Run(() => LoadInitialDataAsync()).Wait();
         this.authentication = authentication;
     }
 

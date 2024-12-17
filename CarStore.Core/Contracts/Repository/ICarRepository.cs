@@ -16,4 +16,5 @@ public interface ICarRepository
     Task<List<Car>> GetCarByKey(string key);
     Task<List<VariantOfCar>> GetVariantsOfCar(int carId);
     Task<string> GetVariantsCodeByName(string Name);
+    Task<Showroom> GetShowroomByCarId(int carId);
 }

@@ -44,6 +44,16 @@ public class AuthenticationService : IAuthenticationService
         lastName = "Nguyễn",
     };
 
+    private readonly User anycar = new()
+    {
+        Id = 2,
+    };
+
+    private readonly User starup = new()
+    {
+        Id = 3,
+    };
+
     public event EventHandler<AuthStateChangedEventArgs> AuthStateChanged;
     private bool _isAuthenticated;
     public bool IsAuthenticated
@@ -186,6 +196,18 @@ public class AuthenticationService : IAuthenticationService
             if (username == "admin" && password == "1234")
             {
                 _currentUser = _userDefault;
+                return true;
+            }
+
+            if(username == "anycar" && password == "1234")
+            {
+                _currentUser = anycar;
+                return true;
+            }
+
+            if (username == "starupshow" && password == "1234")
+            {
+                _currentUser = starup;
                 return true;
             }
 

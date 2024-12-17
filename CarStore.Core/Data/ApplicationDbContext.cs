@@ -16,11 +16,6 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
-
-    protected ApplicationDbContext()
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //configuring relationships
@@ -89,6 +84,21 @@ public class ApplicationDbContext : DbContext
                                         .HasForeignKey(vc => vc.UserId)
                                         .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<Showroom>().HasOne<User>(s => s.User)
+                                        .WithOne(u => u.Showroom)
+                                        .HasForeignKey<Showroom>(s => s.UserId)
+                                        .OnDelete(DeleteBehavior.SetNull);  
+
+        modelBuilder.Entity<Showroom>().HasMany<Address>(s => s.Address)
+                                        .WithOne(a => a.Showroom)
+                                        .HasForeignKey(a => a.ShowroomId)
+                                        .OnDelete(DeleteBehavior.SetNull);
+        
+        modelBuilder.Entity<User>().HasMany<Car>(u => u.Cars)
+                                    .WithOne(c => c.owner)
+                                    .HasForeignKey(c => c.OwnerId)
+                                    .OnDelete(DeleteBehavior.SetNull);
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
@@ -104,6 +114,12 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Wishlist>().Property(w => w.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Showroom>().Property(s => s.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Address>().Property(a => a.Id).ValueGeneratedOnAdd();
+
+        //configuring default values
+        modelBuilder.Entity<User>().Property(u => u.IsShowroom).HasDefaultValue(false);
+        modelBuilder.Entity<Showroom>().Property(s => s.IsReputation).HasDefaultValue(false);
 
         //seeding data
         modelBuilder.Seed();
@@ -122,6 +138,14 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> users { get; set; }
     public DbSet<Schedule> schedules { get; set; }
     public DbSet<Wishlist> wishlists
+    {
+        get; set;
+    }
+    public DbSet<Showroom> showrooms
+    {
+        get; set;
+    }
+    public DbSet<Address> addresses
     {
         get; set;
     }

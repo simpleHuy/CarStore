@@ -69,4 +69,14 @@ public class EfCoreCarRepository : ICarRepository
         if (variantCode == null) { return Name; }
         return variantCode.Code;
     }
+
+    public async Task<Showroom> GetShowroomByCarId(int carId)
+    {
+        var ownerId = await _context.Cars.Where(c => c.CarId == carId).Select(c => c.OwnerId).FirstOrDefaultAsync();
+        var showroomId = await _context.showrooms.Where(s => s.UserId == ownerId).Select(s => s.Id).FirstOrDefaultAsync();
+        var showroom = await _context.showrooms.FindAsync(showroomId);
+        // find all Addresses of showroom
+        showroom.Address = await _context.addresses.Where(a => a.ShowroomId == showroomId).ToListAsync();
+        return showroom;
+    }
 }

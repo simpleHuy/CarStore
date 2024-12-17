@@ -77,5 +77,11 @@ namespace CarStore.Views
         {
             Frame.Navigate(typeof(Account));
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            ViewModel.Showroom = e.Parameter as Showroom;
+        }
     }
 }

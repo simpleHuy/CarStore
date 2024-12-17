@@ -194,8 +194,10 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
-                        <Image Source="../Assets/ShowRoomAvatar.jpg" Height="230" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Các sản phẩm khác của Anycar.vn" FontSize="16" HorizontalAlignment="Center"  />
+                        <Image Source="{x:Bind ViewModel.Showroom.Img}" Height="230" HorizontalAlignment="Center"/>
+                        <TextBlock FontSize="16" HorizontalAlignment="Center">
+                            <Run Text="Các sản phẩm khác của"/> <Run Text="{x:Bind ViewModel.Showroom.Name}" FontWeight="Bold"/>
+                        </TextBlock>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Button Background="Transparent" BorderBrush="Transparent" Width="30" Height="30" Padding="0"
@@ -225,12 +227,23 @@
 
                     <StackPanel  Background="white" Grid.Column="2">
                         <TextBlock Text="Thông tin showroom:" Style="{StaticResource SubtitleTextBlockStyle}"  />
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"  />
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}" Text="     - Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"  />
-                        <TextBlock Style="{StaticResource BaseTextBlockStyle}"  >
-                            <Run Text="     Hotline: " FontWeight="Bold"/> 18006216 - <Run Text="Email:" FontWeight="Bold"/> info@anycar.vn
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.Showroom.Address}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local2:Address">
+                                    <TextBlock Style="{StaticResource BaseTextBlockStyle}">
+                                        <Run Text="     - Chi nhánh"/> <Run Text="{x:Bind City}"/>: <Run Text="{x:Bind Street}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}"> 
+                            <Run Text="     Hotline: " FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Hotline}"/> - <Run Text="Email:" FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Email}"/>
                         </TextBlock>
-
                     </StackPanel>
                 </Grid>
             </Border>

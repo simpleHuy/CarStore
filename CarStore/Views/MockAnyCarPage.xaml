@@ -32,8 +32,8 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Name="Header_LeftSection" Grid.Row="0" Grid.Column="0" 
-           Margin="10 5 20 5"
-           HorizontalAlignment="Left">
+                       Margin="10 5 20 5"
+                       HorizontalAlignment="Left">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
@@ -52,23 +52,6 @@
                              Grid.Column="1" Grid.Row="0" 
                              PlaceholderText="Tìm kiếm trên eCar"
                              Height="40" Width="500"/>
-                <Grid x:Name="Header_AccountSection" 
-                     Grid.Column="2" Grid.Row="0"
-                     HorizontalAlignment="Right">
-                    <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" Visibility="{x:Bind ViewModel.isLoggedIn, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel Orientation="Vertical" Margin="0 0 10 0">
-                                    <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.firstName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
-                                    <TextBlock x:Name="UserType" Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
-                                </StackPanel>
-                                <Image Source="../Assets/Avatars/1.png" Height="50"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-
-                </Grid>
-
             </Grid>
             <StackPanel>
                 <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
@@ -79,21 +62,45 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="../Assets/ShowRoomAvatar.jpg" Height="100" Margin="20"/>
+                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="{x:Bind ViewModel.Showroom.Img}" Height="100" Margin="20"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <TextBlock Text="anyCar.vn" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind ViewModel.Showroom.Name}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                         </StackPanel>
                         <TextBlock Text="Showroom" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
                     </StackPanel>
-                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
+                    <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="2" Margin="20 0" 
+                            VerticalAlignment="Stretch" Width="2" Grid.RowSpan="2"/>
+                    <StackPanel  Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" VerticalAlignment="Center"> 
+                        <TextBlock Text="Thông tin showroom:" Style="{StaticResource SubtitleTextBlockStyle}"  />
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.Showroom.Address}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="local2:Address">
+                                    <TextBlock Style="{StaticResource BaseTextBlockStyle}">
+                                        <Run Text="     - Chi nhánh"/> <Run Text="{x:Bind City}"/>: <Run Text="{x:Bind Street}"/>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Style="{StaticResource BaseTextBlockStyle}"> 
+                            <Run Text="     Hotline: " FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Hotline}"/> - <Run Text="Email:" FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Email}"/>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
                         <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200" Visibility="Collapsed"/>
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
-                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None"
+                <GridView ItemsSource="{x:Bind ViewModel.Cars}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None"
                           ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Car">
