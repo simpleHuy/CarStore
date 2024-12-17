@@ -20,6 +20,7 @@ using ABI.Windows.UI;
 using Microsoft.UI;
 using System.Collections.ObjectModel;
 using Windows.Networking.NetworkOperators;
+using CarStore.Models.AI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -45,6 +46,8 @@ namespace CarStore.Views
             {
                 NameOfCurrentMessage.Text = chatItem.personName;
                 NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
+                ViewModel.targetUserID = chatItem.Id;
+                _ = ViewModel.InitializeChatAsync();
             }
         }
 
@@ -71,19 +74,46 @@ namespace CarStore.Views
 
         private async void SendMessageBtn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.Messages.Add(new Message
+            if (NameOfCurrentMessage.Text == "Gemini")
             {
-                Text = MessageField.Text,
-                isMine = true,
-            });
-            MessageField.Text = "";
-            var promt = MessageField.Text;
-            var response = await ViewModel.gemini.GenerateResponseAsync(promt,ViewModel.history);
-            ViewModel.Messages.Add(new Message
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = MessageField.Text,
+                    isMine = true,
+                });
+                MessageField.Text = "";
+                var promt = MessageField.Text;
+                var History = new List<ChatHistory>();
+                var response = await ViewModel.gemini.GenerateResponseAsync(promt, History);
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = response,
+                    isMine = false,
+                });
+            }
+            else
             {
-                Text = response,
-                isMine = false,
-            });
+                _ = ViewModel.SendMessage(int.Parse(NameOfCurrentMessage.Text), MessageField.Text);
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = MessageField.Text,
+                    isMine = true,
+                });
+                MessageField.Text = "";
+                _ = ViewModel.InitializeChatAsync();
+            }
+        }
+
+        private void Reload_Click(object sender, RoutedEventArgs e)
+        {
+            if (NameOfCurrentMessage.Text == "Gemini")
+            {
+                GeminiInit();
+            }
+            else
+            {
+                _ = ViewModel.InitializeChatAsync();
+            }
         }
     }
 }

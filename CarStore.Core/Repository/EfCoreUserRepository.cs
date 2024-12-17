@@ -21,8 +21,14 @@ public class EfCoreUserRepository : IUserRepository
         return _dbContext.users.FirstOrDefaultAsync(u => u.Email == email);
     }
 
+    public Task<User> GetUserById(int id)
+    {
+        return _dbContext.users.FirstOrDefaultAsync(u => u.Id == id);
+    }
+
     public Task<User> GetUserByUsername(string username)
     {
         return _dbContext.users.FirstOrDefaultAsync(u => u.Username == username);
     }
+
 }

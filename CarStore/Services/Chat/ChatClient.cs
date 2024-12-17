@@ -8,70 +8,54 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using CarStore.Contracts.Services;
 using CarStore.Core.Models.Chat;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 
 namespace CarStore.Services.Chat
 {
-    class ChatClient : IChatService
+    public class ChatClient : IChatService
     {
         private const string ServerAddress = "127.0.0.1";
         private const int InitialServerPort = 3001;
         private static TcpClient client;
         private static NetworkStream stream;
         private static int dynamicPort;
+
         private int userId {get; set;}
         private static List<ChatItem> Chats {get; set;}
         private static List<Message> Messages {get; set;}
 
+
+
+
         private static async Task ConnectToInitialServer()
         {
-            try
-            {
-                client = new TcpClient();
-                await client.ConnectAsync(ServerAddress, InitialServerPort);
-                stream = client.GetStream();
+            client = new TcpClient();
+            client.ConnectAsync(ServerAddress, InitialServerPort).Wait();
+            stream = client.GetStream();
 
-                byte[] data = new byte[1024];
-                int bytes = await stream.ReadAsync(data, 0, data.Length);
-                var portMessage = Encoding.UTF8.GetString(data, 0, bytes);
-
-                if (int.TryParse(portMessage, out dynamicPort))
-                {
-                    await ConnectToDynamicPort();
-                }
-                else
-                {
-                    throw new Exception("Failed to receive a valid port from the server.");
-                }
-            }
-            catch (Exception ex)
+            byte[] data = new byte[1024];
+            int bytes = await stream.ReadAsync(data, 0, data.Length);
+            var portMessage = Encoding.UTF8.GetString(data, 0, bytes);
+            if (int.TryParse(portMessage, out dynamicPort))
             {
-                throw;
+                ConnectToDynamicPort().Wait();
             }
         }
         private static async Task ConnectToDynamicPort()
         {
-            try
-            {
-                client.Close();
-                client = new TcpClient();
-                await client.ConnectAsync(ServerAddress, dynamicPort);
-                stream = client.GetStream();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            client.Close();
+            client = new TcpClient();
+            client.ConnectAsync(ServerAddress, dynamicPort).Wait();
+            stream = client.GetStream();
         }
-        private static async Task SendMessage(int sourceUserID, int targetUserID, string messageContent)
-        {
-            var message = $"SEND {sourceUserID} {targetUserID} {messageContent}|EOM|";
-            await SendToServer(message);
-        }
+
+
+
         private static async Task<string> SendToServer(string message)
         {
             byte[] data = Encoding.UTF8.GetBytes(message);
-            await stream.WriteAsync(data, 0, data.Length);
+            stream.WriteAsync(data, 0, data.Length).Wait();
 
             data = new byte[1024];
             int bytes = await stream.ReadAsync(data, 0, data.Length);
@@ -81,18 +65,11 @@ namespace CarStore.Services.Chat
         //---------------------------------------------------------------
         public ChatClient(int userId)
         {
-            ConnectToInitialServer().Wait();
             this.userId = userId;
             Chats = new List<ChatItem>();
+            Messages = new List<Message>();
         }
 
-
-        public ObservableCollection<ChatItem> GetChatItems()
-        {
-            string userID = userId.ToString("D6");
-            ListConversations(userID).Wait();
-            return new ObservableCollection<ChatItem>(Chats);
-        }
         private static async Task ListConversations(string userId)
         {
             var message = $"LIST {userId}|EOM|";
@@ -119,42 +96,28 @@ namespace CarStore.Services.Chat
             }
         }
 
-
-
-        public ObservableCollection<Message> GetMessages(int userID)
+        private static async Task Exit()
         {
-            ReadMessages(this.userId.ToString("D6"),userID.ToString("D6")).Wait();
-            return new ObservableCollection<Message>(Messages);
-        }
-        private static async Task ReadMessages(string userId,string targetUserId)
-        {
-            var userId1 = userId;
-            var userId2 = targetUserId;
-
-            var message = $"RECV {userId1} {userId2}|EOM|";
-            var response = await SendToServer(message);
-
-            try
-            {
-                var messages = JsonSerializer.Deserialize<List<Dictionary<string, string>>>(response);
-                foreach (var msg in messages)
-                {
-                    Message tmp = new Message
-                    {
-                        Text = msg["message"],
-                        isMine = msg["user"] == userId
-                    };
-                    Messages.Add(tmp);
-                }
-            }
-            catch (JsonException ex)
-            {
-                throw;
-            }
+            var message = "EXIT|EOM|";
+            await SendToServer(message);
+            client.Close();
         }
 
 
         public void SendMessage(Message message) => throw new NotImplementedException();
+
+        public List<ChatItem> GetConversations()
+        {
+            var userId = this.userId.ToString("D6");
+            Chats = new List<ChatItem>();
+            ConnectToInitialServer().Wait();
+            ListConversations(userId).Wait();
+            Exit().Wait();
+            return Chats;
+        }
+
+        public ObservableCollection<Message> GetMessages(int userID) => throw new NotImplementedException();
+        public ObservableCollection<ChatItem> GetChatItems() => throw new NotImplementedException();
     }
 
     public class Conversation
