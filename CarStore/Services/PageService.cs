@@ -29,6 +29,7 @@ public class PageService : IPageService
         Configure<LoginViewModel, LoginPage>();
         Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
         Configure<EditItemPageViewModel, EditItem>();
+        Configure<ChatPageViewModel, ChatPage>();
     }
 
     public Type GetPageType(string key)

@@ -114,6 +114,8 @@ public partial class App : Application
             services.AddTransient<MockAnyCarPage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
+            services.AddTransient<ChatPageViewModel>();
+            services.AddTransient<ChatPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
