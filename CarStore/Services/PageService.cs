@@ -29,6 +29,8 @@ public class PageService : IPageService
         Configure<LoginViewModel, LoginPage>();
         Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
         Configure<EditItemPageViewModel, EditItem>();
+        Configure<AuctionViewModel, AuctionPage>();
+        Configure<DetailAuctionViewModel, DetailAuctionPage>();
     }
 
     public Type GetPageType(string key)

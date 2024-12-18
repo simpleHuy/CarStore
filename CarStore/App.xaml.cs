@@ -114,6 +114,10 @@ public partial class App : Application
             services.AddTransient<MockAnyCarPage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
+            services.AddTransient<AuctionViewModel>();
+            services.AddTransient<AuctionPage>();
+            services.AddTransient<DetailAuctionViewModel>();
+            services.AddTransient<DetailAuctionPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

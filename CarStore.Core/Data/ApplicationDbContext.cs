@@ -79,6 +79,11 @@ public class ApplicationDbContext : DbContext
                                         .HasForeignKey(s => s.MerchantId)
                                         .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<Auction>().HasOne<Car>(a => a.Car)
+                                     .WithOne(c => c.Auction)
+                                     .HasForeignKey<Auction>(a => a.CarId)
+                                     .OnDelete(DeleteBehavior.SetNull);
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
@@ -93,7 +98,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<PriceOfCar>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
-
+        
         //seeding data
         modelBuilder.Seed();
     }
@@ -110,4 +115,13 @@ public class ApplicationDbContext : DbContext
     public DbSet<NumberSeat> numberSeats { get; set; }
     public DbSet<User> users { get; set; }
     public DbSet<Schedule> schedules { get; set; }
+
+    public DbSet<Auction> Auctions
+    {
+        get; set;
+    }
+    public DbSet<Bidding> Biddings
+    {
+        get; set;
+    }
 }

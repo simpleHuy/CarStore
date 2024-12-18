@@ -163,4 +163,7 @@
   <data name="Shell_Login.Content" xml:space="preserve">
     <value>Đăng nhập</value>
   </data>
+  <data name="Shell_Auction.Content" xml:space="preserve">
+    <value>Trang đấu giá</value>
+  </data>
 </root>

@@ -3,6 +3,7 @@ using System;
 using CarStore.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241218112328_addBiddingTable")]
+    partial class addBiddingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,38 +60,6 @@ namespace CarStore.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("Auctions");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
-                {
-                    b.Property<int>("BiddingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BiddingId"));
-
-                    b.Property<int>("AuctionId")
-                        .HasColumnType("integer");
-
-                    b.Property<long>("BidAmount")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UserId1")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BiddingId");
-
-                    b.HasIndex("AuctionId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Biddings");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
@@ -910,23 +881,6 @@ namespace CarStore.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Car");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.Auction", "Auction")
-                        .WithMany()
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("Auction");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>

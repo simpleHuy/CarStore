@@ -70,7 +70,16 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
+    public int AuctionId
+    {
+        get; set;
+    }
+
     public Manufacturer Manufacturer { get; set; }
+    public Auction Auction
+    {
+        get; set;
+    }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
@@ -80,6 +89,7 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
+
 
     public event PropertyChangedEventHandler PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
