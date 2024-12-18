@@ -76,17 +76,14 @@ namespace CarStore.Core.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UserId1")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("BiddingId");
 
                     b.HasIndex("AuctionId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Biddings");
                 });
@@ -915,14 +912,16 @@ namespace CarStore.Core.Migrations
             modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
                 {
                     b.HasOne("CarStore.Core.Models.Auction", "Auction")
-                        .WithMany()
+                        .WithMany("Biddings")
                         .HasForeignKey("AuctionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                        .WithMany("Biddings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auction");
 
@@ -1029,6 +1028,11 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Variant");
                 });
 
+            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
+                {
+                    b.Navigation("Biddings");
+                });
+
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.Navigation("Auction");
@@ -1067,6 +1071,8 @@ namespace CarStore.Core.Migrations
 
             modelBuilder.Entity("CarStore.Core.Models.User", b =>
                 {
+                    b.Navigation("Biddings");
+
                     b.Navigation("CustommerSchedules");
 
                     b.Navigation("MerchantSchedules");

@@ -24,7 +24,7 @@ public class Bidding: INotifyPropertyChanged
     {
         get; set;
     }
-    public string UserId
+    public int UserId
     {
         get; set;
     }

@@ -137,6 +137,7 @@ public partial class App : Application
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
             services.AddScoped<IUserRepository, EfCoreUserRepository>();
+            services.AddScoped<IBiddingRepository, EfCoreBiddingRepository>();
             services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
         }).
         Build();

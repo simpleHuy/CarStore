@@ -54,6 +54,11 @@ public class User
         get; set;
     }
 
+    public ICollection<Bidding> Biddings
+    {
+        get; set;
+    }
+
     public ICollection<Schedule> CustommerSchedules { get; set; }
     public ICollection<Schedule> MerchantSchedules { get; set; }
 }

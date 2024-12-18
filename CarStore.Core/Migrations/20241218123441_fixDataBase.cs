@@ -5,7 +5,7 @@
 namespace CarStore.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class addBiddingTable : Migration
+    public partial class fixDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

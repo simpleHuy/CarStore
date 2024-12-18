@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241218112328_addBiddingTable")]
-    partial class addBiddingTable
+    [Migration("20241218123441_fixDataBase")]
+    partial class fixDataBase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,35 @@ namespace CarStore.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
+                {
+                    b.Property<int>("BiddingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BiddingId"));
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("BidAmount")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("Time")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BiddingId");
+
+                    b.HasIndex("AuctionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Biddings");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
@@ -883,6 +912,25 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Car");
                 });
 
+            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
+                {
+                    b.HasOne("CarStore.Core.Models.Auction", "Auction")
+                        .WithMany("Biddings")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarStore.Core.Models.User", "User")
+                        .WithMany("Biddings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.HasOne("CarStore.Core.Models.EngineType", "EngineType")
@@ -983,6 +1031,11 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Variant");
                 });
 
+            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
+                {
+                    b.Navigation("Biddings");
+                });
+
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.Navigation("Auction");
@@ -1021,6 +1074,8 @@ namespace CarStore.Core.Migrations
 
             modelBuilder.Entity("CarStore.Core.Models.User", b =>
                 {
+                    b.Navigation("Biddings");
+
                     b.Navigation("CustommerSchedules");
 
                     b.Navigation("MerchantSchedules");

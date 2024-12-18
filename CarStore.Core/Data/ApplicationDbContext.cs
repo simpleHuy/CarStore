@@ -84,6 +84,20 @@ public class ApplicationDbContext : DbContext
                                      .HasForeignKey<Auction>(a => a.CarId)
                                      .OnDelete(DeleteBehavior.SetNull);
 
+
+        modelBuilder.Entity<Bidding>()
+                .HasOne(b => b.User)                       
+                .WithMany(u => u.Biddings)                 
+                .HasForeignKey(b => b.UserId)              
+                .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Bidding>()
+            .HasOne(b => b.Auction)
+                .WithMany(a => a.Biddings)
+                .HasForeignKey(b => b.AuctionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();

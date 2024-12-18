@@ -49,6 +49,8 @@ public class Auction: INotifyPropertyChanged
         get; set;
     }
 
+     public ICollection<Bidding> Biddings { get; set; } 
+
     public event PropertyChangedEventHandler PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241218112914_fixBidding")]
-    partial class fixBidding
+    [Migration("20241218122309_addBiddingTable")]
+    partial class addBiddingTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,17 +79,14 @@ namespace CarStore.Core.Migrations
                     b.Property<DateTime>("Time")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("UserId1")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
                     b.HasKey("BiddingId");
 
                     b.HasIndex("AuctionId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Biddings");
                 });
@@ -925,7 +922,9 @@ namespace CarStore.Core.Migrations
 
                     b.HasOne("CarStore.Core.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Auction");
 

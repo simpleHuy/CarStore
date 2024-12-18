@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Models;
+using CarStore.Services.DataAccess;
+using CarStore.Core.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CarStore.Core.Dtos;
+
 
 namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
@@ -107,6 +111,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
     private readonly ICarRepository _carRepository;
+    private readonly IBiddingRepository _biddingRepository;
 
     private int _selectedImageIndex;
     public int SelectedImageIndex
@@ -119,7 +124,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<Bidding> BidHistory { get; set; } = new ObservableCollection<Bidding>();
+    public ObservableCollection<Bidding>? BidHistory { get; set; }
     public string BidAmount
     {
         get; set;
@@ -130,9 +135,26 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
     {
         get;
     }
-    public DetailAuctionViewModel(ICarRepository carRepository)
+    private readonly IDao<Bidding> _bidding;
+    private readonly IDao<User> _user;
+    public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,IDao<Bidding> bidding, IDao<User> user)
     {
         _carRepository = carRepository;
+        _biddingRepository = biddingRepository;
+        _bidding = bidding;
+        _user = user;
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+
+    }
+
+    private async Task LoadInitialDataAsync()
+    {
+        var allBid = await _biddingRepository.GetBidsByAuctionIdAsync(1);
+        var bid = await _bidding.GetByIdAsync(1);
+        var user = await _user.GetByIdAsync(1);
+        bid.User = user;
+        BidHistory = new ObservableCollection<Bidding>(allBid);
+        //BidHistory.Add(bid);
     }
 
     private void PlaceBid()

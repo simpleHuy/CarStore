@@ -72,7 +72,7 @@
                     </TextBlock>
 
                     <!--Select color-->
-                    <ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
+                    <!--<ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
                     ItemsSource="{x:Bind ViewModel.SelectedCar.VariantOfCars, Mode=OneWay}" Loaded="Color_Loaded" 
                     BorderBrush="LightGray" BorderThickness="1" CornerRadius="{StaticResource OverlayCornerRadius}">
                         <ComboBox.ItemContainerStyle>
@@ -91,7 +91,7 @@
                                 <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold"  />
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
-                    </ComboBox>
+                    </ComboBox>-->
 
                     <!--Image With Selected color-->
                     <GridView x:Name="BasicGridView" ItemsSource="{x:Bind ViewModel.SelectedCarPictures, Mode=OneWay}"
@@ -108,26 +108,6 @@
                         </GridView.ItemTemplate>
                     </GridView>
 
-                    <!--Some button-->
-                    <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                        <Button Style="{StaticResource AccentButtonStyle}" Click="Schedule_btn_click"
-                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
-                            <TextBlock Text="Đặt lịch xem xe" Style="{StaticResource BodyTextBlockStyle}"/>
-                        </Button>
-                        <Button  Style="{StaticResource AccentButtonStyle}"
-                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="Contact_btn_click">
-                            <TextBlock Text="Liên hệ với chủ" Style="{StaticResource BodyTextBlockStyle}"/>
-                        </Button>
-                        <Button  Style="{StaticResource AccentButtonStyle}"
-                    CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0" Click="AddWishlist_btn_click">
-                            <TextBlock Text="Thêm vào Wishlists" Style="{StaticResource BodyTextBlockStyle}" />
-                        </Button>
-                        <Button  Style="{StaticResource AccentButtonStyle}" Click="Compare_btn_click"
-                CornerRadius="{ThemeResource OverlayCornerRadius}" Margin="10 0">
-                            <TextBlock Text="So sánh" Style="{StaticResource BodyTextBlockStyle}"/>
-                        </Button>
-                    </StackPanel>-->
-                    
 
                 </StackPanel>
             </Grid>
@@ -155,8 +135,8 @@
                         <DataTemplate x:DataType="local2:Bidding">
                             <StackPanel Orientation="Horizontal" Margin="0,5">
                                 <!-- Hiển thị tên người đấu giá -->
-                                <TextBlock Text="{x:Bind User.Name}" FontWeight="Bold" Margin="0,0,10,0" />
-
+                                <TextBlock Text="{x:Bind User.lastName}" FontWeight="Bold" Margin="0,0,10,0" />
+                                <TextBlock Text=":" Margin="0, 0 10, 0"/>
                                 <!-- Hiển thị giá tiền -->
                                 <TextBlock Text="{x:Bind BidAmount, Converter={StaticResource currency}}" />
 

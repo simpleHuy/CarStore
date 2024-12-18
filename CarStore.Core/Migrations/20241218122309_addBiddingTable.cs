@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class fixBidding : Migration
+    public partial class addBiddingTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +19,7 @@ namespace CarStore.Core.Migrations
                     BiddingId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     AuctionId = table.Column<int>(type: "integer", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    UserId1 = table.Column<int>(type: "integer", nullable: true),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
                     BidAmount = table.Column<long>(type: "bigint", nullable: false),
                     Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -34,10 +33,11 @@ namespace CarStore.Core.Migrations
                         principalColumn: "AuctionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Biddings_users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Biddings_users_UserId",
+                        column: x => x.UserId,
                         principalTable: "users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -46,9 +46,9 @@ namespace CarStore.Core.Migrations
                 column: "AuctionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Biddings_UserId1",
+                name: "IX_Biddings_UserId",
                 table: "Biddings",
-                column: "UserId1");
+                column: "UserId");
         }
 
         /// <inheritdoc />
