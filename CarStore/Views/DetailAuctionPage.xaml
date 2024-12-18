@@ -71,28 +71,6 @@
         <Run Text="Giá hiện tại: "/><Run Text="{x:Bind ViewModel.Auction.Price,Converter={StaticResource currency}}"/>
                     </TextBlock>
 
-                    <!--Select color-->
-                    <!--<ComboBox SelectionChanged="ColorComboBox_SelectionChanged" Header="Màu sắc" Width="200" Background="white" 
-                    ItemsSource="{x:Bind ViewModel.SelectedCar.VariantOfCars, Mode=OneWay}" Loaded="Color_Loaded" 
-                    BorderBrush="LightGray" BorderThickness="1" CornerRadius="{StaticResource OverlayCornerRadius}">
-                        <ComboBox.ItemContainerStyle>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="White" />
-                            </Style>
-                        </ComboBox.ItemContainerStyle>
-
-                        <ComboBox.HeaderTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}" FontWeight="Bold"  />
-                            </DataTemplate>
-                        </ComboBox.HeaderTemplate>
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="local2:VariantOfCar">
-                                <TextBlock Text="{x:Bind Name}" FontWeight="SemiBold"  />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>-->
-
                     <!--Image With Selected color-->
                     <GridView x:Name="BasicGridView" ItemsSource="{x:Bind ViewModel.SelectedCarPictures, Mode=OneWay}"
                 IsItemClickEnabled="True" ItemClick="ChooseThisPicture"
@@ -152,16 +130,16 @@
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
                     <!-- Input nhập số tiền -->
                     <TextBox 
-            x:Name="BidAmountInput" 
-            Width="200" 
-            PlaceholderText="Nhập số tiền" 
-            Text="{x:Bind ViewModel.BidAmount, Mode=TwoWay}" />
+                        x:Name="BidAmountInput" 
+                        Width="200" 
+                        PlaceholderText="Nhập số tiền" 
+                        Text="{x:Bind ViewModel.BidAmount, Mode=TwoWay}"
+                        InputScope="Number"/>
 
                     <!-- Nút đấu giá -->
                     <Button 
                         Content="Đấu Giá" 
-                        Command="{x:Bind ViewModel.PlaceBidCommand}" 
-                        IsEnabled="{x:Bind ViewModel.CanPlaceBid}" />
+                        Command="{x:Bind ViewModel.PlaceBidCommand}" />
                 </StackPanel>
             </Grid>
 

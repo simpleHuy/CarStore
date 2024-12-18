@@ -35,7 +35,6 @@ public sealed partial class DetailAuctionPage : Page
         this.InitializeComponent();
         this.DataContext = ViewModel;
     }
-
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);

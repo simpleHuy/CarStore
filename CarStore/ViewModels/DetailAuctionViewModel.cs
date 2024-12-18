@@ -13,6 +13,7 @@ using CarStore.Services.DataAccess;
 using CarStore.Core.Contracts.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CarStore.Core.Dtos;
+using CommunityToolkit.Mvvm.Input;
 
 
 namespace CarStore.ViewModels;
@@ -125,16 +126,24 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
     }
 
     public ObservableCollection<Bidding>? BidHistory { get; set; }
-    public string BidAmount
-    {
-        get; set;
-    }
-    public bool CanPlaceBid => !string.IsNullOrEmpty(BidAmount) && long.TryParse(BidAmount, out _);
 
-    public ICommand PlaceBidCommand
+    private long bidAmount;
+    public long BidAmount
     {
-        get;
+        get => bidAmount;
+        set
+        {
+            if (bidAmount != value)
+            {
+                bidAmount = value;
+                OnPropertyChanged(nameof(BidAmount));
+                OnPropertyChanged(nameof(CanPlaceBid));
+            }
+        }
     }
+    public bool CanPlaceBid => bidAmount > 0;
+
+    public ICommand PlaceBidCommand{get;}
     private readonly IDao<Bidding> _bidding;
     private readonly IDao<User> _user;
     public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,IDao<Bidding> bidding, IDao<User> user)
@@ -143,8 +152,11 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
         _biddingRepository = biddingRepository;
         _bidding = bidding;
         _user = user;
-        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+        BidAmount = 0;
 
+        PlaceBidCommand = new RelayCommand(PlaceBid, () => CanPlaceBid);
+
+        Task.Run(async () => await LoadInitialDataAsync()).Wait();
     }
 
     private async Task LoadInitialDataAsync()
@@ -154,25 +166,22 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
         var user = await _user.GetByIdAsync(1);
         bid.User = user;
         BidHistory = new ObservableCollection<Bidding>(allBid);
-        //BidHistory.Add(bid);
     }
 
     private void PlaceBid()
     {
         // Thêm logic đấu giá
-        if (long.TryParse(BidAmount, out var amount))
-        {
-            BidHistory.Add(new Bidding
-            {
-                User =
-                {
-                    Name = "User 1"
-                },
-                BidAmount = amount,
-                Time = DateTime.Now
-            });
-            BidAmount = string.Empty; // Reset input
-        }
+        //BidHistory.Add(new Bidding
+        //{
+        //    User = {
+        //        Name = "Người dùng A"
+        //    },
+        //    BidAmount = BidAmount,
+        //    Time = DateTime.Now
+        //});
+
+        // Reset số tiền sau khi đấu giá
+        BidAmount = 0;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
