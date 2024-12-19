@@ -75,8 +75,6 @@ public sealed partial class ScheduleForm : Page
         }
 
         var address = BranchPicker.SelectedItem.ToString();
-
-
         ViewModel.AddSchedule(dateTime, address);
 
         await new ContentDialog()
