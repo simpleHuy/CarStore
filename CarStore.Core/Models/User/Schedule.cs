@@ -14,6 +14,10 @@ public class Schedule
     public int CarId { get; set; }
     public int CustomerId { get; set; }
     public int MerchantId { get; set; }
+    public string Address
+    {
+        get; set;
+    }
 
     // Navgiation Properties
     public Car Car { get; set; }

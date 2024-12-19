@@ -36,13 +36,13 @@ public class EfCoreDao<T> : IDao<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task InsertById(T entity)
+    public async Task Insert(T entity)
     {
         await _context.Set<T>().AddAsync(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task UpdateById(T entity)
+    public async Task Update(T entity)
     {
         _context.Set<T>().Update(entity);
         await _context.SaveChangesAsync();

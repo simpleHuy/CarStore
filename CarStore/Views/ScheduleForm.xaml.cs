@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.ExpressionTranslators.Internal;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -29,14 +30,9 @@ public sealed partial class ScheduleForm : Page
     {
         get; set;
     }
-    public MainPageViewModel mainPageViewModel
-    {
-        get; set;
-    }
     public ScheduleForm()
     {
         ViewModel = App.GetService<ScheduleFormViewModel>();
-        mainPageViewModel = App.GetService<MainPageViewModel>();
         this.InitializeComponent();
     }
 
@@ -54,32 +50,57 @@ public sealed partial class ScheduleForm : Page
                 CloseButtonText = "Quay lại",
             }.ShowAsync();
 
+            return;
         }
-        else
+
+        var today = DateTime.Now;
+        today = new DateTime(today.Year, today.Month, today.Day, 0, 0, 0);
+        var date = DatePicker.Date.Value.DateTime;
+        var time = TimePicker.SelectedTime.Value;
+        var dateTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
+
+        if (today.AddDays(2) > dateTime)
         {
             await new ContentDialog()
             {
                 XamlRoot = this.Content.XamlRoot,
                 Title = "Đặt lịch hẹn",
-                Content = "Đã đặt lịch hẹn thành công",
-                CloseButtonText = "OK",
+                Content = "Thời gian đặt lịch hẹn không hợp lệ!\nVui lòng đặt trước ít nhất 2 ngày",
+                CloseButtonText = "Quay lại",
             }.ShowAsync();
 
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
+            return;
         }
 
+        var address = BranchPicker.SelectedItem.ToString();
+
+
+        ViewModel.AddSchedule(dateTime, address);
+
+        await new ContentDialog()
+        {
+            XamlRoot = this.Content.XamlRoot,
+            Title = "Đặt lịch hẹn",
+            Content = "Đã đặt lịch hẹn thành công",
+            CloseButtonText = "OK",
+        }.ShowAsync();
+
+
+
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
-        if (e.Parameter is Car selectedCar)
+        if (e.Parameter is Tuple<Car, Showroom> schduleData)
         {
-            ViewModel.CurrentSelectedCar = selectedCar;
+            ViewModel.CurrentSelectedCar = schduleData.Item1;
+            ViewModel.Showroom = schduleData.Item2;
         }
     }
 

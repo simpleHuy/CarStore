@@ -70,41 +70,7 @@
                 VerticalContentAlignment="Center"
                 Grid.Column="1" Grid.Row="0" 
                 PlaceholderText="Tìm kiếm trên eCar"
-                Height="40" Width="500"/>   
-            <Grid x:Name="Header_AccountSection" 
-                Grid.Column="2" Grid.Row="0"
-                HorizontalAlignment="Right">
-                <StackPanel x:Name="Header_Buttons"  Orientation="Horizontal" 
-                            Visibility="{x:Bind mainPageViewModel.IsLogin , Converter={StaticResource InvertBooleanToVisibilityConverter}}">
-                    <Button x:Name="BtnLogin"
-                        Margin="5"
-                        Background="White"
-                        Command="{x:Bind ViewModel.NavigateToLoginCommand}"
-                        Width="100">
-                        Đăng nhập
-                    </Button>
-                    <Button x:Name="BtnSignup"
-                        Margin="5"
-                        Background="White"
-                        Command="{x:Bind ViewModel.NavigateToSignupCommand}"
-                        Width="100">
-                        Đăng ký
-                    </Button>
-                </StackPanel>
-                <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
-                            Visibility="{x:Bind ViewModel.isLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0">
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Vertical" Margin="0 0 10 0">
-                                <TextBlock x:Name="AccountName" Text="{x:Bind mainPageViewModel.CurrentUser.lastName    , Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
-                                <TextBlock x:Name="UserType" Text="{x:Bind mainPageViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
-                            </StackPanel>
-                            <Image Source="../Assets/Avatars/1.png" Height="50"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-
-            </Grid>
+                Height="40" Width="500"/>
 
         </Grid>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
@@ -130,11 +96,7 @@
                     <Image x:Name="BigImage" Source="{x:Bind ViewModel.CurrentSelectedCar.DefautlImageLocation, Mode=OneWay}"
                             Stretch="UniformToFill"/>
                 </Border>
-                
-                <!--<ComboBox x:Name="Variant" ItemsSource="{x:Bind ViewModel.CurrentSelectedCar.Variant}"
-                          ItemTemplate="{StaticResource VariantTemplate}"
-                          PlaceholderText="Màu sắc"
-                          Margin="20 0 10 5"/>-->
+
                 <StackPanel Orientation="Horizontal" Margin="20 5 20 20" VerticalAlignment="Center">
                     <TextBlock Text="{x:Bind ViewModel.CurrentSelectedCar.Price, Converter={StaticResource currency}}" Style="{ThemeResource TitleTextBlockStyle}"
                                Foreground="{ThemeResource AccentTextFillColorTertiaryBrush}"/>
@@ -150,13 +112,13 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <TextBlock Text="Thông tin khách hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBox Header="Tên khách hàng" Text="{x:Bind mainPageViewModel.CurrentUser.firstName}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
-                <TextBox Header="Email" Text="{x:Bind mainPageViewModel.CurrentUser.Email}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
-                <TextBox Header="Số điện thoại" Text="{x:Bind mainPageViewModel.CurrentUser.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                <TextBox Header="Tên khách hàng" Text="{x:Bind ViewModel.User.firstName}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                    <TextBox Header="Email" Text="{x:Bind ViewModel.User.Email}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                    <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.User.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBlock Text="Thông tin cửa hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
                     <TextBlock Text="Cửa hàng:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
-                    <TextBlock Text="AnyCar" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
+                    <TextBlock Text="{x:Bind ViewModel.Showroom.Name}" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="20 10 0 0">
                     <TextBlock Text="Số điện thoại:" Style="{ThemeResource BodyStrongTextBlockStyle}"/>
@@ -167,9 +129,16 @@
                     <TextBlock Text="371 Cộng Hòa, phường Tân Mỹ, quận 4, thành phố Hồ Chí Minh" Style="{ThemeResource BodyTextBlockStyle}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <TextBlock Text="Thông tin lịch hẹn" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <ComboBox x:Name="BranchPicker" PlaceholderText="Chi nhánh" Margin="20 10 0 0" Header="Showroom">
-                    <TextBlock Text="Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"/>
-                    <TextBlock Text="Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"/>
+                <ComboBox x:Name="BranchPicker" PlaceholderText="Chi nhánh" Margin="20 10 0 0" Header="Showroom" ItemsSource="{x:Bind ViewModel.Showroom.Address}">
+                    <!--<TextBlock Text="Chi nhánh Hà Nội: Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"/>
+                    <TextBlock Text="Chi nhánh Hồ Chí Minh: Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"/>-->
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="md:Address">
+                                <TextBlock>
+                                    <Run Text="Chi nhánh"/> <Run Text="{x:Bind City}"/>: <Run Text="{x:Bind Street}"/>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                 </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="20" Orientation="Horizontal" Margin="20 10 0 0">
                     <CalendarDatePicker x:Name="DatePicker" Header="Chọn ngày" HorizontalAlignment="Center"/>

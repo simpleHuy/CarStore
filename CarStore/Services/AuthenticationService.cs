@@ -379,7 +379,7 @@ public class AuthenticationService : IAuthenticationService
             Telephone = phoneNumber
         };
 
-        await userDao.InsertById(newUser);
+        await userDao.Insert(newUser);
 
         return await Task.FromResult(true);
     }
@@ -410,7 +410,7 @@ public class AuthenticationService : IAuthenticationService
         user.PasswordHash = hashedPassword;
         user.Salt = salt;
 
-        await userDao.UpdateById(user);
+        await userDao.Update(user);
         return true;
     }
 
@@ -455,7 +455,7 @@ public class AuthenticationService : IAuthenticationService
                 user.PasswordHash = hashedPassword;
                 user.Salt = salt;
 
-                await userDao.UpdateById(user);
+                await userDao.Update(user);
 
                 return true;
             });

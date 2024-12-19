@@ -37,7 +37,7 @@ public class EfCoreUserRepository : IUserRepository
         }
     }
 
-    public Task<User> GetUserByEmail(string email)
+        public Task<User> GetUserByEmail(string email)
     {
         return _dbContext.users.FirstOrDefaultAsync(u => u.Email == email);
     }
@@ -54,4 +54,5 @@ public class EfCoreUserRepository : IUserRepository
             .Select(w => w.Car)
             .ToListAsync();
     }
+
 }

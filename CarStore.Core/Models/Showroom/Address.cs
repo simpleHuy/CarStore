@@ -29,4 +29,6 @@ public class Address
     {
         get; set;
     }
+
+    public override string ToString() => Street;
 }

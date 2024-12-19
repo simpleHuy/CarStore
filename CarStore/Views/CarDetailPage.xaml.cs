@@ -135,7 +135,9 @@ public sealed partial class CarDetailPage : Page
             return;
         }
 
-        Frame.Navigate(typeof(ScheduleForm), ViewModel.SelectedCar);
+        var scheduleData = Tuple.Create(ViewModel.SelectedCar, ViewModel.Showroom);
+
+        Frame.Navigate(typeof(ScheduleForm), scheduleData);
     }
 
     private async void Contact_btn_click(object sender, RoutedEventArgs e)

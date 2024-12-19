@@ -64,15 +64,15 @@ public class ApplicationDbContext : DbContext
                                   .WithOne(s => s.Car)
                                   .HasForeignKey(s => s.CarId)
                                   .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<User>().HasMany<Schedule>(u => u.CustommerSchedules)
+                                  .WithOne(s => s.Customer)
+                                  .HasForeignKey(s => s.CustomerId)
+                                  .OnDelete(DeleteBehavior.SetNull);
 
-        modelBuilder.Entity<Schedule>().HasOne(s => s.Customer)
-                                        .WithMany(u => u.CustommerSchedules)
-                                        .HasForeignKey(s => s.CustomerId)
-                                        .OnDelete(DeleteBehavior.SetNull);
-        modelBuilder.Entity<Schedule>().HasOne(s => s.Merchant)
-                                        .WithMany(u => u.MerchantSchedules)
-                                        .HasForeignKey(s => s.MerchantId)
-                                        .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<User>().HasMany<Schedule>(u => u.MerchantSchedules)
+                                  .WithOne(s => s.Merchant)
+                                  .HasForeignKey(s => s.MerchantId)
+                                  .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Wishlist>().HasKey(w => w.Id);
         modelBuilder.Entity<Wishlist>().HasOne<Car>(vc => vc.Car)

@@ -3,6 +3,7 @@ using System;
 using CarStore.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241217162207_addAddressInSchedule")]
+    partial class addAddressInSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("ShowroomId");
 
-                    b.ToTable("addresses", (string)null);
+                    b.ToTable("addresses");
 
                     b.HasData(
                         new
@@ -122,7 +125,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("TypeOfCarId");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
 
                     b.HasData(
                         new
@@ -298,7 +301,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("NumberSeatId");
 
-                    b.ToTable("CarDetails", (string)null);
+                    b.ToTable("CarDetails");
 
                     b.HasData(
                         new
@@ -396,7 +399,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EngineTypes", (string)null);
+                    b.ToTable("EngineTypes");
 
                     b.HasData(
                         new
@@ -434,7 +437,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Manufacturers", (string)null);
+                    b.ToTable("Manufacturers");
 
                     b.HasData(
                         new
@@ -497,7 +500,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("numberSeats", (string)null);
+                    b.ToTable("numberSeats");
 
                     b.HasData(
                         new
@@ -535,7 +538,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("priceOfCars", (string)null);
+                    b.ToTable("priceOfCars");
 
                     b.HasData(
                         new
@@ -596,7 +599,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("MerchantId");
 
-                    b.ToTable("schedules", (string)null);
+                    b.ToTable("schedules");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Showroom", b =>
@@ -638,7 +641,7 @@ namespace CarStore.Core.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("showrooms", (string)null);
+                    b.ToTable("showrooms");
 
                     b.HasData(
                         new
@@ -681,7 +684,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeOfCars", (string)null);
+                    b.ToTable("TypeOfCars");
 
                     b.HasData(
                         new
@@ -782,7 +785,7 @@ namespace CarStore.Core.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("users", (string)null);
+                    b.ToTable("users");
 
                     b.HasData(
                         new
@@ -821,7 +824,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("variants", (string)null);
+                    b.ToTable("variants");
 
                     b.HasData(
                         new
@@ -871,7 +874,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("variantsOfCars", (string)null);
+                    b.ToTable("variantsOfCars");
 
                     b.HasData(
                         new
@@ -998,7 +1001,7 @@ namespace CarStore.Core.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("wishlists", (string)null);
+                    b.ToTable("wishlists");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Address", b =>
