@@ -37,7 +37,17 @@ public class EfCoreUserRepository : IUserRepository
         }
     }
 
-        public Task<User> GetUserByEmail(string email)
+    public Task<List<Schedule>> GetSchedule(int userId)
+    {
+        // get all shedule of user (userid = customerId or userId = merchantId)
+        // sort by date
+        return _dbContext.schedules
+            .Where(s => s.CustomerId == userId || s.MerchantId == userId)
+            .OrderBy(s => s.Date)
+            .ToListAsync();
+    }
+
+    public Task<User> GetUserByEmail(string email)
     {
         return _dbContext.users.FirstOrDefaultAsync(u => u.Email == email);
     }

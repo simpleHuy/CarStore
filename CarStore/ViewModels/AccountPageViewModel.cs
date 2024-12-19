@@ -20,7 +20,6 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
     private readonly IUserRepository userRepository;
-    private readonly IDao<Car> _carDao;
     private readonly IDao<Variant> _variantDao;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
@@ -33,6 +32,10 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         get;
     }
     public List<Car>? Wishlist
+    {
+        get; set;
+    }
+    public List<Schedule> Schedules
     {
         get; set;
     }
@@ -51,16 +54,10 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         }
     }
 
-    public User? ViewedUser
-    {
-        get; set;
-    }
-
     public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository,
-        ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantdao)
+                                ICarRepository carRepository, IDao<Variant> variantdao)
     {
         this.userRepository = userRepository;
-        _carDao = carDao;
         _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
@@ -71,6 +68,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         Task.Run(async () =>
         {
             var curUserId = _authenticationService.GetCurrentUser().Id;
+            Schedules = await userRepository.GetSchedule(curUserId);
             Wishlist = await userRepository.GetWishlist(curUserId);
             foreach (var car in Wishlist)
             {
@@ -89,6 +87,5 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         var user = _authenticationService.GetCurrentUser();
         CurrentUser = user;
-        ViewedUser = user;
     }
 }

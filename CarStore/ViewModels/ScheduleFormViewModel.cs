@@ -44,7 +44,7 @@ public class ScheduleFormViewModel:ObservableObject, INotifyPropertyChanged
 
     public void AddSchedule(DateTime dateTime, string address)
     {
-        DateTime utcDateTime = dateTime.ToUniversalTime();
+        DateTime utcDateTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Utc);
 
         Schedule schedule = new Schedule
        {
