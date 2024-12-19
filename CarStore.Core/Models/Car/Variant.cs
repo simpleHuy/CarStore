@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace CarStore.Core.Models;
-public class Variant : INotifyPropertyChanged
+public class Variant
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id
@@ -27,6 +27,4 @@ public class Variant : INotifyPropertyChanged
     {
         return Code;
     }
-
-    public event PropertyChangedEventHandler PropertyChanged;
 }

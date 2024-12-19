@@ -38,7 +38,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     public List<Schedule> Schedules
     {
         get; set;
-    }
+    } = new List<Schedule>();
 
     private User? _currentUser;
     public User? CurrentUser
