@@ -32,11 +32,6 @@ public sealed partial class AddItemPage : Page
     {
         ViewModel = App.GetService<AddItemPageViewModel>();
         this.InitializeComponent();
-        ColorPicker.ItemsSource = ViewModel.colors;
-        ManufactureCbb.ItemsSource = ViewModel.Manufacturers;
-        VariantList.ItemsSource = ViewModel.Variants;
-        EngineCbb.ItemsSource = ViewModel.EngineTypes;
-        CarTypeCbb.ItemsSource = ViewModel.TypeOfCars;
     }
 
     private void AddVariantBtn_Click(object sender, RoutedEventArgs e)
@@ -49,20 +44,19 @@ public sealed partial class AddItemPage : Page
         if (e.Key == Windows.System.VirtualKey.Enter) { AddItemToList(); }
     }
 
-    void AddItemToList()
+    private void AddItemToList()
     {
         var variantString = InputVariantTxt.Text;
-        var colorPick = ColorPicker.SelectedItem as string;
+        var colorPick = ColorPicker.SelectedItem as Variant;
         var newVariantOfCar = new VariantOfCar();
         newVariantOfCar.Name = variantString;
-        newVariantOfCar.Variant = new Variant();
-        newVariantOfCar.Variant.Code = colorPick;
+        newVariantOfCar.Variant = colorPick;
+        newVariantOfCar.VariantId = colorPick.Id;
 
-        if (!string.IsNullOrWhiteSpace(variantString) && !string.IsNullOrEmpty(colorPick))
+        if (!string.IsNullOrWhiteSpace(variantString))
         {
             ViewModel.Variants.Add(newVariantOfCar);
             InputVariantTxt.Text = string.Empty;
-            ColorPicker.SelectedIndex = -1; // Reset the ComboBox
         }
         else
         {
@@ -167,7 +161,7 @@ public sealed partial class AddItemPage : Page
 
             if (string.IsNullOrEmpty(digitsOnly))
             {
-                textBox.Text = ""; // Nếu rỗng, không làm gì thêm
+                textBox.Text = "";
                 return;
             }
 
@@ -195,4 +189,20 @@ public sealed partial class AddItemPage : Page
         }
     }
 
+    private async void GuideBtn_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new ContentDialog()
+        {
+            Title = "Hướng dẫn thêm xe",
+            Content = "- Bạn cần điển đủ thông tin bắt buộc (các ô có *).\n\n- Khi thêm màu vui lòng đặt tên cho màu đó (ví dụ: Đỏ đô, trắng tuyết, đen huyền bí,...). " +
+                    "Sau Khi thêm màu hãy bấm vào nút \"thêm\" ở dưới ô chọn hình ảnh.\n\n- Khi thêm vào hình ảnh hãy chọn vào thư mục chứa ảnh của bạn (tên thư mục " +
+                    "đó tốt nhất là tên của xe bạn định đăng bán). Trong thư mục đó có chứa các thư mục con với màu của bạn đã thêm ở trên (ví dụ như: White, " +
+                    "Black, Green,...). Trong mỗi thư mục hãy thêm hình mà bạn muốn Shop hiển thị.\n\n- Vui lòng thực hiện đúng từng bước như trên để xe " +
+                    "của bạn có thể được đăng trên Shop của chúng tôi.",
+            CloseButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+
+        await dialog.ShowAsync();
+    }
 }
