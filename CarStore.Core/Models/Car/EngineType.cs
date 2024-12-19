@@ -10,7 +10,7 @@ using CarStore.Core.Contracts.Services;
 
 namespace CarStore.Core.Models;
 
-public class EngineType : IFilterItem, INotifyPropertyChanged
+public class EngineType : IFilterItem
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id
@@ -27,7 +27,4 @@ public class EngineType : IFilterItem, INotifyPropertyChanged
     {
         get; set;
     }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
 }
