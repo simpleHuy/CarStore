@@ -28,6 +28,8 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
             if (auction != value)
             {
                 auction = value;
+                Task.Run(async () => await LoadInitialDataAsync()).Wait();
+
             }
         }
     }
@@ -127,21 +129,43 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
 
     public ObservableCollection<Bidding>? BidHistory { get; set; }
 
-    private long bidAmount;
-    public long BidAmount
+    private string _bidAmountText;
+    public string BidAmountText
     {
-        get => bidAmount;
+        get => _bidAmountText;
         set
         {
-            if (bidAmount != value)
+            _bidAmountText = value;
+            OnPropertyChanged(nameof(BidAmountText));
+
+            // Validate and update the BidAmount property
+            if (long.TryParse(_bidAmountText, out var parsedValue))
             {
-                bidAmount = value;
-                OnPropertyChanged(nameof(BidAmount));
-                OnPropertyChanged(nameof(CanPlaceBid));
+                BidAmount = parsedValue;
+                ErrorMessage = string.Empty;
+            }
+            else
+            {
+                BidAmount = 0; // Or handle invalid input appropriately
+                ErrorMessage = "Invalid input. Please enter a numeric value.";
             }
         }
     }
-    public bool CanPlaceBid => bidAmount > 0;
+
+    private long _bidAmount;
+    public long BidAmount
+    {
+        get => _bidAmount;
+        private set
+        {
+            _bidAmount = value;
+            OnPropertyChanged(nameof(BidAmount));
+            OnPropertyChanged(nameof(CanPlaceBid));
+            ((RelayCommand)PlaceBidCommand).NotifyCanExecuteChanged();
+        }
+    }
+
+    public bool CanPlaceBid => BidAmount > 0;
 
     public ICommand PlaceBidCommand{get;}
     private readonly IDao<Bidding> _bidding;
@@ -156,15 +180,28 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
 
         PlaceBidCommand = new RelayCommand(PlaceBid, () => CanPlaceBid);
 
-        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+    }
+
+    private string _errorMessage;
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set
+        {
+            _errorMessage = value;
+            OnPropertyChanged(nameof(ErrorMessage));
+        }
     }
 
     private async Task LoadInitialDataAsync()
     {
-        var allBid = await _biddingRepository.GetBidsByAuctionIdAsync(1);
-        var bid = await _bidding.GetByIdAsync(1);
-        var user = await _user.GetByIdAsync(1);
-        bid.User = user;
+        var allBid = await _biddingRepository.GetBidsByAuctionIdAsync(auction.AuctionId);
+        for (int i =0;i < allBid.Count; i++)
+        {
+            var user = await _user.GetByIdAsync(allBid[i].UserId);
+            allBid[i].User = user;
+
+        }
         BidHistory = new ObservableCollection<Bidding>(allBid);
     }
 

@@ -16,13 +16,7 @@ using Windows.Foundation.Collections;
 using CarStore.ViewModels;
 using CarStore.Core.Models;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace CarStore.Views;
-/// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
-/// </summary>
 public sealed partial class DetailAuctionPage : Page
 {
     public DetailAuctionViewModel ViewModel
@@ -79,8 +73,5 @@ public sealed partial class DetailAuctionPage : Page
             comboBox.SelectedIndex = 0;
         }
     }
-
-
-
 
 }

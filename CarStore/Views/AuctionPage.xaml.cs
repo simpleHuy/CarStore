@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -37,12 +37,38 @@ public sealed partial class AuctionPage : Page
         DataContext = ViewModel;
     }
 
-    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Auction selectedAuction)
         {
             // Navigate to the detail page
-            Frame.Navigate(typeof(DetailAuctionPage), selectedAuction);
+            if (selectedAuction.condition == "Đang diễn ra")
+            {
+                Frame.Navigate(typeof(DetailAuctionPage), selectedAuction);
+            }
+            if (selectedAuction.condition == "Sắp diễn ra")
+            {
+                ContentDialog dialog = new ContentDialog
+                {
+                    Title = "Thông báo",
+                    Content = "Phiên đấu giá chưa bắt đầu",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+            }
+            if (selectedAuction.condition == "Kết thúc")
+            {
+                ContentDialog dialog = new ContentDialog
+                {
+                    Title = "Thông báo",
+                    Content = "Phiên đấu giá đã kết thúc",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+
+            }
         }
     }
 
