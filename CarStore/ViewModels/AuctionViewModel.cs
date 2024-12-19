@@ -28,11 +28,16 @@ public partial class AuctionViewModel: ObservableObject
             Source.Add(item);
         }
     }
-    public AuctionViewModel(IDao<Auction> sampleDataService)
+
+    private IAuthenticationService AuthenticationService { get; set; }
+    public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
+    public AuctionViewModel(IDao<Auction> sampleDataService, IAuthenticationService authenticationService)
     {
         _sampleDataService = sampleDataService;
+        AuthenticationService = authenticationService;
         LoadData();
     }
+
     
     public void OnNavigatedFrom()
     {

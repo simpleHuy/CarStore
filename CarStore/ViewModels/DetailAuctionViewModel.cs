@@ -203,22 +203,24 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
 
         }
         BidHistory = new ObservableCollection<Bidding>(allBid);
+        OnPropertyChanged(nameof(BidHistory));
     }
 
-    private void PlaceBid()
-    {
-        // Thêm logic đấu giá
-        //BidHistory.Add(new Bidding
-        //{
-        //    User = {
-        //        Name = "Người dùng A"
-        //    },
-        //    BidAmount = BidAmount,
-        //    Time = DateTime.Now
-        //});
 
-        // Reset số tiền sau khi đấu giá
+
+    private async void PlaceBid()
+    {
+        await _bidding.InsertById(new Bidding
+        {
+            AuctionId = auction.AuctionId,
+            UserId = 1,
+            BidAmount = BidAmount,
+            Time = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
+        });
+
+        await LoadInitialDataAsync();
         BidAmount = 0;
+        BidAmountText = "0";
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

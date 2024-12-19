@@ -112,7 +112,8 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<PriceOfCar>().Property(p => p.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<NumberSeat>().Property(n => n.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Schedule>().Property(s => s.Id).ValueGeneratedOnAdd();
-        
+        modelBuilder.Entity<Bidding>().Property(b => b.BiddingId).ValueGeneratedOnAdd();
+
         //seeding data
         modelBuilder.Seed();
     }

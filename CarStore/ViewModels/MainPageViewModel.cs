@@ -107,6 +107,10 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         CheckAuthenticationState();
     }
 
+    public MainPageViewModel()
+    {
+    }
+
     private void CheckAuthenticationState()
     {
         var user = _authenticationService.GetCurrentUser();

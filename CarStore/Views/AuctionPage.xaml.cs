@@ -30,6 +30,8 @@ public sealed partial class AuctionPage : Page
     {
         get;
     }
+
+    
     public AuctionPage()
     {
         ViewModel = App.GetService<AuctionViewModel>();
@@ -39,7 +41,19 @@ public sealed partial class AuctionPage : Page
 
     private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Auction selectedAuction)
+        if (!ViewModel.IsLoggedIn)
+        {
+            ContentDialog dialog = new ContentDialog
+            {
+                Title = "Thông báo",
+                Content = "Vui lòng đăng nhập để tham gia đấu giá",
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot
+            };
+            await dialog.ShowAsync();
+            return;
+        }
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Auction selectedAuction)
         {
             // Navigate to the detail page
             if (selectedAuction.condition == "Đang diễn ra")
