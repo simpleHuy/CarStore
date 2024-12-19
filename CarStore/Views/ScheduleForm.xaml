@@ -142,8 +142,13 @@
                 </ComboBox>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Spacing="20" Orientation="Horizontal" Margin="20 10 0 0">
                     <CalendarDatePicker x:Name="DatePicker" Header="Chọn ngày" HorizontalAlignment="Center"/>
-                    <TimePicker x:Name="TimePicker" Header="Chọn thời gian" ClockIdentifier="24HourClock" HorizontalAlignment="Center"/>
-                </StackPanel>
+                    <ComboBox x:Name="TimeComboBox" 
+                        Header="Chọn thời gian"
+                        HorizontalAlignment="Center"
+                        Width="200"
+                        ItemsSource="{x:Bind TimeSlots}"
+                        SelectedIndex="0"/>
+                    </StackPanel>
                 <Border HorizontalAlignment="Center" Margin="20 10 20 10">
                     <Button Style="{StaticResource AccentButtonStyle}" Content="Xác nhận" Click="Summit_btn_click"/>
                 </Border>

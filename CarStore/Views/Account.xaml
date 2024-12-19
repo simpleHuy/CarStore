@@ -94,14 +94,14 @@
 
                 <StackPanel Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
                     <TextBlock Text="Lịch hẹn" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20 2"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Width="Auto" Margin="20 0"
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="20 0"
                                   Visibility="{x:Bind ViewModel.Schedules.Count, Converter={StaticResource CountToVisibilityConverter}}">
                         <GridView ItemsSource="{x:Bind ViewModel.Schedules}" IsItemClickEnabled="True" HorizontalAlignment="Left" SelectionMode="None"
-                                  ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled">
+                                  ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" Height="auto">
                             <GridView.ItemTemplate>
                                 <DataTemplate x:DataType="local2:Schedule">
                                     <StackPanel x:Name="ScheduleCard" Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
-                                            Margin="5" CornerRadius="{ThemeResource OverlayCornerRadius}" Padding="20 10">
+                                            Margin="5" CornerRadius="{ThemeResource OverlayCornerRadius}" Padding="15 5" Height="160">
                                         <TextBlock Text="{x:Bind Date, Converter={StaticResource DateTimeToStringConverter}}"/>
                                         <TextBlock Width="200" TextWrapping="Wrap">
                                             <Run Text="Địa chỉ: "/><Run Text="{x:Bind Address}"/>
