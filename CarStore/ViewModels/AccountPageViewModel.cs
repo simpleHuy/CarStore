@@ -13,6 +13,7 @@ using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
 using Windows.Graphics.Printing3D;
 
 namespace CarStore.ViewModels;
@@ -35,6 +36,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         get; set;
     }
+    public List<Car> OwnCar { get; set; } = new List<Car>();
     public List<Schedule> Schedules
     {
         get; set;
@@ -70,7 +72,8 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
             var curUserId = _authenticationService.GetCurrentUser().Id;
             Schedules = await userRepository.GetSchedule(curUserId);
             Wishlist = await userRepository.GetWishlist(curUserId);
-            foreach (var car in Wishlist)
+            OwnCar = await userRepository.GetCarsOfUser(curUserId);
+            foreach (var car in OwnCar)
             {
                 car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
                 foreach (var variant in car.VariantOfCars)

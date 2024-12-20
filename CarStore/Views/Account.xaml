@@ -182,7 +182,7 @@
                     </Button>
                 </StackPanel>
                 
-                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
+                <GridView ItemsSource="{x:Bind ViewModel.OwnCar}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Car">
                             <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"
