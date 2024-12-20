@@ -32,8 +32,10 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-
-
+    public string supabaseFolder
+    {
+        get; set;
+    }
     public string Images
     {
         get; set;

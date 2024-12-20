@@ -28,7 +28,7 @@ internal class DateTimeToColorConverter : IValueConverter
             }
             else if (days == 1)
             {
-                return new SolidColorBrush(Colors.Yellow);
+                return new SolidColorBrush(Colors.Orange);
             }
             else
             {

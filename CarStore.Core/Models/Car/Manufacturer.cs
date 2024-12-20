@@ -9,7 +9,7 @@ using CarStore.Contracts.Services;
 
 namespace CarStore.Core.Models;
 
-public class Manufacturer : IFilterItem
+public class Manufacturer : IFilterItem, INotifyPropertyChanged
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id
@@ -23,4 +23,6 @@ public class Manufacturer : IFilterItem
 
     //Navigation Property
     public ICollection<Car> cars { get; set; }
+
+    public event PropertyChangedEventHandler PropertyChanged;
 }

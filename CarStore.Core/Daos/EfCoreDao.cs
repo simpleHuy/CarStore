@@ -36,10 +36,23 @@ public class EfCoreDao<T> : IDao<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task Insert(T entity)
+    public async Task<object> Insert(T entity)
     {
         await _context.Set<T>().AddAsync(entity);
         await _context.SaveChangesAsync();
+
+        // Get the primary key property name
+        var keyName = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties
+            .Select(x => x.Name).Single();
+
+        // Get the value of the primary key
+        var keyProperty = typeof(T).GetProperty(keyName);
+        if (keyProperty != null)
+        {
+            return keyProperty.GetValue(entity);
+        }
+
+        throw new InvalidOperationException("Entity does not have a primary key property.");
     }
 
     public async Task Update(T entity)

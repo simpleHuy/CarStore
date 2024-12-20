@@ -97,14 +97,19 @@ public sealed partial class AddItemPage : Page
     {
         //Compulsory fields
         var CarName = CarNameTxt.Text;
-        var CarPrice = CarPriceTxt.Text;
-        var CarManufacture = ManufactureCbb.SelectedItem as Manufacturer;
+        var CarPrice = CarPriceTxt.Text.Replace(",", "");
+        var CarManufacture = ManufactureCbb.SelectedItem is Manufacturer manufacturer ? manufacturer : null;
+        var carType = CarTypeCbb.SelectedItem is TypeOfCar typeOfCar ? typeOfCar : null;
+        var carEngine = EngineCbb.SelectedItem is EngineType engineType ? engineType : null;
         var CarVariants = ViewModel.Variants;
         var CarFolderPath = FolderPath.Text;
         var Statuscbb = StatusCbb.SelectedItem as ComboBoxItem;
         var Status = Statuscbb?.Content.ToString();
-        var NumberOfSeats = NumOfSeatTxt.Text;
-        if (string.IsNullOrWhiteSpace(CarName) || string.IsNullOrWhiteSpace(CarPrice) || CarManufacture == null || CarVariants.Count == 0 || string.IsNullOrWhiteSpace(CarFolderPath) || string.IsNullOrWhiteSpace(Status) || string.IsNullOrWhiteSpace(NumberOfSeats))
+        var NumberOfSeats = NumOfSeatTxt.Text.Replace(",", "");
+        var Year = YearTxt.Text.Replace(",", "");
+        if (string.IsNullOrWhiteSpace(CarName) || string.IsNullOrWhiteSpace(CarPrice) || CarManufacture == null 
+            || CarVariants.Count == 0 || string.IsNullOrWhiteSpace(CarFolderPath) || string.IsNullOrWhiteSpace(Status) 
+            || string.IsNullOrWhiteSpace(NumberOfSeats) || string.IsNullOrWhiteSpace(Year) || carType == null || carEngine == null)
         {
             ErrorTxt.Visibility = Visibility.Visible;
             return;
@@ -120,14 +125,30 @@ public sealed partial class AddItemPage : Page
         var TimeToGet100 = TimeGet100Txt.Text;
         var Distance = LongestDistanceTxt.Text;
 
+
+
         var newCar = new Car()
         {
             Name = CarName,
             Price = long.TryParse(CarPrice, out long price) ? price : 0,
             UsageStatus = Status!.ToString(),
             ManufacturerId = CarManufacture!.Id,
+            TypeOfCarId = carType!.Id,
+            EngineTypeId = carEngine!.Id,
             Description = CarDescription,
+            Images = CarName,
+            PriceOfCarId = getPriceOfCarId(long.Parse(CarPrice)),
         };
+
+        var newDetail = new CarDetail()
+        {
+            MaxDistance = int.TryParse(Distance, out var maxDistance) ? maxDistance : 0,
+            TimeGet100 = double.TryParse(TimeToGet100, out var timeGet100) ? timeGet100 : 0,
+            Year = int.Parse(Year),
+            NumberSeatId = getNumberOfSeatId(int.Parse(NumberOfSeats)),
+        };
+
+        await ViewModel.AddItemAsync(CarName, CarFolderPath, newCar, newDetail);
 
         var dialog = new ContentDialog()
         {
@@ -137,8 +158,8 @@ public sealed partial class AddItemPage : Page
             DefaultButton = ContentDialogButton.Primary,
             XamlRoot = this.XamlRoot
         };
-
         var result = await dialog.ShowAsync();
+
         Frame.GoBack();
     }
 
@@ -205,4 +226,30 @@ public sealed partial class AddItemPage : Page
 
         await dialog.ShowAsync();
     }
+
+    private int getPriceOfCarId(long price)
+    {
+        if (price < 500000000)
+            return 1;
+        if (price < 1000000000)
+            return 2;
+        if (price < 2000000000)
+            return 3;
+        if (price < 3000000000)
+            return 4;
+        return 5;
+    }
+
+    private int getNumberOfSeatId(int seat)
+    {
+        if (seat == 2)
+            return 1;
+        if(seat == 4)
+            return 2;
+        if (seat == 5)
+            return 3;
+        return 4;
+    }
 }
+
+ 

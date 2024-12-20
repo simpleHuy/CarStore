@@ -10,7 +10,7 @@ public interface IDao<T> where T : class
 {
     public Task<List<T>> GetAllAsync();
     public Task<T> GetByIdAsync(int id);
-    public Task Insert(T entity);
+    public Task<object> Insert(T entity);
     public Task Update(T entity);
     public Task DeleteById(int id);
 }
