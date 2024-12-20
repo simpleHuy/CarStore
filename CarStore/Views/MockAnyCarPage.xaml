@@ -54,7 +54,8 @@
                              Height="40" Width="500"/>
             </Grid>
             <StackPanel>
-                <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
+                <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5"
+                      Visibility="{x:Bind ViewModel.Owner.IsShowroom, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30"/>
                         <RowDefinition Height="120"/>
@@ -75,7 +76,7 @@
                     </StackPanel>
                     <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="2" Margin="20 0" 
                             VerticalAlignment="Stretch" Width="2" Grid.RowSpan="2"/>
-                    <StackPanel  Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" VerticalAlignment="Center"> 
+                    <StackPanel  Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" VerticalAlignment="Center">
                         <TextBlock Text="Thông tin showroom:" Style="{StaticResource SubtitleTextBlockStyle}"  />
                         <ItemsControl ItemsSource="{x:Bind ViewModel.Showroom.Address}">
                             <ItemsControl.ItemsPanel>
@@ -100,6 +101,47 @@
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
+                
+                <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5"
+                      Visibility="{x:Bind ViewModel.Owner.IsShowroom, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="120"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="../Assets/Avatars/1.png" Height="100" Margin="20"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <TextBlock Text="{x:Bind ViewModel.Owner.Username}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                        </StackPanel>
+                        <TextBlock Text="Người sở hữu" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
+                    </StackPanel>
+                    <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="2" Margin="20 0" 
+                            VerticalAlignment="Stretch" Width="2" Grid.RowSpan="2"/>
+                    <StackPanel  Orientation="Vertical" Grid.Column="3" Grid.RowSpan="3" VerticalAlignment="Center">
+                        <TextBlock Text="Thông tin Chủ sở hữu:" Style="{StaticResource SubtitleTextBlockStyle}"  />
+                        <TextBlock>
+                                Email: <Run Text="{x:Bind ViewModel.Owner.Email}" />
+                        </TextBlock>
+                        <TextBlock>
+                                Điện thoại: <Run Text="{x:Bind ViewModel.Owner.Telephone}" />
+                        </TextBlock>
+                        <TextBlock>
+                                Tên: <Run Text="{x:Bind ViewModel.Owner.lastName}"/> <Run Text="{x:Bind ViewModel.Owner.firstName}"/>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
+                        <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200" Visibility="Collapsed"/>
+                        <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
+                    </StackPanel>
+                </Grid>
+
                 <GridView ItemsSource="{x:Bind ViewModel.Cars}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None"
                           ItemClick="GridView_ItemClick" IsItemClickEnabled="True">
                     <GridView.ItemTemplate>

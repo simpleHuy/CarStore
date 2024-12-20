@@ -49,7 +49,11 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             OnPropertyChanged(nameof(SelectedCar));
             LoadPictureOfCar();
             GetTopCompetitorCars();
-            Task.Run(async () => Showroom = await _carRepository.GetShowroomByCarId(SelectedCar.CarId)).Wait();
+            Task.Run(async () => Owner = await _userDao.GetByIdAsync(SelectedCar.OwnerId)).Wait();
+            if(Owner.IsShowroom)
+            {
+                Task.Run(async () => Showroom = await _carRepository.GetShowroomByCarId(SelectedCar.CarId)).Wait();
+            }
         }
     }
 
@@ -86,6 +90,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
         var path = AppDomain.CurrentDomain.BaseDirectory;
         path += "Assets\\Cars\\" + SelectedCar.Images;
+        path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
 
         if (SelectedCarColor == null)
         {
@@ -114,7 +119,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
 
         // Get all jpg files in the directory
-        path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
         var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
 
         // Convert file paths to proper URI format for WinUI
@@ -191,6 +195,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     private readonly ICarRepository _carRepository;
     private readonly IAuthenticationService authentication;
     private readonly IUserRepository userRepository;
+    private readonly IDao<User> _userDao;
 
     public bool IsLogin
     {
@@ -204,8 +209,15 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         get; set;
     }
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication, IUserRepository userRepository)
+    public User Owner
     {
+        get; set;
+    }
+
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication, 
+        IUserRepository userRepository, IDao<User> userDao)
+    {
+        _userDao = userDao;
         this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;

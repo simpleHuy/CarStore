@@ -81,7 +81,7 @@ namespace CarStore.Views
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ViewModel.Showroom = e.Parameter as Showroom;
+            ViewModel.Owner = e.Parameter as User;
         }
     }
 }

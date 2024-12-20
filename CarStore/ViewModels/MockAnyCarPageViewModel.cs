@@ -17,7 +17,7 @@ namespace CarStore.ViewModels;
 public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
-    private readonly IShowroomRepository showroomRepository;
+    private readonly IUserRepository userRepository;
     private readonly IDao<Car> _carDao;
     private readonly IDao<Variant> _variantDao;
     public List<Car>? Cars
@@ -34,13 +34,24 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
     private Showroom? _showroom;
     public Showroom? Showroom
     {
-        get => _showroom;
+        get; set;
+    }
+
+    private User? _owner;
+    public User? Owner
+    {
+        get => _owner;
         set
         {
-            _showroom = value;
-            Task.Run(async() =>
+            _owner = value;
+            if(_owner.IsShowroom)
             {
-                Cars = await showroomRepository.GetCarsOfShowroom(Showroom);
+                Showroom = _owner.Showroom;
+            }
+
+            Task.Run(async () =>
+            {
+                Cars = await userRepository.GetCarsOfUser(_owner.Id);
                 foreach (var car in Cars)
                 {
                     car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
@@ -53,11 +64,11 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
-    public MockAnyCarPageViewModel(ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantDao, IShowroomRepository showroomRepository)
+    public MockAnyCarPageViewModel(ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantDao, IUserRepository userRepository)
     {
         _carDao = carDao;
         _carRepository = carRepository;
         _variantDao = variantDao;
-        this.showroomRepository = showroomRepository;
+        this.userRepository = userRepository;
     }
 }

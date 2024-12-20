@@ -19,6 +19,7 @@
         <local1:IdToTypeOfCarConverter x:Key="TypeOfCar"/>
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
 
 <ScrollView x:Name="ContentArea" VerticalScrollBarVisibility="Hidden" Padding="60 20" Margin="30 35 30 20">
@@ -184,8 +185,9 @@
             </Border>
 
             <!--Showroom's info-->
-            <Border BorderBrush="Gray" BorderThickness="2" Grid.Column="1" CornerRadius="{ThemeResource OverlayCornerRadius}"
-                    Background="white"  Padding="20">
+            <Border BorderBrush="Gray" BorderThickness="2" Grid.Column="1" 
+                    Background="white"  Padding="20" CornerRadius="{ThemeResource OverlayCornerRadius}"
+                    Visibility="{x:Bind ViewModel.Owner.IsShowroom, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid ColumnSpacing="30" Margin="0 20 0 10">
                     <Grid.ColumnDefinitions >
                         <ColumnDefinition Width="3*"/>
@@ -247,6 +249,64 @@
                     </StackPanel>
                 </Grid>
             </Border>
+            
+            <Border BorderBrush="Gray" BorderThickness="2" Grid.Column="1" 
+                    Background="white"  Padding="20" CornerRadius="{ThemeResource OverlayCornerRadius}"
+                    Visibility="{x:Bind ViewModel.Owner.IsShowroom, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}">
+                <Grid ColumnSpacing="30" Margin="0 20 0 10">
+                    <Grid.ColumnDefinitions >
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
+                        <Image Source="../Assets/Avatars/1.png" Height="230" HorizontalAlignment="Center"/>
+                        <TextBlock FontSize="16" HorizontalAlignment="Center">
+                            <Run Text="Các sản phẩm khác của"/> <Run Text="{x:Bind ViewModel.Owner.Username}" FontWeight="Bold"/>
+                        </TextBlock>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Background="Transparent" BorderBrush="Transparent" Width="30" Height="30" Padding="0"
+                                    Click="ClickFacebookButton" Margin="5 0">
+                                <Grid Margin="0">
+                                    <Ellipse Fill="Transparent" Stroke="Black" StrokeThickness="2"/>
+                                    <Image Source="ms-appx:///Assets/Facebook_icon.png" Width="30" Height="30" 
+                                            HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Grid>
+                            </Button>
+
+                            <Button Background="Transparent" BorderBrush="Transparent" Width="40" Height="40" Padding="0"
+                                    Click="ClickHomePageButton" Margin="0 0 5 0">
+                                <Grid Margin="0">
+                                    <FontIcon Glyph="&#xE80F;"  />
+                                </Grid>
+                            </Button>
+                            <Button  Style="{StaticResource AccentButtonStyle}" Click="SeeMoreProduct_btn_click"
+                                        CornerRadius="{ThemeResource OverlayCornerRadius}" HorizontalAlignment="Center">
+                                <TextBlock Text="Xem thêm" Style="{StaticResource BodyStrongTextBlockStyle}"/>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="2" Margin="0 0" 
+                            VerticalAlignment="Stretch" Width="2" />
+
+                    <StackPanel  Background="white" Grid.Column="2">
+                        <TextBlock Text="Thông tin Chủ sở hữu:" Style="{StaticResource SubtitleTextBlockStyle}"  />
+                        <TextBlock>
+                            Email: <Run Text="{x:Bind ViewModel.Owner.Email}" />
+                        </TextBlock>
+                        <TextBlock>
+                            Điện thoại: <Run Text="{x:Bind ViewModel.Owner.Telephone}" />
+                        </TextBlock>
+                        <TextBlock>
+                            Tên: <Run Text="{x:Bind ViewModel.Owner.lastName}"/> <Run Text="{x:Bind ViewModel.Owner.firstName}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
         </StackPanel>
     </ScrollView>
 </Page>

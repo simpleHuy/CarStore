@@ -170,7 +170,7 @@ public sealed partial class CarDetailPage : Page
 
     private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(MockAnyCarPage), ViewModel.Showroom);
+        Frame.Navigate(typeof(MockAnyCarPage), ViewModel.Owner);
     }
 
     private async void Compare_btn_click(object sender, RoutedEventArgs e)

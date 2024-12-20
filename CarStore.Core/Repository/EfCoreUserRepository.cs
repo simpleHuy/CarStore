@@ -37,6 +37,13 @@ public class EfCoreUserRepository : IUserRepository
         }
     }
 
+    public Task<List<Car>> GetCarsOfUser(int userId)
+    {
+        return _dbContext.Cars
+            .Where(c => c.OwnerId == userId)
+            .ToListAsync();
+    }
+
     public Task<List<Schedule>> GetSchedule(int userId)
     {
         // get all shedule of user (userid = customerId or userId = merchantId)
