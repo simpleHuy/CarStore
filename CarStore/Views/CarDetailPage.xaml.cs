@@ -111,15 +111,6 @@ public sealed partial class CarDetailPage : Page
         }
     }
 
-    private void Color_Loaded(object sender, RoutedEventArgs e)
-    {
-        var comboBox = sender as ComboBox;
-        if (comboBox != null && comboBox.Items.Count > 0)
-        {
-            comboBox.SelectedIndex = 0;
-        }
-    }
-
     private async void Schedule_btn_click(object sender, RoutedEventArgs e)
     {
         if (!ViewModel.IsLogin)

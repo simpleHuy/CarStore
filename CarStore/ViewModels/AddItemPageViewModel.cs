@@ -20,6 +20,7 @@ public class AddItemPageViewModel: ObservableObject
     private readonly IDao<EngineType> _engineType;
     private readonly IDao<TypeOfCar> _typeOfCar;
     private readonly IDao<Variant> _variant;
+    private readonly IDao<VariantOfCar> _variantOfCar;
     private readonly IDao<Car> _car;
     private readonly IDao<CarDetail> _carDetail;
     private readonly IAuthenticationService authenticationService;
@@ -43,7 +44,8 @@ public class AddItemPageViewModel: ObservableObject
     public List<EngineType> EngineTypes {get; set;}
     public List<TypeOfCar> TypeOfCars {get; set;}
     public AddItemPageViewModel(IDao<Manufacturer> manufacture, IDao<EngineType> engineType, IDao<TypeOfCar> typeOfCar, 
-            IDao<Variant> variant, IAuthenticationService authenticationService, IDao<Car> car, IDao<CarDetail> carDetail)
+            IDao<Variant> variant, IAuthenticationService authenticationService, IDao<Car> car, IDao<CarDetail> carDetail, 
+            IDao<VariantOfCar> variantOfCar)
     {
         this.authenticationService = authenticationService;
         _manufacture = manufacture;
@@ -61,6 +63,7 @@ public class AddItemPageViewModel: ObservableObject
             Colors = await _variant.GetAllAsync();
             await Supabase.InitializeAsync();
         }).Wait();
+        _variantOfCar = variantOfCar;
     }
 
     private string GetImageContentType(string fileName)
@@ -117,6 +120,11 @@ public class AddItemPageViewModel: ObservableObject
         var carPKey = await _car.Insert(car);
         detail.CarId = (int)carPKey;
         _carDetail.Insert(detail);
+        foreach(var variant in Variants)
+        {
+            variant.CarId = (int)carPKey;
+            await _variantOfCar.Insert(variant);
+        }
     }
 
 }

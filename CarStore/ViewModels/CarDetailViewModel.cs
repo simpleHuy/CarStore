@@ -18,10 +18,22 @@ using CarStore.Core.Contracts.Repository;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using CarStore.Contracts.Services;
+using Supabase;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
+    private readonly string supabaseUrl = "https://qlhadsqzinowxtappxes.supabase.co";
+    private readonly string supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+                                            "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGFkc3F6aW5vd3h0YXBweGVzIiwicm9sZSI6InNlcnZ" +
+                                            "pY2Vfcm9sZSIsImlhdCI6MTczMzQ3MzUzMSwiZXhwIjoyMDQ5MDQ5NTMxfQ." +
+                                            "q9LuucC7SvS2CqL9osIr-4EfS66tum-tPA8IA2BUric";
+    private readonly string bucket = "CarStore";
+    public Client Supabase
+    {
+        get; set;
+    }
+
     // Car will be binded
     private Car? _selectedCar;
     public List<Car>? Cars
@@ -91,23 +103,56 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             path += "\\" + variantsCode;
         }
 
-        if (Directory.Exists(path))
+        if(!Directory.Exists(path))
         {
-            // Get all jpg files in the directory
-            var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
-                                      .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
-                                      .ToArray();
 
-            // Convert file paths to proper URI format for WinUI
-            var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
-
-
-            SelectedCarPictures = new ObservableCollection<string>(imageUris);
+            var basePathIndex = path.IndexOf("Assets\\Cars");
+            var downloadPath = path.Substring(0, basePathIndex + "Assets\\Cars".Length);
+            downloadPath = downloadPath.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+            downloadPath += "\\" + SelectedCar.Images;
+            Task.Run(() => DownloadImage(downloadPath, SelectedCar.supabaseFolder)).Wait();
         }
-        else
+
+        // Get all jpg files in the directory
+        var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
+                                  .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
+                                  .ToArray();
+
+        // Convert file paths to proper URI format for WinUI
+        var imageUris = imageFiles.Select((file, index) =>
+            new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
+
+        SelectedCarPictures = new ObservableCollection<string>(imageUris);
+    }
+
+    private async Task DownloadImage(string downloadPath, string folder)
+    {
+        try
         {
-            SelectedCarPictures = new ObservableCollection<string>();
+            var items = await Supabase.Storage.From(bucket).List(folder);
+            foreach (var item in items)
+            {
+                var currentRemotePath = Path.Combine(folder, item.Name).Replace("\\", "/");
+                var currentLocalPath = Path.Combine(downloadPath, item.Name);
+                if (item.Id == null) // This is a folder
+                {
+                    // Create local subfolder
+                    Directory.CreateDirectory(currentLocalPath);
+                    Console.WriteLine($"Created folder: {currentLocalPath}");
+
+                    // Recursively download contents of this subfolder
+                    await DownloadImage(currentLocalPath, currentRemotePath);
+                }
+                else
+                {
+                    var img = await Supabase.Storage.From(bucket).DownloadPublicFile(currentRemotePath);
+                    await File.WriteAllBytesAsync(currentLocalPath, img);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -124,9 +169,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         CompetitorCars = new List<Car>();
         foreach (var car in Cars)
         {
-            if (CompetitorCars.Count > 9)
-                break;
-
             if (/*(car.Price >= minPrice && car.Price <= maxPrice) && car.CarId != SelectedCar.CarId*/ true)
             {
                 CompetitorCars.Add(car);
@@ -168,7 +210,12 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;
-        Task.Run(() => LoadInitialDataAsync()).Wait();
+        Supabase = new Client(supabaseUrl, supabaseKey);
+        Task.Run(async () => 
+        { 
+            await LoadInitialDataAsync();
+            await Supabase.InitializeAsync();
+        }).Wait();
         this.authentication = authentication;
     }
 
