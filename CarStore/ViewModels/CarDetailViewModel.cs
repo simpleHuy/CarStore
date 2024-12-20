@@ -103,9 +103,9 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             path += "\\" + variantsCode;
         }
 
-        if(!Directory.Exists(path))
-        {
 
+        if (!Directory.Exists(path))
+        {
             var basePathIndex = path.IndexOf("Assets\\Cars");
             var downloadPath = path.Substring(0, basePathIndex + "Assets\\Cars".Length);
             downloadPath = downloadPath.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
@@ -114,15 +114,14 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
 
         // Get all jpg files in the directory
-        var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
-                                  .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
-                                  .ToArray();
+        path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+        var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
 
         // Convert file paths to proper URI format for WinUI
-        var imageUris = imageFiles.Select((file, index) =>
-            new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
+        //var imageUris = imageFiles.Select((file, index) =>
+        //    new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
 
-        SelectedCarPictures = new ObservableCollection<string>(imageUris);
+        SelectedCarPictures = new ObservableCollection<string>(imageFiles);
     }
 
     private async Task DownloadImage(string downloadPath, string folder)
