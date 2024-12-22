@@ -19,10 +19,11 @@ public class EfCoreShowroomRepository : IShowroomRepository
         _dbContext = context;
     }
 
-    public Task<List<Car>> GetCarsOfShowroom(Showroom showroom)
+    public Task<Showroom> GetShowroomByUserId(int userId)
     {
-        return _dbContext.Cars
-            .Where(c => c.OwnerId == showroom.UserId)
-            .ToListAsync();
+        //find showroom having userId = userId
+        return _dbContext.showrooms
+            .Include(s => s.User)
+            .FirstOrDefaultAsync(s => s.UserId == userId);
     }
 }

@@ -23,16 +23,6 @@ using Supabase;
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
-    private readonly string supabaseUrl = "https://qlhadsqzinowxtappxes.supabase.co";
-    private readonly string supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
-                                            "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGFkc3F6aW5vd3h0YXBweGVzIiwicm9sZSI6InNlcnZ" +
-                                            "pY2Vfcm9sZSIsImlhdCI6MTczMzQ3MzUzMSwiZXhwIjoyMDQ5MDQ5NTMxfQ." +
-                                            "q9LuucC7SvS2CqL9osIr-4EfS66tum-tPA8IA2BUric";
-    private readonly string bucket = "CarStore";
-    public Client Supabase
-    {
-        get; set;
-    }
 
     // Car will be binded
     private Car? _selectedCar;
@@ -132,7 +122,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     {
         try
         {
-            var items = await Supabase.Storage.From(bucket).List(folder);
+            var items = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).List(folder);
             foreach (var item in items)
             {
                 var currentRemotePath = Path.Combine(folder, item.Name).Replace("\\", "/");
@@ -141,14 +131,12 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
                 {
                     // Create local subfolder
                     Directory.CreateDirectory(currentLocalPath);
-                    Console.WriteLine($"Created folder: {currentLocalPath}");
-
                     // Recursively download contents of this subfolder
                     await DownloadImage(currentLocalPath, currentRemotePath);
                 }
                 else
                 {
-                    var img = await Supabase.Storage.From(bucket).DownloadPublicFile(currentRemotePath);
+                    var img = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).DownloadPublicFile(currentRemotePath);
                     await File.WriteAllBytesAsync(currentLocalPath, img);
                 }
             }
@@ -221,11 +209,9 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;
-        Supabase = new Client(supabaseUrl, supabaseKey);
         Task.Run(async () => 
         { 
             await LoadInitialDataAsync();
-            await Supabase.InitializeAsync();
         }).Wait();
         this.authentication = authentication;
     }

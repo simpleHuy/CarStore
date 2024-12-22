@@ -135,11 +135,13 @@ public partial class App : Application
             services.AddScoped<IUserRepository, EfCoreUserRepository>();
             services.AddScoped<IShowroomRepository, EfCoreShowroomRepository>();
             services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
+
         }).
         Build();
 
         UnhandledException += App_UnhandledException;
     }
+
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {

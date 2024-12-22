@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using CarStore.Contracts.Services;
 using CarStore.Core.Contracts.Services;
 using CarStore.Core.Models;
+using CarStore.Helpers;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Supabase;
@@ -24,16 +25,6 @@ public class AddItemPageViewModel: ObservableObject
     private readonly IDao<Car> _car;
     private readonly IDao<CarDetail> _carDetail;
     private readonly IAuthenticationService authenticationService;
-    private readonly string supabaseUrl = "https://qlhadsqzinowxtappxes.supabase.co";
-    private readonly string supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
-                                            "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsaGFkc3F6aW5vd3h0YXBweGVzIiwicm9sZSI6InNlcnZ" +
-                                            "pY2Vfcm9sZSIsImlhdCI6MTczMzQ3MzUzMSwiZXhwIjoyMDQ5MDQ5NTMxfQ." +
-                                            "q9LuucC7SvS2CqL9osIr-4EfS66tum-tPA8IA2BUric";
-    private readonly string bucket = "CarStore";
-    public Client Supabase
-    {
-        get; set;
-    }
 
     public List<Variant> Colors
     {
@@ -54,14 +45,12 @@ public class AddItemPageViewModel: ObservableObject
         _variant = variant;
         _car = car;
         _carDetail = carDetail;
-        Supabase = new Client(supabaseUrl, supabaseKey);
         Task.Run(async () =>
         {
             Manufacturers = await _manufacture.GetAllAsync();
             EngineTypes = await _engineType.GetAllAsync();
             TypeOfCars = await _typeOfCar.GetAllAsync();
             Colors = await _variant.GetAllAsync();
-            await Supabase.InitializeAsync();
         }).Wait();
         _variantOfCar = variantOfCar;
     }
@@ -86,7 +75,7 @@ public class AddItemPageViewModel: ObservableObject
             throw new Exception("Not exist path");
         }
 
-        var storage = Supabase.Storage;
+        var storage = GlobalVariable.Supabase.Storage;
         var unixTimestamp = new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds();
         var firstURL = "";
         foreach (var variant in Variants)
@@ -106,11 +95,11 @@ public class AddItemPageViewModel: ObservableObject
                 };
 
                 await storage
-                    .From(bucket)
+                    .From(GlobalVariable.bucket)
                     .Upload(data, subFolderSupaBase, options);
                 if(firstURL == "")
                 {
-                    firstURL = storage.From(bucket).GetPublicUrl(subFolderSupaBase);
+                    firstURL = storage.From(GlobalVariable.bucket).GetPublicUrl(subFolderSupaBase);
                 }
             }
         }
@@ -119,7 +108,7 @@ public class AddItemPageViewModel: ObservableObject
         car.DefautlImageLocation = firstURL;
         var carPKey = await _car.Insert(car);
         detail.CarId = (int)carPKey;
-        _carDetail.Insert(detail);
+        await _carDetail.Insert(detail);
         foreach(var variant in Variants)
         {
             variant.CarId = (int)carPKey;

@@ -71,6 +71,8 @@
                     <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="10">
                             <TextBlock Text="{x:Bind ViewModel.Showroom.Name}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            <Image Source="../Assets/tichXanh.png" Width="15"
+                                   Visibility="{x:Bind ViewModel.Showroom.IsReputation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         </StackPanel>
                         <TextBlock Text="Showroom" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
                     </StackPanel>
@@ -95,6 +97,8 @@
                         <TextBlock Style="{StaticResource BaseTextBlockStyle}"> 
                             <Run Text="     Hotline: " FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Hotline}"/> - <Run Text="Email:" FontWeight="Bold"/> <Run Text="{x:Bind ViewModel.Showroom.Email}"/>
                         </TextBlock>
+                        <TextBlock Text="     Là 1 showroom uy tín" Foreground="DeepSkyBlue" 
+                                   Visibility="{x:Bind ViewModel.Showroom.IsReputation, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
                         <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200" Visibility="Collapsed"/>

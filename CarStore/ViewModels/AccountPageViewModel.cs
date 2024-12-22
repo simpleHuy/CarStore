@@ -21,7 +21,9 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
     private readonly IUserRepository userRepository;
+    private readonly IShowroomRepository showroomRepository;
     private readonly IDao<Variant> _variantDao;
+    private readonly IDao<Showroom> _showroomDao;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     public IRelayCommand NavigateToLoginCommand
@@ -57,13 +59,15 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     }
 
     public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository,
-                                ICarRepository carRepository, IDao<Variant> variantdao)
+                                ICarRepository carRepository, IDao<Variant> variantdao, IDao<Showroom> showroomDao, IShowroomRepository showroomRepository)
     {
         this.userRepository = userRepository;
+        this.showroomRepository = showroomRepository;
         _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
         _variantDao = variantdao;
+        _showroomDao = showroomDao;
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
@@ -90,5 +94,15 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         var user = _authenticationService.GetCurrentUser();
         CurrentUser = user;
+    }
+
+    public bool CheckReputation()
+    {
+        var showroom = new Showroom();
+        Task.Run(async () =>
+        {
+            showroom = await showroomRepository.GetShowroomByUserId(CurrentUser!.Id);
+        }).Wait();
+        return showroom.IsReputation;
     }
 }

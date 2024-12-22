@@ -8,5 +8,5 @@ using CarStore.Core.Models;
 namespace CarStore.Core.Contracts.Repository;
 public interface IShowroomRepository
 {
-    public Task<List<Car>> GetCarsOfShowroom(Showroom showroom);
+    public Task<Showroom> GetShowroomByUserId(int userId);
 }

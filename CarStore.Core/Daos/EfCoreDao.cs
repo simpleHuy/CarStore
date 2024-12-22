@@ -42,11 +42,15 @@ public class EfCoreDao<T> : IDao<T> where T : class
         await _context.SaveChangesAsync();
 
         // Get the primary key property name
-        var keyName = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey().Properties
-            .Select(x => x.Name).Single();
+        var Pkey = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey();
+        if(Pkey.Properties.Count > 1)
+        {
+            return null;
+        }
+        var keyname = Pkey.Properties.Select(x => x.Name).Single();
 
         // Get the value of the primary key
-        var keyProperty = typeof(T).GetProperty(keyName);
+        var keyProperty = typeof(T).GetProperty(keyname);
         if (keyProperty != null)
         {
             return keyProperty.GetValue(entity);

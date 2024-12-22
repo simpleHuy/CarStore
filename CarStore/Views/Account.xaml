@@ -17,6 +17,7 @@
         <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
         <helpers:DateTimeToColorConverter x:Key="DateTimeToColorConverter"/>
         <helpers:DateTimeToScheduleStatus x:Key="DateTimeToScheduleStatus"/>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
         <services:IdToManufaturerConverter x:Key="Manufacturer"/>
     </Page.Resources>
@@ -88,6 +89,11 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
                         <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200"/>
+                        <Button Content="Đăng kí uy tín" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
+                                Converter={StaticResource BooleanToVisibilityConverter}}" Click="RegisterReputation_click"/>
+                        <Button Content="Đăng kí showroom" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
+                                Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                                Click="RegisterShowroom_click"/>
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>

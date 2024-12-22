@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -78,5 +78,58 @@ public sealed partial class Account : Page
     private void ExploreButton(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(MainPage));
+    }
+
+    private async void RegisterReputation_click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CheckReputation())
+        {
+            var failContent = new ContentDialog
+            {
+                Title = "Đăng kí không thành công",
+                Content = "Bạn đã là 1 showroom uy tín.",
+                PrimaryButtonText = "OK",
+                XamlRoot = this.XamlRoot
+            };
+
+            await failContent.ShowAsync();
+            return;
+        }
+        var successContent = new ContentDialog
+        {
+            Title = "Đăng kí thành công",
+            Content = "Đơn đăng kí đã được gửi đi, chúng tôi sẽ xem xét và thông báo kết quả cho bạn sau.",
+            PrimaryButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+
+        await successContent.ShowAsync();
+    }
+
+    private async void RegisterShowroom_click(object sender, RoutedEventArgs e)
+    {
+        if(ViewModel.OwnCar.Count < 3)
+        {
+            var failContent = new ContentDialog
+            {
+                Title = "Đăng kí không thành công",
+                Content = "Bạn cần sở hữu ít nhất 3 xe để đăng kí làm showroom.",
+                PrimaryButtonText = "OK",
+                XamlRoot = this.XamlRoot
+            };
+
+            await failContent.ShowAsync();
+            return;
+        }
+
+        var successContent = new ContentDialog
+        {
+            Title = "Đăng kí thành công",
+            Content = "Đơn đăng kí đã được gửi đi, chúng tôi sẽ xem xét và thông báo kết quả cho bạn sau.",
+            PrimaryButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+
+        await successContent.ShowAsync();
     }
 }
