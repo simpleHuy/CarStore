@@ -9,4 +9,5 @@ public interface IUserRepository
     public Task AddCarToWishlist(int userId, int carId);
     public Task<List<Schedule>> GetSchedule(int userId);
     public Task<List<Car>> GetCarsOfUser(int userId);
+    public Task<User> GetUserById(int id);
 }

@@ -52,6 +52,7 @@
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
     <None Remove="Views\Account - Copy.xaml" />
     <None Remove="Views\Account.xaml" />
+    <None Remove="Views\ChatPage.xaml" />
     <None Remove="Views\ComparePage.xaml" />
     <None Remove="Views\EditItem.xaml" />
     <None Remove="Views\MockAnyCarPage.xaml" />
@@ -62,6 +63,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\ChatPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\EditItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
