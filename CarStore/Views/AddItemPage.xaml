@@ -11,10 +11,10 @@
     Background="{ThemeResource GradientPageBackground}">
 
     <Page.Resources>
-        <DataTemplate x:Name="ColorPicker_Item" x:DataType="x:String">
+        <DataTemplate x:Name="ColorPicker_Item" x:DataType="model:Variant">
             <StackPanel Orientation="Horizontal">
-                <Border Width="10" Height="10" Background="{x:Bind}" Margin="5"/>
-                <TextBlock Text="{x:Bind}"/>
+                <Border Width="10" Height="10" Background="{x:Bind Code}" Margin="5"/>
+                <TextBlock Text="{x:Bind Code}"/>
             </StackPanel>
         </DataTemplate>
 
@@ -55,11 +55,14 @@
                 <TextBlock Text="Thông tin chung" Margin="40 32 40 0" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
                 <StackPanel Margin="16 20 16 16" Orientation="Horizontal" Spacing="8">
                     <TextBox x:Name="CarNameTxt" Header="Tên xe*" MaxWidth="250" MinWidth="200"/>
-                    <ComboBox x:Name="ManufactureCbb" Header="Hãng sản xuất*" MaxWidth="200" MinWidth="162" ItemTemplate="{StaticResource Manufacture_Item}"/>
+                    <ComboBox x:Name="ManufactureCbb" Header="Hãng sản xuất*" MaxWidth="200" MinWidth="162" 
+                              ItemTemplate="{StaticResource Manufacture_Item}" ItemsSource="{x:Bind ViewModel.Manufacturers}"/>
                 </StackPanel>
                 <StackPanel Margin="16 0 16 16" Orientation="Horizontal" Spacing="8">
-                    <ComboBox x:Name="CarTypeCbb" Header="Loại xe*" MinWidth="180" ItemTemplate="{StaticResource CarType_Item}"/>
-                    <ComboBox x:Name="EngineCbb" Header="Động cơ*" MinWidth="180" ItemTemplate="{StaticResource EngineType_Item}"/>
+                    <ComboBox x:Name="CarTypeCbb" Header="Loại xe*" MinWidth="180" ItemsSource="{x:Bind ViewModel.TypeOfCars}"
+                              ItemTemplate="{StaticResource CarType_Item}"/>
+                    <ComboBox x:Name="EngineCbb" Header="Động cơ*" MinWidth="180" ItemsSource="{x:Bind ViewModel.EngineTypes}"
+                              ItemTemplate="{StaticResource EngineType_Item}"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="16 0 16 16" Spacing="8">
                     <TextBox x:Name="CarPriceTxt" Header="Giá*" MinWidth="200" TextChanged="CarPriceTxt_TextChanged"/>
@@ -88,7 +91,8 @@
                 <TextBlock Text="Thông tin mẫu mã" Margin="40 32 40 0" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Center"/>
                 <StackPanel Orientation="Horizontal" Margin="16 20 16 16" Spacing="8">
                     <TextBox Header="Thêm mẫu mã*" x:Name="InputVariantTxt" PlaceholderText="Nhập mẫu mã" MinWidth="200" ToolTipService.ToolTip="e.g. Xanh đại dương, Đen huyền bí ,etc." KeyDown="InputVariantTxt_KeyDown"/>
-                    <ComboBox x:Name="ColorPicker" Header="Chọn màu*" ItemTemplate="{StaticResource ColorPicker_Item}" SelectedIndex="0"/>
+                    <ComboBox x:Name="ColorPicker" Header="Chọn màu*" ItemTemplate="{StaticResource ColorPicker_Item}" 
+                              SelectedIndex="0" ItemsSource="{x:Bind ViewModel.Colors}"/>
                 </StackPanel>
                 <TextBox x:Name="FolderPath" Text="" IsReadOnly="True" Margin="16 0 16 16" Header="Đường dẫn thư mục ảnh*" ToolTipService.ToolTip="Vui lòng chọn thư mục có tên là tên xe, bên trong chứa các thư mục con mang tên màu sắc, các ảnh được đánh số từ 1 có định dạng: 1.png, 2.png,etc."/>
                 <StackPanel Orientation="Horizontal" Margin="16 0 16 16" Spacing="8">
@@ -96,7 +100,7 @@
                     <Button x:Name="DeleteVariantBtn" Content="Xóa" Click="DeleteVariantBtn_Click" MinWidth="100"/>
                     <Button x:Name="AddFolderBtn" Content="Thêm thư mục ảnh" Click="AddFolderBtn_Click" MinWidth="100"/>
                 </StackPanel>
-                <ListView x:Name="VariantList" ItemTemplate="{StaticResource VariantPreview_Item}"/>
+                <ListView x:Name="VariantList" ItemTemplate="{StaticResource VariantPreview_Item}" ItemsSource="{x:Bind ViewModel.Variants}"/>
             </StackPanel>
             
             <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1">
@@ -107,6 +111,7 @@
                 <StackPanel Orientation="Horizontal" Spacing="8">
                     <Button x:Name="AddItemBtn" Content="Thêm" Click="AddItemBtn_Click" MinWidth="100" Style="{ThemeResource AccentButtonStyle}"/>
                     <Button x:Name="CancelBtn" Content="Hủy" Click="CancelBtn_Click" MinWidth="100"/>
+                    <Button x:Name="GuideBtn" Content="Hướng dẫn" Click="GuideBtn_Click" MinWidth="100"/>
                 </StackPanel>
                 <TextBlock x:Name="ErrorTxt" Foreground="Red" VerticalAlignment="Center" Text="Vui lòng nhập đầy đủ thông tin." Visibility="Collapsed"/>
             </StackPanel>

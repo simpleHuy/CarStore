@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,9 +56,16 @@ public sealed partial class Account : Page
                 variantCode = await ViewModel._carRepository.GetVariantsCodeByName(selectedVariant.Name);
             }).Wait();
 
-            if (currentItem != null)
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            path += "Assets\\Cars\\" + currentItem.Images + "\\" + variantCode;
+            path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+            if (Directory.Exists(path))
             {
-                currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
+                var firstImage = Directory.GetFiles(path).FirstOrDefault();
+                if (firstImage != null)
+                {
+                    currentItem.DefautlImageLocation = firstImage;
+                }
             }
         }
     }
@@ -66,5 +73,63 @@ public sealed partial class Account : Page
     private void AddItemBtn_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(AddItemPage));
+    }
+
+    private void ExploreButton(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(MainPage));
+    }
+
+    private async void RegisterReputation_click(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.CheckReputation())
+        {
+            var failContent = new ContentDialog
+            {
+                Title = "Đăng kí không thành công",
+                Content = "Bạn đã là 1 showroom uy tín.",
+                PrimaryButtonText = "OK",
+                XamlRoot = this.XamlRoot
+            };
+
+            await failContent.ShowAsync();
+            return;
+        }
+        var successContent = new ContentDialog
+        {
+            Title = "Đăng kí thành công",
+            Content = "Đơn đăng kí đã được gửi đi, chúng tôi sẽ xem xét và thông báo kết quả cho bạn sau.",
+            PrimaryButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+
+        await successContent.ShowAsync();
+    }
+
+    private async void RegisterShowroom_click(object sender, RoutedEventArgs e)
+    {
+        if(ViewModel.OwnCar.Count < 3)
+        {
+            var failContent = new ContentDialog
+            {
+                Title = "Đăng kí không thành công",
+                Content = "Bạn cần sở hữu ít nhất 3 xe để đăng kí làm showroom.",
+                PrimaryButtonText = "OK",
+                XamlRoot = this.XamlRoot
+            };
+
+            await failContent.ShowAsync();
+            return;
+        }
+
+        var successContent = new ContentDialog
+        {
+            Title = "Đăng kí thành công",
+            Content = "Đơn đăng kí đã được gửi đi, chúng tôi sẽ xem xét và thông báo kết quả cho bạn sau.",
+            PrimaryButtonText = "OK",
+            XamlRoot = this.XamlRoot
+        };
+
+        await successContent.ShowAsync();
     }
 }

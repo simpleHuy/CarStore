@@ -54,6 +54,23 @@ public class User
         get; set;
     }
 
+    public bool IsShowroom
+    {
+        get; set;
+    }
+
+    public Showroom Showroom
+    {
+        get; set;
+    }
     public ICollection<Schedule> CustommerSchedules { get; set; }
     public ICollection<Schedule> MerchantSchedules { get; set; }
+    public ICollection<Wishlist> Wishlists
+    {
+        get; set;
+    }
+    public List<Car> Cars
+    {
+        get; set;
+    }
 }

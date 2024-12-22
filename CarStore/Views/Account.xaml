@@ -13,9 +13,13 @@
     Background="{ThemeResource GradientPageBackground}">
     <Page.Resources>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
+        <helpers:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+        <helpers:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+        <helpers:DateTimeToColorConverter x:Key="DateTimeToColorConverter"/>
+        <helpers:DateTimeToScheduleStatus x:Key="DateTimeToScheduleStatus"/>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <services:LongToVNCurrencyConverter x:Key="currency"/>
         <services:IdToManufaturerConverter x:Key="Manufacturer"/>
-        
     </Page.Resources>
     <ScrollView>
         <StackPanel>
@@ -78,19 +82,64 @@
                     <Image Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Source="../Assets/Avatars/1.png" Height="100" Margin="20"/>
                     <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="10">
-                            <TextBlock Text="{x:Bind ViewModel.ViewedUser.firstName, Mode=OneWay}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
-                            <TextBlock Text="{x:Bind ViewModel.ViewedUser.lastName, Mode=OneWay}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CurrentUser.firstName, Mode=OneWay}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
+                            <TextBlock Text="{x:Bind ViewModel.CurrentUser.lastName, Mode=OneWay}" Style="{ThemeResource TitleLargeTextBlockStyle}"/>
                         </StackPanel>
-                        <TextBlock Text="{x:Bind ViewModel.ViewedUser.AccountType, Mode=OneWay}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
+                        <TextBlock Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
                         <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200"/>
+                        <Button Content="Đăng kí uy tín" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
+                                Converter={StaticResource BooleanToVisibilityConverter}}" Click="RegisterReputation_click"/>
+                        <Button Content="Đăng kí showroom" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
+                                Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                                Click="RegisterShowroom_click"/>
                         <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
+
+                <StackPanel Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
+                    <TextBlock Text="Lịch hẹn" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20 2"/>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="20 0"
+                                  Visibility="{x:Bind ViewModel.Schedules.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                        <GridView ItemsSource="{x:Bind ViewModel.Schedules}" IsItemClickEnabled="True" HorizontalAlignment="Left" SelectionMode="None"
+                                  ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" Height="auto">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="local2:Schedule">
+                                    <StackPanel x:Name="ScheduleCard" Orientation="Vertical" BorderBrush="Wheat" BorderThickness="0.5"
+                                            Margin="5" CornerRadius="{ThemeResource OverlayCornerRadius}" Padding="15 5" Height="160">
+                                        <TextBlock Text="{x:Bind Date, Converter={StaticResource DateTimeToStringConverter}}"/>
+                                        <TextBlock Width="200" TextWrapping="Wrap">
+                                            <Run Text="Địa chỉ: "/><Run Text="{x:Bind Address}"/>
+                                        </TextBlock>
+                                        <TextBlock>
+                                            <Run Text="Xe: "/><Run Text="{x:Bind Car.Name}"/>
+                                        </TextBlock>
+                                        <TextBlock>
+                                            <Run Text="Trạng thái: "/><Run Text="{x:Bind Date, Converter={StaticResource DateTimeToScheduleStatus}}" 
+                                                                           Foreground="{x:Bind Date, Converter={StaticResource DateTimeToColorConverter}}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                        </GridView>
+                    </ScrollViewer>
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20"
+                                Visibility="{x:Bind ViewModel.Schedules.Count, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=Inverse}">
+                        <TextBlock Text="Lịch hẹn hiện đang trống" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+
                 <StackPanel Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}" Margin="80 5">
                     <TextBlock Text="Wishlist" Style="{ThemeResource SubtitleTextBlockStyle}" Margin="20 2"/>
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Width="Auto" Margin="20 0">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Width="Auto" Margin="20 0"
+                                  Visibility="{x:Bind ViewModel.Wishlist.Count, Converter={StaticResource CountToVisibilityConverter}}">
                         <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" IsItemClickEnabled="True" Name="ListCompettorCars" ItemClick="ListCompettorCars_ItemClick"
                   ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.VerticalScrollMode="Disabled" HorizontalAlignment="Left" SelectionMode="None">
                             <GridView.ItemTemplate>
@@ -124,8 +173,13 @@
                             </GridView.ItemsPanel>
                         </GridView>
                     </ScrollViewer>
-                
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="20"
+                                Visibility="{x:Bind ViewModel.Wishlist.Count, Converter={StaticResource CountToVisibilityConverter}, ConverterParameter=Inverse}">
+                        <TextBlock Text="Wishlist hiện đang trống" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                        <Button Content="Khám phá ngay" HorizontalAlignment="Center" Click="ExploreButton"/>
+                    </StackPanel>
                 </StackPanel>
+                
                 <StackPanel Orientation="Horizontal" Margin="80 5" Spacing="8">
                     <Button x:Name="AddItemBtn" Background="Transparent" BorderThickness="0" Click="AddItemBtn_Click">
                         <Border Background="White" Width="100" Height="100" CornerRadius="{ThemeResource ControlCornerRadius}">
@@ -134,7 +188,7 @@
                     </Button>
                 </StackPanel>
                 
-                <GridView ItemsSource="{x:Bind ViewModel.Wishlist}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
+                <GridView ItemsSource="{x:Bind ViewModel.OwnCar}" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionMode="None">
                     <GridView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Car">
                             <Grid Background="White" BorderThickness="0" CornerRadius="{ThemeResource ControlCornerRadius}"

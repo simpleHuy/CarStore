@@ -36,6 +36,7 @@ public class AuthenticationService : IAuthenticationService
 
     private readonly User _userDefault = new()
     {
+        Id = 1,
         Email = "example@gmail.com",
         Telephone = "0333601234",
         AccountType = "Hội viên tiềm năng",
@@ -185,6 +186,18 @@ public class AuthenticationService : IAuthenticationService
             if (username == "admin" && password == "1234")
             {
                 _currentUser = _userDefault;
+                return true;
+            }
+
+            if(username == "anycar" && password == "1234")
+            {
+                _currentUser = await userDao.GetByIdAsync(2);
+                return true;
+            }
+
+            if (username == "starupshow" && password == "1234")
+            {
+                _currentUser = await userDao.GetByIdAsync(3);
                 return true;
             }
 
@@ -356,7 +369,7 @@ public class AuthenticationService : IAuthenticationService
             Telephone = phoneNumber
         };
 
-        await userDao.InsertById(newUser);
+        await userDao.Insert(newUser);
 
         return await Task.FromResult(true);
     }
@@ -387,7 +400,7 @@ public class AuthenticationService : IAuthenticationService
         user.PasswordHash = hashedPassword;
         user.Salt = salt;
 
-        await userDao.UpdateById(user);
+        await userDao.Update(user);
         return true;
     }
 
@@ -432,7 +445,7 @@ public class AuthenticationService : IAuthenticationService
                 user.PasswordHash = hashedPassword;
                 user.Salt = salt;
 
-                await userDao.UpdateById(user);
+                await userDao.Update(user);
 
                 return true;
             });
