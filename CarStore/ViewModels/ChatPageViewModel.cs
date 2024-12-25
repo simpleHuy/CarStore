@@ -23,7 +23,7 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
     private Timer timer;
 
     //Gemini API
-    private static string GEMINI_API_KEY = "API";
+    private static string GEMINI_API_KEY = "AIzaSyDvTOxy5sLr_VTbUK81982q3-nCnzcbaUo";
     public GeminiChatbot gemini = new(GEMINI_API_KEY);
 
     //Data
