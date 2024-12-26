@@ -278,6 +278,7 @@ public class GetCarDetailTests
     private Mock<IAuthenticationService> _mockAuthenticationService;
     private CarDetailViewModel _viewModel;
     private Mock<IUserRepository> _mockUserRepository;
+    private Mock<IDao<User>> _mockUserDao;
 
     [TestInitialize]
     public void Setup()
@@ -297,7 +298,8 @@ public class GetCarDetailTests
         _mockCarDao.Setup(x => x.GetAllAsync()).ReturnsAsync(mockCars);
 
         // Create ViewModel
-        _viewModel = new CarDetailViewModel(_mockCarDao.Object, _mockCarRepository.Object, _mockAuthenticationService.Object, _mockUserRepository.Object);
+        _viewModel = new CarDetailViewModel(_mockCarDao.Object, _mockCarRepository.Object, _mockAuthenticationService.Object, 
+                                            _mockUserRepository.Object, _mockUserDao.Object);
     }
 
     [TestMethod]
