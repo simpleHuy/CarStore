@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241225152344_addTableRegisterDetail")]
+    [Migration("20241226103140_addTableRegisterDetail")]
     partial class addTableRegisterDetail
     {
         /// <inheritdoc />
@@ -663,6 +663,12 @@ namespace CarStore.Core.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");

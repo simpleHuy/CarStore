@@ -64,9 +64,23 @@ public class EfCoreDao<T> : IDao<T> where T : class
         {
             if (ex.InnerException != null && ex.InnerException.Message.Contains("UNIQUE constraint failed"))
             {
-                throw new InvalidOperationException("A record with the same UserId already exists.", ex);
+                // Log the error or handle it as needed
+                Console.WriteLine("A record with the same UserId already exists.");
             }
-            throw;
+            else
+            {
+                // Log the error or handle it as needed
+                Console.WriteLine($"An error occurred while saving the entity changes: {ex.InnerException?.Message}");
+            }
+            // Return null or a default value to indicate failure
+            return null;
+        }
+        catch (Exception ex)
+        {
+            // Log the error or handle it as needed
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+            // Return null or a default value to indicate failure
+            return null;
         }
     }
 
