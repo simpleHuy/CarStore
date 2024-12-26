@@ -91,6 +91,7 @@ public partial class App : Application
             services.AddTransient<MainPageViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<RegisterViewModel>();
+            services.AddTransient<RegisterPage>();
             services.AddTransient<FilterViewModel>();
             services.AddTransient<FilterPage>();
             services.AddTransient<ShellPage>();

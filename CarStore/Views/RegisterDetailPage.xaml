@@ -21,27 +21,25 @@
             Grid.Row="1"
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
-            ItemsSource="{Binding ViewModel.Source, Mode=OneWay}">
+            ItemsSource="{x:Bind ViewModel.RegisterDetails, Mode=OneWay}"
+            DataContext="{x:Bind ViewModel}">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
-                <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                <controls:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
-                <controls:DataGridTextColumn Binding="{Binding ShipTo}" Header="ShipTo" />
-                <controls:DataGridTextColumn Binding="{Binding OrderTotal}" Header="OrderTotal" />
-                <controls:DataGridTextColumn Binding="{Binding Status}" Header="Status" />
-                <controls:DataGridTemplateColumn Header="Symbol">
-                    <controls:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <FontIcon
-                                HorizontalAlignment="Left"
-                                FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                Glyph="{Binding Symbol}"
-                                AutomationProperties.Name="{Binding SymbolName}" />
-                        </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
+                <controls:DataGridTextColumn Binding="{Binding Id}" Header="Id" IsReadOnly="True"/>
+                <controls:DataGridTextColumn Binding="{Binding CreatedDate}" Header="Created Date" IsReadOnly="True"/>
+                <controls:DataGridTextColumn Binding="{Binding Content}" Header="Content" IsReadOnly="True"/>
+                <controls:DataGridTextColumn Binding="{Binding User.Username}" Header="username" IsReadOnly="True"/>
+                <controls:DataGridTemplateColumn Header="Actions">
+                <controls:DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="Accept" Click="Accept_Register_Click"/>
+                            <Button Content="Refuse" Click="Refuse_Register_Click"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
             </controls:DataGrid.Columns>
         </controls:DataGrid>

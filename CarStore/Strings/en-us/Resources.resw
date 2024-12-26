@@ -167,4 +167,7 @@
     <value>RegisterDetail</value>
     <comment>Page title for RegisterDetailPage</comment>
   </data>
+  <data name="Shell_Register.Content" xml:space="preserve">
+    <value>Danh sách đăng kí</value>
+  </data>
 </root>

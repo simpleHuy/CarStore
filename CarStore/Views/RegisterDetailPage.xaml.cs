@@ -1,4 +1,5 @@
-﻿using CarStore.ViewModels;
+﻿using CarStore.Core.Models;
+using CarStore.ViewModels;
 
 using Microsoft.UI.Xaml.Controls;
 
@@ -17,5 +18,18 @@ public sealed partial class RegisterDetailPage : Page
     {
         ViewModel = App.GetService<RegisterDetailViewModel>();
         InitializeComponent();
+        DataContext = ViewModel;
+    }
+
+    private void Accept_Register_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var detail = (sender as Button).DataContext as RegisterDetail;
+        ViewModel.AcceptRegister(detail);
+    }
+
+    private void Refuse_Register_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        var detail = (sender as Button).DataContext as RegisterDetail;
+        ViewModel.RefuseRegister(detail);
     }
 }

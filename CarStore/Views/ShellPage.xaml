@@ -46,34 +46,35 @@
                 IsPaneOpen="False"
                 OpenPaneLength="200">
             <NavigationView.MenuItems>
-                <!--
-            TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
-            https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
-        
-            TODO: Update item icons by updating FontIcon.Glyph properties.
-            https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
-            -->
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-            <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel"
-                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, 
-                                            ConverterParameter='Inverse', Mode=OneWay}">
-                <NavigationViewItem.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
-
-            <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
-                                Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                <NavigationViewItem x:Uid="Shell_Login" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.LoginViewModel"
+                                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, 
+                                                ConverterParameter='Inverse', Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
+                                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                        <NavigationViewItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_Register" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.RegisterDetailViewModel"
+                                    Visibility="{x:Bind ViewModel.IsAdmin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xF0E2;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
+
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
