@@ -163,4 +163,8 @@
   <data name="Shell_Login.Content" xml:space="preserve">
     <value>Đăng nhập</value>
   </data>
+  <data name="RegisterDetail_Title.Text" xml:space="preserve">
+    <value>RegisterDetail</value>
+    <comment>Page title for RegisterDetailPage</comment>
+  </data>
 </root>

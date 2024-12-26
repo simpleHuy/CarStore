@@ -84,12 +84,13 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<RegisterDetailViewModel>();
+            services.AddTransient<RegisterDetailPage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPageViewModel>();
             services.AddTransient<MainPage>();
             services.AddTransient<RegisterViewModel>();
-            services.AddTransient<RegisterPage>();
             services.AddTransient<FilterViewModel>();
             services.AddTransient<FilterPage>();
             services.AddTransient<ShellPage>();

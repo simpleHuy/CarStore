@@ -24,6 +24,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     private readonly IShowroomRepository showroomRepository;
     private readonly IDao<Variant> _variantDao;
     private readonly IDao<Showroom> _showroomDao;
+    private readonly IDao<RegisterDetail> _RegDao;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     public IRelayCommand NavigateToLoginCommand
@@ -58,8 +59,9 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         }
     }
 
-    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository,
-                                ICarRepository carRepository, IDao<Variant> variantdao, IDao<Showroom> showroomDao, IShowroomRepository showroomRepository)
+    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository, 
+                                ICarRepository carRepository, IDao<Variant> variantdao, IDao<Showroom> showroomDao, 
+                                IShowroomRepository showroomRepository, IDao<RegisterDetail> regDao)
     {
         this.userRepository = userRepository;
         this.showroomRepository = showroomRepository;
@@ -68,6 +70,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
         _authenticationService = authService;
         _variantDao = variantdao;
         _showroomDao = showroomDao;
+        _RegDao = regDao;
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
@@ -104,5 +107,19 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
             showroom = await showroomRepository.GetShowroomByUserId(CurrentUser!.Id);
         }).Wait();
         return showroom.IsReputation;
+    }
+
+    public async void Register(string content)
+    {
+        DateTime utcDateTime = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+
+        var registerDetail = new RegisterDetail
+        {
+            UserId = CurrentUser!.Id,
+            Content = content,
+            CreatedDate = utcDateTime
+        };
+
+        await _RegDao.Insert(registerDetail);
     }
 }
