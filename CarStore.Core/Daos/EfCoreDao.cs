@@ -38,25 +38,36 @@ public class EfCoreDao<T> : IDao<T> where T : class
 
     public async Task<object> Insert(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
-        await _context.SaveChangesAsync();
-
-        // Get the primary key property name
-        var Pkey = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey();
-        if(Pkey.Properties.Count > 1)
+        try
         {
-            return null;
-        }
-        var keyname = Pkey.Properties.Select(x => x.Name).Single();
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
 
-        // Get the value of the primary key
-        var keyProperty = typeof(T).GetProperty(keyname);
-        if (keyProperty != null)
+            // Get the primary key property name
+            var Pkey = _context.Model.FindEntityType(typeof(T)).FindPrimaryKey();
+            if (Pkey.Properties.Count > 1)
+            {
+                return null;
+            }
+            var keyname = Pkey.Properties.Select(x => x.Name).Single();
+
+            // Get the value of the primary key
+            var keyProperty = typeof(T).GetProperty(keyname);
+            if (keyProperty != null)
+            {
+                return keyProperty.GetValue(entity);
+            }
+
+            throw new InvalidOperationException("Entity does not have a primary key property.");
+        }
+        catch (DbUpdateException ex)
         {
-            return keyProperty.GetValue(entity);
+            if (ex.InnerException != null && ex.InnerException.Message.Contains("UNIQUE constraint failed"))
+            {
+                throw new InvalidOperationException("A record with the same UserId already exists.", ex);
+            }
+            throw;
         }
-
-        throw new InvalidOperationException("Entity does not have a primary key property.");
     }
 
     public async Task Update(T entity)
