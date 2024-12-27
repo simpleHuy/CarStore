@@ -115,6 +115,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
     }
     private readonly ICarRepository _carRepository;
     private readonly IBiddingRepository _biddingRepository;
+    
 
     private int _selectedImageIndex;
     public int SelectedImageIndex
@@ -128,6 +129,17 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
     }
 
     public ObservableCollection<Bidding>? BidHistory { get; set; }
+    
+    private long price;
+    public long Price
+    {
+        get => price;
+        set
+        {
+            price = value;
+            OnPropertyChanged(nameof(Price));
+        }
+    }
 
     private string _bidAmountText;
     public string BidAmountText
@@ -170,16 +182,16 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
     public ICommand PlaceBidCommand{get;}
     private readonly IDao<Bidding> _bidding;
     private readonly IDao<User> _user;
-    public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,IDao<Bidding> bidding, IDao<User> user)
+    private readonly IDao<Auction> _auction;
+    public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository)
     {
         _carRepository = carRepository;
         _biddingRepository = biddingRepository;
         _bidding = bidding;
+        _auction = auctionRepository;
         _user = user;
         BidAmount = 0;
-
         PlaceBidCommand = new RelayCommand(PlaceBid, () => CanPlaceBid);
-
     }
 
     private string _errorMessage;
@@ -217,7 +229,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged
             BidAmount = BidAmount,
             Time = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)
         });
-
         await LoadInitialDataAsync();
         BidAmount = 0;
         BidAmountText = "0";

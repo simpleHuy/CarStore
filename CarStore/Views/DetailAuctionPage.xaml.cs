@@ -35,6 +35,7 @@ public sealed partial class DetailAuctionPage : Page
         if (e.Parameter is Auction auction)
         {
             ViewModel.Auction = auction;
+            ViewModel.Price = (long)auction.Price;
             ViewModel.SelectedCar = auction.Car;
         }
     }

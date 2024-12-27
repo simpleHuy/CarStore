@@ -68,7 +68,7 @@
                     </StackPanel>
                     <!--Price-->
                     <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Foreground="Red">
-        <Run Text="Giá hiện tại: "/><Run Text="{x:Bind ViewModel.Auction.Price,Converter={StaticResource currency}}"/>
+        <Run Text="Giá hiện tại: "/><Run Text="{x:Bind ViewModel.Price,Converter={StaticResource currency}, Mode=OneWay}"/>
                     </TextBlock>
 
                     <!--Image With Selected color-->
