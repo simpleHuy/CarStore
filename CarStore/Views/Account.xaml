@@ -94,7 +94,6 @@
                         <Button Content="Đăng kí showroom" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
                                 Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
                                 Click="RegisterShowroom_click"/>
-                        <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                     </StackPanel>
                 </Grid>
 
