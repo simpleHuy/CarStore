@@ -142,8 +142,11 @@
                                 </DataTemplate>
                             </AutoSuggestBox.ItemTemplate>
                         </AutoSuggestBox>
-                        <Button CornerRadius="{StaticResource OverlayCornerRadius}" Margin="20 0" Click="FilterBtn_Click" Width="45" Height="45">
+                        <Button CornerRadius="{StaticResource OverlayCornerRadius}" Margin="20 0" Click="FilterBtn_Click" Width="45" Height="45" Background="Transparent" BorderThickness="0">
                             <FontIcon Glyph="&#xE71C;" />
+                        </Button>
+                        <Button x:Name="ChatBtn" Click="ChatBtn_Click" Background="Transparent" BorderThickness="0" Padding="5" Width="50" Height="50" Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <FontIcon Glyph="&#xE8F2;" />
                         </Button>
                     </StackPanel>
 
@@ -173,6 +176,7 @@
 
                         <StackPanel x:Name="Header_AccountInfo"  Orientation="Horizontal" 
                             Visibility="{x:Bind ViewModel.IsLogin , Converter={StaticResource BooleanToVisibilityConverter}}">
+                            
                             <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical" Margin="0 0 10 0">

@@ -10,6 +10,10 @@ using System.Net.Sockets;
 using System.Text;
 using CarStore.Core.Models;
 using System.Text.Json;
+using System.Drawing.Text;
+using CarStore.Core.Contracts.Services;
+using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
 {
@@ -20,10 +24,14 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
     private static NetworkStream stream;
     private static int dynamicPort;
     private bool isReload = false;
-    private Timer timer;
+    private readonly Timer timer;
+    public readonly IDao<User> _user;
+    public bool isConnectedToServer = true;
+    public bool isErrorOccurred = false;
+    private ListView _messageListView;
 
     //Gemini API
-    private static string GEMINI_API_KEY = "AIzaSyDvTOxy5sLr_VTbUK81982q3-nCnzcbaUo";
+    private static string GEMINI_API_KEY = "AIzaSyCsJR_KT5o6VrmTCvhoVK8xpIuv5TIBGN4";
     public GeminiChatbot gemini = new(GEMINI_API_KEY);
 
     //Data
@@ -31,14 +39,30 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
     {
         get; set;
     }
+    private ObservableCollection<ChatItem> _chatItems;
     public ObservableCollection<ChatItem> ChatItems
     {
-        get; set;
+        get { return _chatItems; }
+        set
+        {
+            _chatItems = value;
+            OnPropertyChanged(nameof(ChatItems));
+        }
     }
+    private ObservableCollection<Message> _messages;
     public ObservableCollection<Message> Messages
     {
-        get; set;
+        get
+        {
+            return _messages;
+        }
+        set
+        {
+            _messages = value;
+            OnPropertyChanged(nameof(Messages));
+        }
     }
+
     public User currentUser
     {
         get; set;
@@ -51,22 +75,42 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         mainPageViewModel = App.GetService<MainPageViewModel>();
         ChatItems = new ObservableCollection<ChatItem>();
         Messages = new ObservableCollection<Message>();
-
+        _user = App.GetService<IDao<User>>();
+        currentUser = mainPageViewModel.CurrentUser;
+        userID = currentUser.Id;
         // Initialize chat items and messages asynchronously
         _ = InitializeChatAsync();
         timer = new Timer(async _ =>
         {
             await InitializeChatAsync();
-        }, null, 0, 2000);
+        }, null, 0, 5000);
 
     }
 
-    public async Task InitializeChatAsync()
+    public bool ContainsDate(string input)
+    { // Định nghĩa biểu thức chính quy cho ngày tháng
+        string datePattern = @"\b(0?[1-9]|[12][0-9]|3[01])[-/.](0?[1-9]|1[0-2])[-/.](\d{4})\b";
+        Regex regex = new Regex(datePattern);
+        if (regex.IsMatch(input))
+        {
+            return true;
+        }
+
+        string[] keywords = { "ngày", "tháng", "năm", "date", "day", "month", "year" }; 
+        foreach (var keyword in keywords) 
+        { 
+            if (input.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0) 
+            { 
+                return true; 
+            } 
+        }
+        return false;
+    }
+        public async Task InitializeChatAsync()
     {
         try
         {
             await ConnectToInitialServer();
-            //ChatItems.Clear();
             await ListConversations(userID.ToString("D6"));
             if (isReload)
             {
@@ -97,12 +141,15 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
             }
             else
             {
+                isConnectedToServer = false;
+                isErrorOccurred = true;
                 throw new Exception("Failed to receive a valid port from the server.");
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error in ConnectToInitialServer: {ex.Message}");
+            isConnectedToServer = false;
             throw;
         }
     }
@@ -115,10 +162,14 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
             client = new TcpClient();
             await client.ConnectAsync(ServerAddress, dynamicPort);
             stream = client.GetStream();
+            isConnectedToServer = true;
+            isErrorOccurred = false;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error in ConnectToDynamicPort: {ex.Message}");
+            isConnectedToServer = false;
+            isErrorOccurred = true;
             throw;
         }
     }
@@ -137,11 +188,24 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         }
     }
 
+    public string ExtractMessage(string message)
+    {
+        int firstColonIndex = message.IndexOf(':');
+        if (firstColonIndex != -1)
+        {
+            // Extract the text after the first colon and trim any whitespace
+            string textOnly = message.Substring(firstColonIndex + 1).Trim();
+            return textOnly;
+        }
+        return message; // Return the original message if no colon is found
+    }
+
+
     private async Task ListConversations(string userId)
     {
         await ConnectToInitialServer();
         var message = $"LIST {userId}|EOM|";
-
+        
         var response = await SendToServer(message);
 
         try
@@ -151,11 +215,22 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
 
             foreach (var conversation in conversations)
             {
+                var id = int.Parse(conversation.OtherUserId);
+                var user = await _user.GetByIdAsync(id);
+                var userName = conversation.OtherUserId.ToString();
+                if (user != null)
+                {
+                    userName = user.firstName + " " + user.lastName;
+                    if (userName == " " || userName == null)
+                    {
+                        userName = user.Email;
+                    }
+                }
                 var tmp = new ChatItem
                 {
                     Id = int.Parse(conversation.OtherUserId),
-                    personName = conversation.OtherUserId,
-                    lastMessage = conversation.LastMessage
+                    personName = userName,
+                    lastMessage = ExtractMessage(conversation.LastMessage),
                 };
 
                 var existingItem = updatedChatItems.FirstOrDefault(item => item.Id == tmp.Id);
@@ -210,7 +285,8 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
                 Message tmp = new Message
                 {
                     Text = msg["message"],
-                    isMine = msg["user"] == userID.ToString("D6")
+                    isMine = msg["user"] == userID.ToString("D6"),
+                    haveDate = ContainsDate(msg["message"]),
                 };
                 Messages.Add(tmp);
             }

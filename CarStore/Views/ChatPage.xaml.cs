@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,6 +21,9 @@ using Microsoft.UI;
 using System.Collections.ObjectModel;
 using Windows.Networking.NetworkOperators;
 using CarStore.Models.AI;
+using Microsoft.VisualBasic.ApplicationServices;
+using CarStore.Core.Models;
+using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -40,7 +43,25 @@ namespace CarStore.Views
             GeminiInit();
         }
 
-        private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public ChatPage(int userID)
+        {
+            this.InitializeComponent();
+            ViewModel = App.GetService<ChatPageViewModel>();
+            ChatInit(userID);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is int targetUserId)
+            {
+                ViewModel.targetUserID = (int)e.Parameter;
+                ChatInit(targetUserId);
+            }
+        }
+
+        private async void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ChatListView.SelectedItem is ChatItem chatItem)
             {
@@ -48,6 +69,10 @@ namespace CarStore.Views
                 NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
                 ViewModel.targetUserID = chatItem.Id;
                 _ = ViewModel.InitializeChatAsync();
+                MessageField.Text = "";
+                await Task.Delay(100); // Adjust delay as needed
+                if (ViewModel.Messages.Count > 0) { MessagesListView.ScrollIntoView(ViewModel.Messages.Last()); }
+
             }
         }
 
@@ -72,36 +97,26 @@ namespace CarStore.Views
             );
         }
 
+        private async void ChatInit(int userID)
+        {
+            var targetUser = await ViewModel._user.GetByIdAsync(userID);
+            var targetName = targetUser.firstName +" "+ targetUser.lastName;
+            if (targetName == null|| targetName == " ")
+            {
+                targetName = targetUser.Email;
+            }
+            NameOfCurrentMessage.Text = targetName;
+
+            NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
+            var Text = "Xin chào, tôi muốn liên hệ!";
+            ViewModel.targetUserID = userID;
+            ViewModel.Messages.Clear();
+            MessageField.Text = Text;
+        }
+
         private async void SendMessageBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (NameOfCurrentMessage.Text == "Gemini")
-            {
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = MessageField.Text,
-                    isMine = true,
-                });
-                MessageField.Text = "";
-                var promt = MessageField.Text;
-                var History = new List<ChatHistory>();
-                var response = await ViewModel.gemini.GenerateResponseAsync(promt, History);
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = response,
-                    isMine = false,
-                });
-            }
-            else
-            {
-                _ = ViewModel.SendMessage(int.Parse(NameOfCurrentMessage.Text), MessageField.Text);
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = MessageField.Text,
-                    isMine = true,
-                });
-                MessageField.Text = "";
-                _ = ViewModel.InitializeChatAsync();
-            }
+            SendMessageAsync();
         }
 
         private void Reload_Click(object sender, RoutedEventArgs e)
@@ -114,6 +129,79 @@ namespace CarStore.Views
             {
                 _ = ViewModel.InitializeChatAsync();
             }
+        }
+
+        private void MessageField_KeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
+                SendMessageAsync();
+            }
+        }
+
+        private void MessageField_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (MessageField.Text == "")
+            {
+                SendMessageBtn.IsEnabled = false;
+                SendMessageBtn.Foreground = new SolidColorBrush(Colors.Gray);
+            }
+            else
+            {
+                SendMessageBtn.IsEnabled = true;
+                SendMessageBtn.Foreground = new SolidColorBrush(Colors.CornflowerBlue);
+            }
+        }
+
+        private async void SendMessageAsync()
+        {
+            if (MessageField.Text == "")
+            {
+                return;
+            }
+            if (NameOfCurrentMessage.Text == "Gemini")
+            {
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = MessageField.Text,
+                    isMine = true,
+                    haveDate = ViewModel.ContainsDate(MessageField.Text),
+                });
+                var promt = MessageField.Text;
+                MessageField.Text = "";
+
+                var History = new List<ChatHistory>();
+                var response = await ViewModel.gemini.GenerateResponseAsync(promt, History);
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = response,
+                    isMine = false,
+                    haveDate = ViewModel.ContainsDate(response),
+                });
+            }
+            else
+            {
+                _ = ViewModel.SendMessage(ViewModel.targetUserID, MessageField.Text); //change this to target userID
+                ViewModel.Messages.Add(new Message
+                {
+                    Text = MessageField.Text,
+                    isMine = true,
+                    haveDate = ViewModel.ContainsDate(MessageField.Text),
+                });
+                MessageField.Text = "";
+                _ = ViewModel.InitializeChatAsync();
+            }
+        }
+
+        private async void DateRedirect_Click(object sender, RoutedEventArgs e)
+        {
+                await new ContentDialog()
+                {
+                    XamlRoot = this.Content.XamlRoot,
+                    Title = "Tính năng chưa khả dụng",
+                    Content = "Tính năng đang trong giai đoạn hoàn thiện. Vui lòng đợi các bản cập nhật sau!",
+                    CloseButtonText = "OK",
+                }.ShowAsync();
         }
     }
 }

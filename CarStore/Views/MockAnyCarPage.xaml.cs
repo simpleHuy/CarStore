@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,11 +25,13 @@ namespace CarStore.Views
     /// </summary>
     public sealed partial class MockAnyCarPage : Page
     {
+        private readonly MainPageViewModel mainPageViewModel;
         public MockAnyCarPage()
         {
             this.InitializeComponent();
             ViewModel = App.GetService<MockAnyCarPageViewModel>();
             DataContext = ViewModel;
+            mainPageViewModel = App.GetService<MainPageViewModel>();
         }
 
         public MockAnyCarPageViewModel ViewModel
@@ -82,6 +84,31 @@ namespace CarStore.Views
         {
             base.OnNavigatedTo(e);
             ViewModel.Owner = e.Parameter as User;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void Chat_Trigger(object sender, RoutedEventArgs e)
+        {
+            if (mainPageViewModel.IsLogin)
+            {
+                Frame.Navigate(typeof(ChatPage), ViewModel.Owner.Id);
+            }
+            else
+            {
+                await new ContentDialog()
+                {
+                    XamlRoot = this.Content.XamlRoot,
+                    Title = "Bạn chưa đăng nhập",
+                    Content = "Vui lòng đăng nhập để sử dụng tính năng này!",
+                    CloseButtonText = "OK",
+                }.ShowAsync();
+
+                return;
+            }
         }
     }
 }

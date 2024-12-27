@@ -20,6 +20,10 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
     private readonly IUserRepository userRepository;
     private readonly IDao<Car> _carDao;
     private readonly IDao<Variant> _variantDao;
+    public ChatPageViewModel ChatPageViewModel
+    {
+        get; set;
+    }
     public List<Car>? Cars
     {
         get; set;
@@ -70,5 +74,6 @@ public class MockAnyCarPageViewModel : ObservableObject, INotifyPropertyChanged
         _carRepository = carRepository;
         _variantDao = variantDao;
         this.userRepository = userRepository;
+        ChatPageViewModel = App.GetService<ChatPageViewModel>();
     }
 }

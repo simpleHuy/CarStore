@@ -72,8 +72,16 @@ namespace CarStore.Models.AI
         {
             var startIndex = responseBody.IndexOf("\"text\": \"") + 9;
             var endIndex = responseBody.IndexOf("\"", startIndex);
-            return responseBody.Substring(startIndex, endIndex - startIndex);
+
+            // Extract the substring
+            var extractedText = responseBody.Substring(startIndex, endIndex - startIndex);
+
+            // Replace escaped newline characters with actual newline characters
+            extractedText = extractedText.Replace("\\n", "\n");
+
+            return extractedText;
         }
+
     }
 
     public class ChatHistory

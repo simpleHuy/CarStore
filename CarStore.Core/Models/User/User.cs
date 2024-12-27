@@ -16,9 +16,14 @@ public class User
         get;
         set;
     }
+    
+    private string _name;
     public string Name
     {
-        get; set;
+        get
+        {
+            return firstName +" "+ lastName;
+        }
     }
     public string Email
     {

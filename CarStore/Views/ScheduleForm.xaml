@@ -112,7 +112,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <TextBlock Text="Thông tin khách hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
-                <TextBox Header="Tên khách hàng" Text="{x:Bind ViewModel.User.firstName}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
+                <TextBox Header="Tên khách hàng" Text="{x:Bind ViewModel.User.Name}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                     <TextBox Header="Email" Text="{x:Bind ViewModel.User.Email}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                     <TextBox Header="Số điện thoại" Text="{x:Bind ViewModel.User.Telephone}" IsReadOnly="True" Margin="20 10 20 0" Background="{ThemeResource ControlFillColorDisabledBrush}" Foreground="{ThemeResource TextFillColorDisabledBrush}"/>
                 <TextBlock Text="Thông tin cửa hàng" Margin="10 10 0 0" Style="{ThemeResource SubtitleTextBlockStyle}"/>
