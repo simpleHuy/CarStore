@@ -14,8 +14,8 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<RegisterViewModel, RegisterPage>();
         Configure<FilterViewModel, FilterPage>();
+        Configure<RegisterViewModel, RegisterPage>();
         Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
         Configure<CarDetailViewModel, CarDetailPage>();
         Configure<MainPageViewModel, MainPage>();
@@ -30,6 +30,7 @@ public class PageService : IPageService
         Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
         Configure<EditItemPageViewModel, EditItem>();
         Configure<ChatPageViewModel, ChatPage>();
+        Configure<RegisterDetailViewModel, RegisterDetailPage>();
     }
 
     public Type GetPageType(string key)

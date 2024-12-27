@@ -78,4 +78,8 @@ public class User
     {
         get; set;
     }
+    public RegisterDetail RegisterDetails
+    {
+        get; set;
+    }
 }

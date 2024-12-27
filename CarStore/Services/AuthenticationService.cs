@@ -171,25 +171,15 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<bool> LoginAsync(string username, string password)
     {
-        IsAuthenticated = true;
-
-        return await Task.Run(async () =>
+        Task.Run(async () =>
         {
-            // For demo purposes - replace with your actual authentication logic
-            //if (username == "admin" && password == "1234")
-            //{
-            //    return true;
-            //}
-
-
-            // Or use the existing user storage system:
             if (username == "admin" && password == "1234")
             {
                 _currentUser = _userDefault;
                 return true;
             }
 
-            if(username == "anycar" && password == "1234")
+            if (username == "anycar" && password == "1234")
             {
                 _currentUser = await userDao.GetByIdAsync(2);
                 return true;
@@ -203,8 +193,10 @@ public class AuthenticationService : IAuthenticationService
 
             var userData = await userRepository.GetUserByUsername(username);
             if (userData == null)
+            {
                 return false;
-           
+            }
+
             var hashedPassword = HashPassword(password, userData.Salt);
             if (hashedPassword == userData.PasswordHash)
             {
@@ -213,7 +205,14 @@ public class AuthenticationService : IAuthenticationService
             }
 
             return false;
-        });
+        }).Wait();
+        if (_currentUser != null)
+        {
+            IsAuthenticated = true;
+            return true;
+        }
+        return false;
+
     }
     public ValidationResult ValidateRegistrationData(
         string firstName,

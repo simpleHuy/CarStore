@@ -95,6 +95,9 @@ public sealed partial class Account : Page
             await failContent.ShowAsync();
             return;
         }
+
+        ViewModel.Register("reputation");
+
         var successContent = new ContentDialog
         {
             Title = "Đăng kí thành công",
@@ -121,6 +124,8 @@ public sealed partial class Account : Page
             await failContent.ShowAsync();
             return;
         }
+
+        ViewModel.Register("showroom");
 
         var successContent = new ContentDialog
         {

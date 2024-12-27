@@ -99,9 +99,15 @@ public class ApplicationDbContext : DbContext
                                     .HasForeignKey(c => c.OwnerId)
                                     .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<RegisterDetail>().HasOne<User>(rd => rd.User)
+                                            .WithOne(u => u.RegisterDetails)
+                                            .HasForeignKey<RegisterDetail>(rd => rd.UserId)
+                                            .OnDelete(DeleteBehavior.SetNull);
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+        modelBuilder.Entity<RegisterDetail>().HasIndex(rd => rd.UserId).IsUnique();
 
         //configuring generated id
         modelBuilder.Entity<Car>().Property(c => c.CarId).ValueGeneratedOnAdd();
@@ -116,6 +122,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Wishlist>().Property(w => w.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Showroom>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Address>().Property(a => a.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<RegisterDetail>().Property(rd => rd.Id).ValueGeneratedOnAdd();
 
         //configuring default values
         modelBuilder.Entity<User>().Property(u => u.IsShowroom).HasDefaultValue(false);
@@ -146,6 +153,10 @@ public class ApplicationDbContext : DbContext
         get; set;
     }
     public DbSet<Address> addresses
+    {
+        get; set;
+    }
+    public DbSet<RegisterDetail> RegisterDetails
     {
         get; set;
     }
