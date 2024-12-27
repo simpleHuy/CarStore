@@ -45,6 +45,7 @@
                 Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}"
                 IsPaneOpen="False"
                 OpenPaneLength="200">
+            <!--asdasdasdasdasdasdasdasdasfsdfasdf-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
