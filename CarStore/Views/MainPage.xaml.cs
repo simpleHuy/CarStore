@@ -163,4 +163,9 @@ public sealed partial class MainPage : Page
     {
         Frame.Navigate(typeof(FilterPage));
     }
+
+    private void ChatBtn_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(ChatPage));
+    }
 }

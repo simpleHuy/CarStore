@@ -182,6 +182,9 @@
                                     <Image Source="../Assets/Avatars/1.png" Height="50"/>
                                 </StackPanel>
                             </Button>
+                            <Button x:Name="ChatBtn" Click="ChatBtn_Click">
+                                <FontIcon Glyph="&#xE8F2;" />
+                            </Button>
                         </StackPanel>
 
                     </Grid>

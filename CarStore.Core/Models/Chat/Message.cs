@@ -16,4 +16,9 @@ public class Message
     {
         get; set;
     }
+
+    public bool haveDate
+    {
+        get; set; 
+    }
 }

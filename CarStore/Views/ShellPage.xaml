@@ -73,7 +73,16 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
+                <!--<NavigationViewItem x:Uid="Shell_Chat" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.ChatPageViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F2;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>-->
             </NavigationView.MenuItems>
+            
+            
+            
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>

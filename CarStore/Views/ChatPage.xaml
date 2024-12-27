@@ -6,6 +6,7 @@
     xmlns:local="using:CarStore.Views"
     xmlns:local1="using:CarStore.Core.Models.Chat"
     xmlns:service="using:CarStore.Services"
+    xmlns:helpers="using:CarStore.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -15,6 +16,8 @@
         <service:MessageAlign x:Key="MessageAlign"/>
         <service:BooleanToColorMessage x:Key="BooleanToColorMessage"/>
         <service:BooleanToColorMessageForeground x:Key="BooleanToColorMessageForeground"/>
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
+        <helpers:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibility"/>
         <DataTemplate x:Key="ChatItem" x:DataType="local1:ChatItem">
             <StackPanel Height="50" CornerRadius="{StaticResource ControlCornerRadius}" Margin="10">
                 <TextBlock Text="{x:Bind personName}" Style="{StaticResource BodyStrongTextBlockStyle}" FontSize="17"/>
@@ -23,10 +26,13 @@
         </DataTemplate>
         <DataTemplate x:Key="MessageItem" x:DataType="local1:Message">
             <Grid HorizontalAlignment="{x:Bind isMine, Converter={StaticResource MessageAlign}}">
-                <Border Background="{x:Bind isMine, Converter={StaticResource BooleanToColorMessage}}" Margin="10 2" CornerRadius="10">
+                <StackPanel Background="{x:Bind isMine, Converter={StaticResource BooleanToColorMessage}}" Margin="10 2" CornerRadius="10">
                     <TextBlock Text="{x:Bind Text}" TextWrapping="Wrap" MaxWidth="400" Padding="10" Foreground="{x:Bind isMine, Converter={StaticResource BooleanToColorMessageForeground}}"/>
-                </Border>
-                
+                    <Grid Background="AliceBlue" HorizontalAlignment="Stretch">
+                        <Button x:Name="DateRedirect" Visibility="{x:Bind haveDate, Converter={StaticResource BooleanToVisibility}}"
+                                    Click="DateRedirect_Click" BorderThickness="0" Background="Transparent" Content="Thêm lịch hẹn" Foreground="{StaticResource GeminiColor}"/>
+                    </Grid>
+                </StackPanel>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -59,7 +65,7 @@
                     </Button>
                 </Border>
             </Grid>
-            
+
             <ListView x:Name="ChatListView" Grid.Row="1" ItemsSource="{x:Bind ViewModel.ChatItems, Mode=TwoWay}" ItemTemplate="{StaticResource ChatItem}" 
                   BorderBrush="Transparent" CornerRadius="{StaticResource ColorPickerSliderCornerRadius}" Background="White" Padding="5 10" SelectionChanged="ChatListView_SelectionChanged">
                 <ListView.ItemContainerStyle>
@@ -68,6 +74,8 @@
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
+
+
         </Grid>
         <Grid Grid.Column="1" Margin="0 10 5 10" Background="White" CornerRadius="{StaticResource ColorPickerSliderCornerRadius}">
             <Grid.RowDefinitions>
@@ -93,9 +101,15 @@
                 </Grid>
             </Grid>
 
-            <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.Messages, Mode=TwoWay}" ItemTemplate="{StaticResource MessageItem}" IsItemClickEnabled="False" SelectionMode="None" Padding="0 10 0 10">
-                
+            <ListView x:Name="MessagesListView"
+                      Grid.Row="1"
+                      ItemsSource="{x:Bind ViewModel.Messages, Mode=TwoWay}"
+                      ItemTemplate="{StaticResource MessageItem}"
+                      IsItemClickEnabled="False"
+                      SelectionMode="None"
+                      Padding="0 10 0 10">  
             </ListView>
+
 
             <Grid Grid.Row="2" Margin="10 5 10 10">
                 <Grid>
@@ -103,8 +117,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" x:Name="MessageField" PlaceholderText=" Nhập tin nhắn" Margin="0 0 5 0" TextWrapping="Wrap" VerticalAlignment="Center" MaxHeight="200" MinHeight="40" CornerRadius="12"/>
-                    <Button Grid.Column="1" x:Name="SendMessageBtn" MinHeight="40" BorderThickness="0" Click="SendMessageBtn_Click">
+                    <TextBox Grid.Column="0" x:Name="MessageField" PlaceholderText=" Nhập tin nhắn" KeyDown="MessageField_KeyDown" TextChanged="MessageField_TextChanged" Margin="0 0 5 0" TextWrapping="Wrap" VerticalAlignment="Center" MaxHeight="200" MinHeight="40" CornerRadius="12"/>
+                    <Button Grid.Column="1" x:Name="SendMessageBtn" MinHeight="40" BorderThickness="0" Click="SendMessageBtn_Click" IsEnabled="False">
                         <FontIcon Glyph="&#xE725;" Foreground="CornflowerBlue"/>
                     </Button>
                 </Grid>

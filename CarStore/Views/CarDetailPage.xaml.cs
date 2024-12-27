@@ -133,13 +133,19 @@ public sealed partial class CarDetailPage : Page
 
     private async void Contact_btn_click(object sender, RoutedEventArgs e)
     {
-        await new ContentDialog()
+        if (!ViewModel.IsLogin)
         {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Bạn chưa đăng nhập",
+                Content = "Vui lòng đăng nhập để thêm vào Wishlist!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            return;
+        }
+        Frame.Navigate(typeof(ChatPage), ViewModel.Owner.Id);
     }
 
     private async void AddWishlist_btn_click(object sender, RoutedEventArgs e)
