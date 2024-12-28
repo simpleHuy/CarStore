@@ -28,180 +28,179 @@ using Windows.System;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace CarStore.Views
-{
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class ChatPage : Page
-    {   
-        public ChatPageViewModel ViewModel { get; set; }
-        public ChatPage()
+namespace CarStore.Views;
+
+/// <summary>
+/// An empty page that can be used on its own or navigated to within a Frame.
+/// </summary>
+public sealed partial class ChatPage : Page
+{   
+    public ChatPageViewModel ViewModel { get; set; }
+    public ChatPage()
+    {
+        this.InitializeComponent();
+        ViewModel = App.GetService<ChatPageViewModel>();
+        GeminiInit();
+    }
+
+    public ChatPage(int userID)
+    {
+        this.InitializeComponent();
+        ViewModel = App.GetService<ChatPageViewModel>();
+        ChatInit(userID);
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is int targetUserId)
         {
-            this.InitializeComponent();
-            ViewModel = App.GetService<ChatPageViewModel>();
-            GeminiInit();
+            ViewModel.targetUserID = (int)e.Parameter;
+            ChatInit(targetUserId);
         }
+    }
 
-        public ChatPage(int userID)
+    private async void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ChatListView.SelectedItem is ChatItem chatItem)
         {
-            this.InitializeComponent();
-            ViewModel = App.GetService<ChatPageViewModel>();
-            ChatInit(userID);
+            NameOfCurrentMessage.Text = chatItem.personName;
+            NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
+            ViewModel.targetUserID = chatItem.Id;
+            _ = ViewModel.InitializeChatAsync();
+            MessageField.Text = "";
+            await Task.Delay(100); // Adjust delay as needed
+            if (ViewModel.Messages.Count > 0) { MessagesListView.ScrollIntoView(ViewModel.Messages.Last()); }
+
         }
+    }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
+    private void GeminiButton_Click(object sender, RoutedEventArgs e)
+    {
+        GeminiInit();
+    }
 
-            if (e.Parameter is int targetUserId)
+    private void GeminiInit()
+    {
+        NameOfCurrentMessage.Text = "Gemini";
+        NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
+        ViewModel.Messages = new ObservableCollection<Message>(
+            new List<Message>
             {
-                ViewModel.targetUserID = (int)e.Parameter;
-                ChatInit(targetUserId);
-            }
-        }
-
-        private async void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ChatListView.SelectedItem is ChatItem chatItem)
-            {
-                NameOfCurrentMessage.Text = chatItem.personName;
-                NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
-                ViewModel.targetUserID = chatItem.Id;
-                _ = ViewModel.InitializeChatAsync();
-                MessageField.Text = "";
-                await Task.Delay(100); // Adjust delay as needed
-                if (ViewModel.Messages.Count > 0) { MessagesListView.ScrollIntoView(ViewModel.Messages.Last()); }
-
-            }
-        }
-
-        private void GeminiButton_Click(object sender, RoutedEventArgs e)
-        {
-            GeminiInit();
-        }
-
-        private void GeminiInit()
-        {
-            NameOfCurrentMessage.Text = "Gemini";
-            NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
-            ViewModel.Messages = new ObservableCollection<Message>(
-                new List<Message>
+                new Message
                 {
-                    new Message
-                    {
-                        Text = "Gemini is here to help you!",
-                        isMine = false,
-                    },
-                }
-            );
-        }
-
-        private async void ChatInit(int userID)
-        {
-            var targetUser = await ViewModel._user.GetByIdAsync(userID);
-            var targetName = targetUser.firstName +" "+ targetUser.lastName;
-            if (targetName == null|| targetName == " ")
-            {
-                targetName = targetUser.Email;
+                    Text = "Gemini is here to help you!",
+                    isMine = false,
+                },
             }
-            NameOfCurrentMessage.Text = targetName;
+        );
+    }
 
-            NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
-            var Text = "Xin chào, tôi muốn liên hệ!";
-            ViewModel.targetUserID = userID;
-            ViewModel.Messages.Clear();
-            MessageField.Text = Text;
+    private async void ChatInit(int userID)
+    {
+        var targetUser = await ViewModel._user.GetByIdAsync(userID);
+        var targetName = targetUser.firstName +" "+ targetUser.lastName;
+        if (targetName == null|| targetName == " ")
+        {
+            targetName = targetUser.Email;
         }
+        NameOfCurrentMessage.Text = targetName;
 
-        private async void SendMessageBtn_Click(object sender, RoutedEventArgs e)
+        NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
+        var Text = "Xin chào, tôi muốn liên hệ!";
+        ViewModel.targetUserID = userID;
+        ViewModel.Messages.Clear();
+        MessageField.Text = Text;
+    }
+
+    private async void SendMessageBtn_Click(object sender, RoutedEventArgs e)
+    {
+        SendMessageAsync();
+    }
+
+    private void Reload_Click(object sender, RoutedEventArgs e)
+    {
+        if (NameOfCurrentMessage.Text == "Gemini")
+        {
+            GeminiInit();
+        }
+        else
+        {
+            _ = ViewModel.InitializeChatAsync();
+        }
+    }
+
+    private void MessageField_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (e.Key == Windows.System.VirtualKey.Enter)
         {
             SendMessageAsync();
         }
+    }
 
-        private void Reload_Click(object sender, RoutedEventArgs e)
+    private void MessageField_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (MessageField.Text == "")
         {
-            if (NameOfCurrentMessage.Text == "Gemini")
-            {
-                GeminiInit();
-            }
-            else
-            {
-                _ = ViewModel.InitializeChatAsync();
-            }
+            SendMessageBtn.IsEnabled = false;
+            SendMessageBtn.Foreground = new SolidColorBrush(Colors.Gray);
         }
-
-        private void MessageField_KeyDown(object sender, KeyRoutedEventArgs e)
+        else
         {
-            if (e.Key == Windows.System.VirtualKey.Enter)
-            {
-                SendMessageAsync();
-            }
+            SendMessageBtn.IsEnabled = true;
+            SendMessageBtn.Foreground = new SolidColorBrush(Colors.CornflowerBlue);
         }
+    }
 
-        private void MessageField_TextChanged(object sender, TextChangedEventArgs e)
+    private async void SendMessageAsync()
+    {
+        if (MessageField.Text == "")
         {
-            if (MessageField.Text == "")
-            {
-                SendMessageBtn.IsEnabled = false;
-                SendMessageBtn.Foreground = new SolidColorBrush(Colors.Gray);
-            }
-            else
-            {
-                SendMessageBtn.IsEnabled = true;
-                SendMessageBtn.Foreground = new SolidColorBrush(Colors.CornflowerBlue);
-            }
+            return;
         }
-
-        private async void SendMessageAsync()
+        if (NameOfCurrentMessage.Text == "Gemini")
         {
-            if (MessageField.Text == "")
+            ViewModel.Messages.Add(new Message
             {
-                return;
-            }
-            if (NameOfCurrentMessage.Text == "Gemini")
-            {
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = MessageField.Text,
-                    isMine = true,
-                    haveDate = ViewModel.ContainsDate(MessageField.Text),
-                });
-                var promt = MessageField.Text;
-                MessageField.Text = "";
+                Text = MessageField.Text,
+                isMine = true,
+                haveDate = ViewModel.ContainsDate(MessageField.Text),
+            });
+            var promt = MessageField.Text;
+            MessageField.Text = "";
 
-                var History = new List<ChatHistory>();
-                var response = await ViewModel.gemini.GenerateResponseAsync(promt, History);
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = response,
-                    isMine = false,
-                    haveDate = ViewModel.ContainsDate(response),
-                });
-            }
-            else
+            var History = new List<ChatHistory>();
+            var response = await ViewModel.gemini.GenerateResponseAsync(promt, History);
+            ViewModel.Messages.Add(new Message
             {
-                _ = ViewModel.SendMessage(ViewModel.targetUserID, MessageField.Text); //change this to target userID
-                ViewModel.Messages.Add(new Message
-                {
-                    Text = MessageField.Text,
-                    isMine = true,
-                    haveDate = ViewModel.ContainsDate(MessageField.Text),
-                });
-                MessageField.Text = "";
-                _ = ViewModel.InitializeChatAsync();
-            }
+                Text = response,
+                isMine = false,
+                haveDate = ViewModel.ContainsDate(response),
+            });
         }
-
-        private async void DateRedirect_Click(object sender, RoutedEventArgs e)
+        else
         {
-                await new ContentDialog()
-                {
-                    XamlRoot = this.Content.XamlRoot,
-                    Title = "Tính năng chưa khả dụng",
-                    Content = "Tính năng đang trong giai đoạn hoàn thiện. Vui lòng đợi các bản cập nhật sau!",
-                    CloseButtonText = "OK",
-                }.ShowAsync();
+            _ = ViewModel.SendMessage(ViewModel.targetUserID, MessageField.Text); //change this to target userID
+            ViewModel.Messages.Add(new Message
+            {
+                Text = MessageField.Text,
+                isMine = true,
+                haveDate = ViewModel.ContainsDate(MessageField.Text),
+            });
+            MessageField.Text = "";
+            _ = ViewModel.InitializeChatAsync();
         }
+    }
+
+    private async void DateRedirect_Click(object sender, RoutedEventArgs e)
+    {
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Tính năng chưa khả dụng",
+                Content = "Tính năng đang trong giai đoạn hoàn thiện. Vui lòng đợi các bản cập nhật sau!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
     }
 }

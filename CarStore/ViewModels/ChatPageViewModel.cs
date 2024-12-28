@@ -14,8 +14,11 @@ using System.Drawing.Text;
 using CarStore.Core.Contracts.Services;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using CarStore.Contracts.Services;
 
-public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
+namespace CarStore.ViewModels;
+
+public class ChatPageViewModel : ObservableRecipient, INotifyPropertyChanged
 {
     //Chat server
     private const string ServerAddress = "127.0.0.1";
@@ -29,16 +32,13 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
     public bool isConnectedToServer = true;
     public bool isErrorOccurred = false;
     private ListView _messageListView;
+    private readonly IAuthenticationService authenticationService;
 
     //Gemini API
     private static string GEMINI_API_KEY = "AIzaSyCsJR_KT5o6VrmTCvhoVK8xpIuv5TIBGN4";
     public GeminiChatbot gemini = new(GEMINI_API_KEY);
 
-    //Data
-    public MainPageViewModel mainPageViewModel
-    {
-        get; set;
-    }
+
     private ObservableCollection<ChatItem> _chatItems;
     public ObservableCollection<ChatItem> ChatItems
     {
@@ -70,14 +70,17 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
     public int userID = 1;
     public int targetUserID = 2;
 
-    public ChatPageViewModel()
+    public ChatPageViewModel(IAuthenticationService authenticationService, IDao<User> userDao)
     {
-        mainPageViewModel = App.GetService<MainPageViewModel>();
+        this.authenticationService = authenticationService;
         ChatItems = new ObservableCollection<ChatItem>();
         Messages = new ObservableCollection<Message>();
-        _user = App.GetService<IDao<User>>();
-        currentUser = mainPageViewModel.CurrentUser;
-        userID = currentUser.Id;
+        _user = userDao;
+        currentUser = this.authenticationService.GetCurrentUser();
+        if (currentUser != null)
+        {
+            userID = currentUser.Id;
+        }
         // Initialize chat items and messages asynchronously
         _ = InitializeChatAsync();
         timer = new Timer(async _ =>
@@ -106,7 +109,7 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         }
         return false;
     }
-        public async Task InitializeChatAsync()
+    public async Task InitializeChatAsync()
     {
         try
         {
