@@ -106,7 +106,7 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         }
         return false;
     }
-        public async Task InitializeChatAsync()
+    public async Task InitializeChatAsync()
     {
         try
         {
@@ -321,4 +321,12 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         await ReadMessages(targetUserId);
         return Messages;
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    protected void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
 }

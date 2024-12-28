@@ -40,6 +40,7 @@ namespace CarStore.Views
         {
             this.InitializeComponent();
             ViewModel = App.GetService<ChatPageViewModel>();
+            DataContext = ViewModel;
             GeminiInit();
         }
 
