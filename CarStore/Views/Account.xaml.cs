@@ -137,4 +137,10 @@ public sealed partial class Account : Page
 
         await successContent.ShowAsync();
     }
+
+    private void Logout_btn_click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.Logout();
+        Frame.Navigate(typeof(MainPage));
+    }
 }
