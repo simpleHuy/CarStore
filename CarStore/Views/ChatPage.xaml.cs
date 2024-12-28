@@ -24,6 +24,8 @@ using CarStore.Models.AI;
 using Microsoft.VisualBasic.ApplicationServices;
 using CarStore.Core.Models;
 using Windows.System;
+using Windows.ApplicationModel.Chat;
+using System.Threading;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -36,19 +38,14 @@ namespace CarStore.Views
     public sealed partial class ChatPage : Page
     {   
         public ChatPageViewModel ViewModel { get; set; }
+        private Timer Timer;
         public ChatPage()
         {
             this.InitializeComponent();
             ViewModel = App.GetService<ChatPageViewModel>();
             DataContext = ViewModel;
             GeminiInit();
-        }
-
-        public ChatPage(int userID)
-        {
-            this.InitializeComponent();
-            ViewModel = App.GetService<ChatPageViewModel>();
-            ChatInit(userID);
+            //Timer = new Timer(async _ => { await ViewModel.InitializeChatAsync(); }, null, 0, 5000);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -66,14 +63,15 @@ namespace CarStore.Views
         {
             if (ChatListView.SelectedItem is ChatItem chatItem)
             {
-                NameOfCurrentMessage.Text = chatItem.personName;
-                NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
                 ViewModel.targetUserID = chatItem.Id;
                 _ = ViewModel.InitializeChatAsync();
                 MessageField.Text = "";
                 await Task.Delay(100); // Adjust delay as needed
-                if (ViewModel.Messages.Count > 0) { MessagesListView.ScrollIntoView(ViewModel.Messages.Last()); }
-
+                if (ViewModel.Messages.Count > 0) { 
+                    MessagesListView.ScrollIntoView(ViewModel.Messages.Last()); 
+                }
+                NameOfCurrentMessage.Text = chatItem.personName;
+                NameOfCurrentMessage.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
 
@@ -89,10 +87,10 @@ namespace CarStore.Views
             ViewModel.Messages = new ObservableCollection<Message>(
                 new List<Message>
                 {
-                    new Message
-                    {
-                        Text = "Gemini is here to help you!",
+                    new() {
+                        Text = "Xin chào, tôi là Gemini, tôi có thể giúp gì cho bạn?",
                         isMine = false,
+                        haveDate = false,
                     },
                 }
             );
@@ -111,8 +109,13 @@ namespace CarStore.Views
             NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
             var Text = "Xin chào, tôi muốn liên hệ!";
             ViewModel.targetUserID = userID;
-            ViewModel.Messages.Clear();
+            _ = ViewModel.InitializeChatAsync();
             MessageField.Text = Text;
+            await Task.Delay(100); // Adjust delay as needed
+            if (ViewModel.Messages.Count > 0)
+            {
+                MessagesListView.ScrollIntoView(ViewModel.Messages.Last());
+            }
         }
 
         private async void SendMessageBtn_Click(object sender, RoutedEventArgs e)
@@ -137,20 +140,6 @@ namespace CarStore.Views
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 SendMessageAsync();
-            }
-        }
-
-        private void MessageField_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (MessageField.Text == "")
-            {
-                SendMessageBtn.IsEnabled = false;
-                SendMessageBtn.Foreground = new SolidColorBrush(Colors.Gray);
-            }
-            else
-            {
-                SendMessageBtn.IsEnabled = true;
-                SendMessageBtn.Foreground = new SolidColorBrush(Colors.CornflowerBlue);
             }
         }
 

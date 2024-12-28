@@ -14,6 +14,11 @@ using System.Drawing.Text;
 using CarStore.Core.Contracts.Services;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using System.Windows.Threading;
+using Microsoft.UI.Dispatching;
+using CommunityToolkit.WinUI;
+using System.Threading;
+
 
 public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
 {
@@ -80,11 +85,6 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
         userID = currentUser.Id;
         // Initialize chat items and messages asynchronously
         _ = InitializeChatAsync();
-        timer = new Timer(async _ =>
-        {
-            await InitializeChatAsync();
-        }, null, 0, 5000);
-
     }
 
     public bool ContainsDate(string input)
@@ -114,7 +114,19 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
             await ListConversations(userID.ToString("D6"));
             if (isReload)
             {
-                Messages = await getMessagesAsync(targetUserID);
+                var newMessages = await getMessagesAsync(targetUserID);
+                var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+                if (dispatcherQueue != null)
+                {
+                    await dispatcherQueue.EnqueueAsync(() =>
+                    {
+                        Messages = newMessages;
+                    });
+                }
+                else
+                {
+                    Messages = newMessages;
+                }
             }
             isReload = true;
         }
@@ -250,8 +262,15 @@ public class ChatPageViewModel : ObservableObject, INotifyPropertyChanged
                     updatedChatItems.Insert(0, tmp);
                 }
             }
-
-            ChatItems = new ObservableCollection<ChatItem>(updatedChatItems);
+            var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+            if (dispatcherQueue != null)
+            {
+                await dispatcherQueue.EnqueueAsync(() => ChatItems = new ObservableCollection<ChatItem>(updatedChatItems));
+            }
+            else
+            {
+                ChatItems = new ObservableCollection<ChatItem>(updatedChatItems);
+            }
         }
         catch (JsonException ex)
         {
