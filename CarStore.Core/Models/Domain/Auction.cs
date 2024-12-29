@@ -52,6 +52,9 @@ public class Auction: INotifyPropertyChanged
      public ICollection<Bidding> Biddings { get; set; } 
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public static bool Any(Func<object, bool> value) => throw new NotImplementedException();
+
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

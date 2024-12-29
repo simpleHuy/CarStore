@@ -31,6 +31,7 @@ public class PageService : IPageService
         Configure<EditItemPageViewModel, EditItem>();
         Configure<AuctionViewModel, AuctionPage>();
         Configure<DetailAuctionViewModel, DetailAuctionPage>();
+        Configure<AddAuctionViewModel, AddAuctionPage>();
     }
 
     public Type GetPageType(string key)

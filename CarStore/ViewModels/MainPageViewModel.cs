@@ -107,9 +107,6 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         CheckAuthenticationState();
     }
 
-    public MainPageViewModel()
-    {
-    }
 
     private void CheckAuthenticationState()
     {

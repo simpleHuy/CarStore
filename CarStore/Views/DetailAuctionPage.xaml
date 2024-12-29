@@ -145,7 +145,7 @@
                         x:Name="BidAmountInput" 
                         Width="200" 
                         PlaceholderText="Nhập số tiền" 
-                        Text="{x:Bind ViewModel.BidAmountText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Text="{x:Bind ViewModel.BidAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         InputScope="Number"/>
 
                     <!-- Nút đấu giá -->

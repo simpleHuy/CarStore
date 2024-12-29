@@ -118,6 +118,8 @@ public partial class App : Application
             services.AddTransient<AuctionPage>();
             services.AddTransient<DetailAuctionViewModel>();
             services.AddTransient<DetailAuctionPage>();
+            services.AddTransient<AddAuctionViewModel>();
+            services.AddTransient<AddAuctionPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));

@@ -173,33 +173,11 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
 
-    private string _bidAmountText;
-    public string BidAmountText
-    {
-        get => _bidAmountText;
-        set
-        {
-            _bidAmountText = value;
-            OnPropertyChanged(nameof(BidAmountText));
-
-            if (long.TryParse(_bidAmountText, out var parsedValue))
-            {
-                BidAmount = parsedValue;
-                ErrorMessage = string.Empty;
-            }
-            else
-            {
-                BidAmount = 0; // Or handle invalid input appropriately
-                ErrorMessage = "Invalid input. Please enter a numeric value.";
-            }
-        }
-    }
-
     private long _bidAmount;
     public long BidAmount
     {
         get => _bidAmount;
-        private set
+        set
         {
             _bidAmount = value;
             OnPropertyChanged(nameof(BidAmount));
@@ -220,9 +198,12 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     }
 
 
-    public bool CanPlaceBid => BidAmount > Auction.Price && IsAuctionEnded == false;
+    public bool CanPlaceBid => BidAmount > price && BidAmount > Auction.Price  && IsAuctionEnded == false;
 
-    public ICommand PlaceBidCommand{get;}
+    public ICommand PlaceBidCommand
+    {
+        get;
+    }
 
     private readonly IDao<Bidding> _bidding;
     private readonly IDao<User> _user;
@@ -240,7 +221,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         OnPropertyChanged(nameof(BidHistory));
     }
 
-    private int _timeLimit = 1;  // Time limit in minutes
+    private int _timeLimit = 1;  
     public int TimeLimit
     {
         get => _timeLimit;
@@ -261,7 +242,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         _user = user;
 
         BidAmount = 0;
-        PlaceBidCommand = new RelayCommand(PlaceBid, () => CanPlaceBid);
+        PlaceBidCommand = new RelayCommand(PlaceBid);
 
         _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -269,18 +250,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
 
         SetupSocketEvents();
         ConnectSocket(); 
-        
-        
-        //if (auction != null)
-        //{
-        //    DateTime endTime = auction.StartDate.AddMinutes(Auction.EndDate);
-        //    _timeRemaining = endTime - DateTime.Now;
-
-        //}
-        //else
-        //{
-        //    _timeRemaining = TimeSpan.FromMinutes(TimeLimit);
-        //}
 
     }
     private DispatcherQueueTimer _timer;
@@ -301,6 +270,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
 
     // Thêm event để thông báo khi đấu giá kết thúc
     public event EventHandler AuctionEnded;
+    public event EventHandler BidFailed;
 
     public string TimeRemainingText => _timeRemaining.ToString(@"mm\:ss");
 
@@ -326,17 +296,14 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             _timeRemaining = _timeRemaining.Subtract(TimeSpan.FromSeconds(1));
             OnPropertyChanged(nameof(TimeRemainingText));
 
-            // Kiểm tra nếu thời gian đã hết
             if (_timeRemaining == TimeSpan.Zero)
             {
                 _timer.Stop();
-                // Raise event để View có thể hiển thị dialog
                 AuctionEnded?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-    // Thêm property để View có thể kiểm tra trạng thái
     public bool IsAuctionEnded => _timeRemaining == TimeSpan.Zero;
 
     private async void ConnectSocket()
@@ -396,22 +363,21 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                     Time = time.ToLocalTime()
                 };
 
+                Price = newBid.BidAmount;
+
                 Debug.WriteLine($"Parsed bid data: AuctionId={newBid.AuctionId}, UserId={newBid.UserId}, Amount={newBid.BidAmount}, Time={newBid.Time}");
 
                 await _dispatcherQueue.EnqueueAsync(async () =>
                 {
                     try
                     {
-                        if (newBid.UserId != 1) // Replace 1 with your actual current user ID
+                        if (newBid.UserId != 1) 
                         {
-                            // Save to database
                             await _bidding.InsertById(newBid);
 
-                            // Get user details
                             var user = await _user.GetByIdAsync(newBid.UserId);
                             newBid.User = user;
 
-                            // Add to bid history
                             BidHistory ??= new ObservableCollection<Bidding>();
 
                             _dispatcherQueue.TryEnqueue(() =>
@@ -443,36 +409,36 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     {
         if (Auction == null) return;
 
+        if (!CanPlaceBid)
+        {
+            BidFailed?.Invoke(this, EventArgs.Empty);
+            return;
+        }
+
         try
         {
-            // Use UTC time for consistency
             var currentTime = DateTime.UtcNow;
             Price = BidAmount;
 
             var newBid = new Bidding
             {
                 AuctionId = Auction.AuctionId,
-                UserId = 1, // Replace with actual UserId
+                UserId = 1, 
                 BidAmount = BidAmount,
                 Time = currentTime.ToUniversalTime()
             };
 
-            // Save to database first
             await _bidding.InsertById(newBid);
 
-            // Get user info for display
             var user = await _user.GetByIdAsync(newBid.UserId);
             newBid.User = user;
 
-            // Add to bid history
             BidHistory ??= new ObservableCollection<Bidding>();
             BidHistory.Add(newBid);
             OnPropertyChanged(nameof(BidHistory));
 
-            // Then emit to socket server
             if (_socket.Connected)
             {
-                // Format time as ISO 8601 string for JavaScript
                 var bidData = new
                 {
                     auctionId = newBid.AuctionId,
@@ -483,7 +449,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
 
                 await _socket.EmitAsync("placeBid", new { auctionId = Auction.AuctionId, bid = bidData });
 
-                BidAmountText = string.Empty;
                 BidAmount = 0;
             }
             else

@@ -72,6 +72,24 @@ public sealed partial class DetailAuctionPage : Page
                 }
             };
 
+            ViewModel.BidFailed += async (s, args) =>
+            {
+                if (_currentDialog == null)
+                {
+                    _currentDialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Giá đấu phải lớn hơn giá hiện tại",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await _currentDialog.ShowAsync();
+                    _currentDialog = null;
+                }
+            };
+
+
+
 
         }
     }
