@@ -17,6 +17,7 @@ namespace CarStore.ViewModels;
 public partial class AuctionViewModel : ObservableObject
 {
     private readonly IDao<Auction> _sampleDataService;
+    private readonly IDao<Car> _car;
     public ObservableCollection<Auction> Source { get; } = new ObservableCollection<Auction>();
 
     public async void LoadData()
@@ -37,9 +38,10 @@ public partial class AuctionViewModel : ObservableObject
     }
     public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
 
-    public AuctionViewModel(IDao<Auction> sampleDataService, IAuthenticationService authenticationService)
+    public AuctionViewModel(IDao<Auction> sampleDataService, IDao<Car> car,IAuthenticationService authenticationService)
     {
         _sampleDataService = sampleDataService;
+        _car = car;
         AuthenticationService = authenticationService;
         LoadData();
     }
@@ -69,5 +71,13 @@ public partial class AuctionViewModel : ObservableObject
         DateTime currentTime = DateTime.UtcNow.ToUniversalTime();
         DateTime endTime = startTime.AddMinutes(minutes);
         return currentTime >= startTime && currentTime <= endTime;
+    }
+
+    public async Task DeleteAuction(Auction auction)
+    {
+        var car = await _car.GetByIdAsync(auction.CarId);
+        car.AuctionId = 0;
+        await _sampleDataService.DeleteById(auction.AuctionId);
+        LoadData();
     }
 }

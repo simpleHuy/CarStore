@@ -57,4 +57,5 @@ public class AddAuctionViewModel: ObservableObject
         SelectedCar.AuctionId = newAuction.AuctionId;
         await _car.UpdateById(SelectedCar);
     }
+
 }

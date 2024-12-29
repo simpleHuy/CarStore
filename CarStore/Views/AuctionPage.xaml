@@ -40,6 +40,7 @@
                 <controls:DataGridTextColumn Binding="{Binding Car.ManufacturerId, Converter={StaticResource Manufacturer}}" Header="Nhà sản xuất" />
                 <controls:DataGridTextColumn Binding="{Binding Car.EngineTypeId, Converter={StaticResource EngineType}}" Header="Động cơ" />
                 <controls:DataGridTextColumn Binding="{Binding Car.TypeOfCarId, Converter={StaticResource TypeOfCar}}" Header="Loại xe" />
+                
                 <controls:DataGridTemplateColumn Header="Tình Trạng">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -50,8 +51,28 @@
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
+                
                 <controls:DataGridTextColumn Binding="{Binding EndDate}" Header="Thời gian đấu giá (phút)" />
+
+                <controls:DataGridTemplateColumn Header="Xóa">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="DeleteBtn_Click"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Delete" />
+                            </Button>
+
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+
+
+
             </controls:DataGrid.Columns>
+                           
+            
         </controls:DataGrid>
     </Grid>
 </Page>

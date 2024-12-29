@@ -41,49 +41,67 @@ public sealed partial class AuctionPage : Page
 
     private async void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (!ViewModel.IsLoggedIn)
-        {
-            ContentDialog dialog = new ContentDialog
-            {
-                Title = "Thông báo",
-                Content = "Vui lòng đăng nhập để tham gia đấu giá",
-                CloseButtonText = "OK",
-                XamlRoot = this.Content.XamlRoot
-            };
-            await dialog.ShowAsync();
+        if (e.AddedItems.Count == 0 || e.RemovedItems.Count == 0)
             return;
-        }
-            if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Auction selectedAuction)
-        {
-            // Navigate to the detail page
-            if (selectedAuction.condition == "Đang diễn ra")
-            {
-                Frame.Navigate(typeof(DetailAuctionPage), selectedAuction);
-            }
-            if (selectedAuction.condition == "Sắp diễn ra")
-            {
-                ContentDialog dialog = new ContentDialog
-                {
-                    Title = "Thông báo",
-                    Content = "Phiên đấu giá chưa bắt đầu",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
-            }
-            if (selectedAuction.condition == "Kết thúc")
-            {
-                ContentDialog dialog = new ContentDialog
-                {
-                    Title = "Thông báo",
-                    Content = "Phiên đấu giá đã kết thúc",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
 
+        if (sender is DataGrid dataGrid && dataGrid.SelectedItem is Auction selectedAuction)
+        {
+            // Kiểm tra nếu hành động không phải từ nút Delete
+            if (!(e.OriginalSource is Button))
+            {
+                if (!ViewModel.IsLoggedIn)
+                {
+                    ContentDialog dialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Vui lòng đăng nhập để tham gia đấu giá",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                    return;
+                }
+
+                // Điều hướng đến trang chi tiết
+                if (selectedAuction.condition == "Đang diễn ra")
+                {
+                    Frame.Navigate(typeof(DetailAuctionPage), selectedAuction);
+                }
+                else if (selectedAuction.condition == "Sắp diễn ra")
+                {
+                    ContentDialog dialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Phiên đấu giá chưa bắt đầu",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
+                else if (selectedAuction.condition == "Kết thúc")
+                {
+                    ContentDialog dialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Phiên đấu giá đã kết thúc",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
             }
         }
     }
+
+
+    private async void DeleteBtn_Click(object sender, RoutedEventArgs e)
+    {
+        
+        if (sender is Button button && button.DataContext is Auction selectedAuction)
+        {
+            await ViewModel.DeleteAuction(selectedAuction);
+        }
+    }
+
 
 }

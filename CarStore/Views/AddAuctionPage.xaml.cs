@@ -34,7 +34,7 @@ public sealed partial class AddAuctionPage : Page
         try
         {
             var startDate = StartDatePicker.Date.Date + StartTimePicker.Time;
-            var utcStartDate = DateTime.SpecifyKind(startDate.AddHours(7), DateTimeKind.Utc);
+            var utcStartDate = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
 
             var auction = new Auction
             {
