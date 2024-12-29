@@ -25,6 +25,7 @@
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+            IsReadOnly="True"
             SelectionChanged="DataGrid_SelectionChanged">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
@@ -35,11 +36,10 @@
                 <controls:DataGridTextColumn Binding="{Binding Name}" Header="Tên" />
                 <controls:DataGridTextColumn Binding="{Binding Description}" Header="Mô tả" />
                 <controls:DataGridTextColumn Binding="{Binding StartDate}" Header="Thời gian BD" />
-                <controls:DataGridTextColumn Binding="{Binding EndDate}" Header="Thời gian KT" />
-                <controls:DataGridTextColumn Binding="{Binding Price, Converter={StaticResource currency}}" Header="Price" />
-                <controls:DataGridTextColumn Binding="{Binding Car.ManufacturerId, Converter={StaticResource Manufacturer}}" Header="Manufacturer" />
-                <controls:DataGridTextColumn Binding="{Binding Car.EngineTypeId, Converter={StaticResource EngineType}}" Header="Engine Type" />
-                <controls:DataGridTextColumn Binding="{Binding Car.TypeOfCarId, Converter={StaticResource TypeOfCar}}" Header="Type Of Car" />
+                <controls:DataGridTextColumn Binding="{Binding Price, Converter={StaticResource currency}}" Header="Giá khởi điểm" />
+                <controls:DataGridTextColumn Binding="{Binding Car.ManufacturerId, Converter={StaticResource Manufacturer}}" Header="Nhà sản xuất" />
+                <controls:DataGridTextColumn Binding="{Binding Car.EngineTypeId, Converter={StaticResource EngineType}}" Header="Động cơ" />
+                <controls:DataGridTextColumn Binding="{Binding Car.TypeOfCarId, Converter={StaticResource TypeOfCar}}" Header="Loại xe" />
                 <controls:DataGridTemplateColumn Header="Tình Trạng">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -50,13 +50,7 @@
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
-                <controls:DataGridTemplateColumn>
-                    <controls:DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock  FontFamily="Segoe MDL2 Assets" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Text="&#xE8C4;" />
-                        </DataTemplate>
-                    </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
+                <controls:DataGridTextColumn Binding="{Binding EndDate}" Header="Thời gian đấu giá (phút)" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
     </Grid>

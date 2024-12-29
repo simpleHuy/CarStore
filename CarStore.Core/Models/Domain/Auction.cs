@@ -28,7 +28,7 @@ public class Auction: INotifyPropertyChanged
     {
         get; set;
     }
-    public DateTime EndDate
+    public int EndDate
     {
         get; set;
     }

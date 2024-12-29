@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +29,16 @@ public sealed partial class DetailAuctionPage : Page
         this.InitializeComponent();
         this.DataContext = ViewModel;
     }
+    private void ScrollToLastItem()
+    {
+        if (ViewModel.BidHistory.Count > 0)
+        {
+            var lastItem = ViewModel.BidHistory.Last();
+            BidListView.ScrollIntoView(lastItem);
+        }
+    }
+    private ContentDialog _currentDialog;
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
@@ -36,8 +46,39 @@ public sealed partial class DetailAuctionPage : Page
         {
             ViewModel.Auction = auction;
             ViewModel.Price = (long)auction.Price;
+            DateTime currentTime = DateTime.Now;
+            DateTime endTime = auction.StartDate.AddMinutes(auction.EndDate);
+            ViewModel.TimeRemaining = endTime - currentTime;
+            ViewModel.TimeLimit = auction.EndDate;
             ViewModel.SelectedCar = auction.Car;
+            ViewModel.BidHistory.CollectionChanged +=  async(s, args) =>
+            {
+                ScrollToLastItem();
+            };
+
+            ViewModel.AuctionEnded += async (s, args) =>
+            {
+                if (_currentDialog == null)
+                {
+                    _currentDialog = new ContentDialog
+                    {
+                        Title = "Thông báo",
+                        Content = "Đấu giá đã kết thúc",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await _currentDialog.ShowAsync();
+                    _currentDialog = null;
+                }
+            };
+
+
         }
+    }
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        base.OnNavigatedFrom(e);
+        ViewModel.TimeRemaining = TimeSpan.Zero;
     }
 
     private void ChooseThisPicture(object sender, ItemClickEventArgs e)

@@ -18,12 +18,16 @@ using SocketIOClient;
 using System.Net.Http;
 using Microsoft.UI.Dispatching;
 using System.Diagnostics;
+using CommunityToolkit.WinUI;
+using System.Text.Json;
+using System.Runtime.CompilerServices;
+
+
 
 namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, IDisposable
 {
     private readonly SocketIOClient.SocketIO _socket;
-    private readonly Timer timer;
     private readonly DispatcherQueue _dispatcherQueue;
 
     private Auction auction;
@@ -156,7 +160,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             await _socket.EmitAsync("joinAuction", auction.AuctionId);
         }
     }
-
     public ObservableCollection<Bidding>? BidHistory { get; set; }
     
     private long price;
@@ -217,7 +220,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     }
 
 
-    public bool CanPlaceBid => BidAmount > 0;
+    public bool CanPlaceBid => BidAmount > Auction.Price && IsAuctionEnded == false;
 
     public ICommand PlaceBidCommand{get;}
 
@@ -236,6 +239,18 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         BidHistory = new ObservableCollection<Bidding>(allBid);
         OnPropertyChanged(nameof(BidHistory));
     }
+
+    private int _timeLimit = 1;  // Time limit in minutes
+    public int TimeLimit
+    {
+        get => _timeLimit;
+        set
+        {
+            _timeLimit = value;
+
+            OnPropertyChanged(nameof(TimeLimit));
+        }
+    }
     public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,
         IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository)
     {
@@ -253,8 +268,76 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         _socket = new SocketIOClient.SocketIO("http://localhost:3000");
 
         SetupSocketEvents();
-        ConnectSocket();
+        ConnectSocket(); 
+        
+        
+        //if (auction != null)
+        //{
+        //    DateTime endTime = auction.StartDate.AddMinutes(Auction.EndDate);
+        //    _timeRemaining = endTime - DateTime.Now;
+
+        //}
+        //else
+        //{
+        //    _timeRemaining = TimeSpan.FromMinutes(TimeLimit);
+        //}
+
     }
+    private DispatcherQueueTimer _timer;
+    private TimeSpan _timeRemaining;
+
+    public TimeSpan TimeRemaining
+    {
+        get => _timeRemaining;
+        set
+        {
+            _timeRemaining = value;
+            InitializeTimer();
+            StartCountdown();
+            OnPropertyChanged(nameof(TimeRemaining));
+        }
+    }
+
+
+    // Thêm event để thông báo khi đấu giá kết thúc
+    public event EventHandler AuctionEnded;
+
+    public string TimeRemainingText => _timeRemaining.ToString(@"mm\:ss");
+
+    private void InitializeTimer()
+    {
+        _timer = DispatcherQueue.GetForCurrentThread().CreateTimer();
+        _timer.Interval = TimeSpan.FromSeconds(1);
+        _timer.Tick += TimerElapsed;
+    }
+
+    public void StartCountdown()
+    {
+        if (_timeRemaining > TimeSpan.Zero)
+        {
+            _timer.Start();
+        }
+    }
+
+    private void TimerElapsed(object sender, object e)
+    {
+        if (_timeRemaining > TimeSpan.Zero)
+        {
+            _timeRemaining = _timeRemaining.Subtract(TimeSpan.FromSeconds(1));
+            OnPropertyChanged(nameof(TimeRemainingText));
+
+            // Kiểm tra nếu thời gian đã hết
+            if (_timeRemaining == TimeSpan.Zero)
+            {
+                _timer.Stop();
+                // Raise event để View có thể hiển thị dialog
+                AuctionEnded?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    // Thêm property để View có thể kiểm tra trạng thái
+    public bool IsAuctionEnded => _timeRemaining == TimeSpan.Zero;
 
     private async void ConnectSocket()
     {
@@ -283,11 +366,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             {
                 ErrorMessage = string.Empty;
             });
-
-            if (Auction != null)
-            {
-                await JoinNewAuction();
-            }
         };
 
         _socket.OnDisconnected += (sender, e) =>
@@ -298,26 +376,64 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             });
         };
 
-        _socket.On("bidPlaced", response =>
+        _socket.On("bidPlaced", async response =>
         {
             try
             {
-                var bid = response.GetValue<Bidding>();
-                _dispatcherQueue.TryEnqueue(async () =>
-                {
-                    // Get user details for the new bid
-                    var user = await _user.GetByIdAsync(bid.UserId);
-                    bid.User = user;
+                Debug.WriteLine("Received bidPlaced event");
+                var data = response.GetValue<JsonElement>();
+                var bidData = data.GetProperty("bid");
 
-                    BidHistory?.Add(bid);
-                    OnPropertyChanged(nameof(BidHistory));
+                // Parse time using ISO 8601 format
+                var timeStr = bidData.GetProperty("time").GetString();
+                var time = DateTime.Parse(timeStr).ToLocalTime();
+
+                var newBid = new Bidding
+                {
+                    AuctionId = bidData.GetProperty("auctionId").GetInt32(),
+                    UserId = bidData.GetProperty("userId").GetInt32(),
+                    BidAmount = bidData.GetProperty("bidAmount").GetInt64(),
+                    Time = time.ToLocalTime()
+                };
+
+                Debug.WriteLine($"Parsed bid data: AuctionId={newBid.AuctionId}, UserId={newBid.UserId}, Amount={newBid.BidAmount}, Time={newBid.Time}");
+
+                await _dispatcherQueue.EnqueueAsync(async () =>
+                {
+                    try
+                    {
+                        if (newBid.UserId != 1) // Replace 1 with your actual current user ID
+                        {
+                            // Save to database
+                            await _bidding.InsertById(newBid);
+
+                            // Get user details
+                            var user = await _user.GetByIdAsync(newBid.UserId);
+                            newBid.User = user;
+
+                            // Add to bid history
+                            BidHistory ??= new ObservableCollection<Bidding>();
+
+                            _dispatcherQueue.TryEnqueue(() =>
+                            {
+                                BidHistory.Add(newBid);
+                                OnPropertyChanged(nameof(BidHistory));
+                            });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error processing bid: {ex}");
+                        ErrorMessage = $"Error processing bid: {ex.Message}";
+                    }
                 });
             }
             catch (Exception ex)
             {
+                Debug.WriteLine($"Error handling bid data: {ex}");
                 _dispatcherQueue.TryEnqueue(() =>
                 {
-                    ErrorMessage = $"Error processing bid: {ex.Message}";
+                    ErrorMessage = $"Error handling bid data: {ex.Message}";
                 });
             }
         });
@@ -326,37 +442,46 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     private async void PlaceBid()
     {
         if (Auction == null) return;
+
         try
         {
+            // Use UTC time for consistency
+            var currentTime = DateTime.UtcNow;
+            Price = BidAmount;
+
             var newBid = new Bidding
             {
                 AuctionId = Auction.AuctionId,
                 UserId = 1, // Replace with actual UserId
                 BidAmount = BidAmount,
-                Time = DateTime.UtcNow
+                Time = currentTime.ToUniversalTime()
             };
 
             // Save to database first
             await _bidding.InsertById(newBid);
 
+            // Get user info for display
+            var user = await _user.GetByIdAsync(newBid.UserId);
+            newBid.User = user;
+
+            // Add to bid history
+            BidHistory ??= new ObservableCollection<Bidding>();
+            BidHistory.Add(newBid);
+            OnPropertyChanged(nameof(BidHistory));
+
             // Then emit to socket server
             if (_socket.Connected)
             {
-                // Create a simplified anonymous object for serialization
+                // Format time as ISO 8601 string for JavaScript
                 var bidData = new
                 {
-                    auctionId = Auction.AuctionId,
-                    bid = new
-                    {
-                        auctionId = newBid.AuctionId,
-                        userId = newBid.UserId,
-                        bidAmount = newBid.BidAmount,
-                        time = newBid.Time
-                    }
+                    auctionId = newBid.AuctionId,
+                    userId = newBid.UserId,
+                    bidAmount = newBid.BidAmount,
+                    time = currentTime.ToUniversalTime()
                 };
 
-                // Emit the data directly without manual serialization
-                await _socket.EmitAsync("placeBid", bidData);
+                await _socket.EmitAsync("placeBid", new { auctionId = Auction.AuctionId, bid = bidData });
 
                 BidAmountText = string.Empty;
                 BidAmount = 0;
@@ -371,6 +496,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
         catch (Exception ex)
         {
+            Debug.WriteLine($"Error placing bid: {ex}");
             _dispatcherQueue.TryEnqueue(() =>
             {
                 ErrorMessage = $"Failed to place bid: {ex.Message}";

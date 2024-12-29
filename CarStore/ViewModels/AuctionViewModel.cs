@@ -11,26 +11,32 @@ using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CarStore.Core.Contracts.Repository;
 using CarStore.Core.Contracts.Services;
+using System.Diagnostics;
 
 namespace CarStore.ViewModels;
-public partial class AuctionViewModel: ObservableObject
+public partial class AuctionViewModel : ObservableObject
 {
     private readonly IDao<Auction> _sampleDataService;
     public ObservableCollection<Auction> Source { get; } = new ObservableCollection<Auction>();
+
     public async void LoadData()
     {
         Source.Clear();
-
         var data = await _sampleDataService.GetAllAsync();
-
         foreach (var item in data)
         {
+            // Cập nhật condition trước khi thêm vào Source
+            item.condition = GetAuctionCondition(item.StartDate, item.EndDate);
             Source.Add(item);
         }
     }
 
-    private IAuthenticationService AuthenticationService { get; set; }
+    private IAuthenticationService AuthenticationService
+    {
+        get; set;
+    }
     public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
+
     public AuctionViewModel(IDao<Auction> sampleDataService, IAuthenticationService authenticationService)
     {
         _sampleDataService = sampleDataService;
@@ -38,8 +44,30 @@ public partial class AuctionViewModel: ObservableObject
         LoadData();
     }
 
-    
-    public void OnNavigatedFrom()
+    private string GetAuctionCondition(DateTime startTime, int minutes)
     {
+        DateTime currentTime = DateTime.Now;
+        Debug.WriteLine("Current time: " + currentTime);
+        DateTime endTime = startTime.AddMinutes(minutes);
+
+        if (currentTime < startTime)
+        {
+            return "Sắp diễn ra";
+        }
+        else if (currentTime >= startTime && currentTime <= endTime)
+        {
+            return "Đang diễn ra";
+        }
+        else
+        {
+            return "Kết thúc";
+        }
+    }
+
+    public bool IsTimeInRange(DateTime startTime, int minutes)
+    {
+        DateTime currentTime = DateTime.UtcNow.ToUniversalTime();
+        DateTime endTime = startTime.AddMinutes(minutes);
+        return currentTime >= startTime && currentTime <= endTime;
     }
 }
