@@ -360,7 +360,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                     AuctionId = bidData.GetProperty("auctionId").GetInt32(),
                     UserId = bidData.GetProperty("userId").GetInt32(),
                     BidAmount = bidData.GetProperty("bidAmount").GetInt64(),
-                    Time = time.ToLocalTime()
+                    Time = time.ToUniversalTime().AddHours(7)
                 };
 
                 Price = newBid.BidAmount;
@@ -423,9 +423,9 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             var newBid = new Bidding
             {
                 AuctionId = Auction.AuctionId,
-                UserId = 1, 
+                UserId = 1,
                 BidAmount = BidAmount,
-                Time = currentTime.ToUniversalTime()
+                Time = currentTime.ToUniversalTime().AddHours(7)
             };
 
             await _bidding.InsertById(newBid);

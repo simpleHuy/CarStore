@@ -54,5 +54,7 @@ public class AddAuctionViewModel: ObservableObject
     public async Task AddAuction(Auction newAuction)
     {
         await _auction.InsertById(newAuction);
+        SelectedCar.AuctionId = newAuction.AuctionId;
+        await _car.UpdateById(SelectedCar);
     }
 }
