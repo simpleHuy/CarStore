@@ -22,8 +22,6 @@ using CommunityToolkit.WinUI;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
 
-
-
 namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, IDisposable
 {
@@ -132,7 +130,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     }
     private readonly ICarRepository _carRepository;
     private readonly IBiddingRepository _biddingRepository;
-    
 
     private int _selectedImageIndex;
     public int SelectedImageIndex
@@ -196,15 +193,12 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             OnPropertyChanged(nameof(ErrorMessage));
         }
     }
-
-
     public bool CanPlaceBid => BidAmount > price && BidAmount > Auction.Price  && IsAuctionEnded == false;
-
     public ICommand PlaceBidCommand
     {
         get;
     }
-
+    
     private readonly IDao<Bidding> _bidding;
     private readonly IDao<User> _user;
     private readonly IDao<Auction> _auction;
@@ -215,7 +209,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         {
             var user = await _user.GetByIdAsync(allBid[i].UserId);
             allBid[i].User = user;
-
         }
         BidHistory = new ObservableCollection<Bidding>(allBid);
         OnPropertyChanged(nameof(BidHistory));
@@ -254,7 +247,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     }
     private DispatcherQueueTimer _timer;
     private TimeSpan _timeRemaining;
-
     public TimeSpan TimeRemaining
     {
         get => _timeRemaining;
@@ -267,8 +259,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
 
-
-    // Thêm event để thông báo khi đấu giá kết thúc
     public event EventHandler AuctionEnded;
     public event EventHandler BidFailed;
 
@@ -288,7 +278,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             _timer.Start();
         }
     }
-
     private void TimerElapsed(object sender, object e)
     {
         if (_timeRemaining > TimeSpan.Zero)
@@ -303,9 +292,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             }
         }
     }
-
     public bool IsAuctionEnded => _timeRemaining == TimeSpan.Zero;
-
     private async void ConnectSocket()
     {
         try
@@ -324,7 +311,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             });
         }
     }
-
     private void SetupSocketEvents()
     {
         _socket.OnConnected += async (sender, e) =>
@@ -404,7 +390,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             }
         });
     }
-
     private async void PlaceBid()
     {
         if (Auction == null) return;
@@ -468,8 +453,6 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             });
         }
     }
-
-
     public void Dispose()
     {
         Task.Run(async () =>

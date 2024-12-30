@@ -18,6 +18,8 @@ public partial class AuctionViewModel : ObservableObject
 {
     private readonly IDao<Auction> _sampleDataService;
     private readonly IDao<Car> _car;
+    private readonly IBiddingRepository _bidding;
+    private readonly IDao<User> _user;
     public ObservableCollection<Auction> Source { get; } = new ObservableCollection<Auction>();
 
     public async void LoadData()
@@ -26,7 +28,6 @@ public partial class AuctionViewModel : ObservableObject
         var data = await _sampleDataService.GetAllAsync();
         foreach (var item in data)
         {
-            // Cập nhật condition trước khi thêm vào Source
             item.condition = GetAuctionCondition(item.StartDate, item.EndDate);
             Source.Add(item);
         }
@@ -38,10 +39,12 @@ public partial class AuctionViewModel : ObservableObject
     }
     public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
 
-    public AuctionViewModel(IDao<Auction> sampleDataService, IDao<Car> car,IAuthenticationService authenticationService)
+    public AuctionViewModel(IDao<Auction> sampleDataService, IDao<Car> car, IDao<User> user , IBiddingRepository biddingRepository ,IAuthenticationService authenticationService)
     {
         _sampleDataService = sampleDataService;
         _car = car;
+        _user = user;
+        _bidding = biddingRepository;
         AuthenticationService = authenticationService;
         LoadData();
     }
@@ -79,5 +82,22 @@ public partial class AuctionViewModel : ObservableObject
         car.AuctionId = 0;
         await _sampleDataService.DeleteById(auction.AuctionId);
         LoadData();
+    }
+
+    public async Task<User?> GetInfor(Auction auction)
+    {
+        if (auction.condition != "Kết thúc")
+        {
+            return null;
+        }
+        var allBid = await _bidding.GetBidsByAuctionIdAsync(auction.AuctionId);
+
+        var winBid = allBid.OrderByDescending(x => x.BidAmount).FirstOrDefault();
+        if (winBid == null)
+        {
+            return null;
+        }
+        var winner = await _user.GetByIdAsync(winBid.UserId);
+        return winner;
     }
 }

@@ -88,9 +88,6 @@ public sealed partial class DetailAuctionPage : Page
                 }
             };
 
-
-
-
         }
     }
     protected override void OnNavigatedFrom(NavigationEventArgs e)

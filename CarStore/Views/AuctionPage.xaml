@@ -25,8 +25,7 @@
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
-            IsReadOnly="True"
-            SelectionChanged="DataGrid_SelectionChanged">
+            IsReadOnly="True">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>
@@ -54,6 +53,19 @@
                 
                 <controls:DataGridTextColumn Binding="{Binding EndDate}" Header="Thời gian đấu giá (phút)" />
 
+                <controls:DataGridTemplateColumn Header="Tham gia">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="JoinBtn_Click"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                                <SymbolIcon Symbol="OpenLocal" />
+                            </Button>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>
+
                 <controls:DataGridTemplateColumn Header="Xóa">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -66,12 +78,22 @@
 
                         </DataTemplate>
                     </controls:DataGridTemplateColumn.CellTemplate>
-                </controls:DataGridTemplateColumn>
-
-
-
+                </controls:DataGridTemplateColumn>                
+                
+                <controls:DataGridTemplateColumn Header="Thông tin">
+                    <controls:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="InforBtn_Click"
+                                    CommandParameter="{Binding}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Center">
+                                <SymbolIcon Symbol="Contact" />
+                            </Button>
+                        </DataTemplate>
+                    </controls:DataGridTemplateColumn.CellTemplate>
+                </controls:DataGridTemplateColumn>                
+                
             </controls:DataGrid.Columns>
-                           
             
         </controls:DataGrid>
     </Grid>
