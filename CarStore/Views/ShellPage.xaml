@@ -68,6 +68,13 @@
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
 
+                <NavigationViewItem x:Uid="Shell_Chat" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.ChatPageViewModel"
+                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F2;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
                 <NavigationViewItem x:Uid="Shell_Register" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.RegisterDetailViewModel"
                                     Visibility="{x:Bind ViewModel.IsAdmin, Converter={StaticResource Visibility}, Mode=OneWay}">
                     <NavigationViewItem.Icon>

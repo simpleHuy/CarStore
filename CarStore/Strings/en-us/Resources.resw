@@ -164,10 +164,13 @@
     <value>Đăng nhập</value>
   </data>
   <data name="RegisterDetail_Title.Text" xml:space="preserve">
-    <value>RegisterDetail</value>
+    <value>Danh sách các User đăng kí cập nhật tài khoản</value>
     <comment>Page title for RegisterDetailPage</comment>
   </data>
   <data name="Shell_Register.Content" xml:space="preserve">
     <value>Danh sách đăng kí</value>
+  </data>
+  <data name="Shell_Chat.Content" xml:space="preserve">
+    <value>Chat</value>
   </data>
 </root>

@@ -14,24 +14,14 @@ public class PageService : IPageService
 
     public PageService()
     {
-        Configure<FilterViewModel, FilterPage>();
-        Configure<RegisterViewModel, RegisterPage>();
-        Configure<ForgotPasswordViewModel, ForgotPasswordPage>();
-        Configure<CarDetailViewModel, CarDetailPage>();
         Configure<MainPageViewModel, MainPage>();
-        Configure<ScheduleFormViewModel, ScheduleForm>();
-        Configure<VerifyViewModel, VerifyPage>();
-        Configure<SearchingViewModel, SearchingPage>();
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
-        Configure<CompareViewModel, ComparePage>();
-        Configure<AddItemPageViewModel, AddItemPage>();
         Configure<LoginViewModel, LoginPage>();
-        Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
-        Configure<EditItemPageViewModel, EditItem>();
-        Configure<ChatPageViewModel, ChatPage>();
         Configure<RegisterDetailViewModel, RegisterDetailPage>();
+        Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
     }
+
 
     public Type GetPageType(string key)
     {

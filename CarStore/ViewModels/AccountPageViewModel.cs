@@ -122,4 +122,9 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 
         await _RegDao.Insert(registerDetail);
     }
+
+    public void Logout()
+    {
+        _authenticationService.Logout();
+    }
 }

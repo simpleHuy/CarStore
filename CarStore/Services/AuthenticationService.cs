@@ -66,9 +66,8 @@ public class AuthenticationService : IAuthenticationService
 
     public void Logout()
     {
-        IsAuthenticated = false;
-        // Clear the current user
         _currentUser = null;
+        IsAuthenticated = false;
     }
 
     public User GetCurrentUser()
