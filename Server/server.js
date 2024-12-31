@@ -28,8 +28,10 @@ io.on('connection', (socket) => {
     socket.on('placeBid', (data) => {
         console.log('Received bid data:', data);
         const { auctionId, bid } = data;
-        io.to(`auction_${auctionId}`).emit('bidPlaced', { auctionId, bid });
+    
+        socket.to(`auction_${auctionId}`).emit('bidPlaced', { auctionId, bid });
     });
+    
 
     socket.on('disconnect', () => {
         console.log('Client disconnected:', socket.id);

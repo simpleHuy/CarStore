@@ -15,6 +15,8 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using CarStore.ViewModels;
 using CarStore.Core.Models;
+using CarStore.Core.Contracts.Services;
+using CarStore.Core.Contracts.Repository;
 
 namespace CarStore.Views;
 public sealed partial class DetailAuctionPage : Page
@@ -39,13 +41,18 @@ public sealed partial class DetailAuctionPage : Page
     }
     private ContentDialog _currentDialog;
 
-    protected override void OnNavigatedTo(NavigationEventArgs e)
+    protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
+
+        IBiddingRepository biddingRepository = App.GetService<IBiddingRepository>();
+
         if (e.Parameter is Auction auction)
         {
             ViewModel.Auction = auction;
-            ViewModel.Price = (long)auction.Price;
+            var bidding =await  biddingRepository.GetBidsByAuctionIdAsync(auction.AuctionId);
+            var lastBidding = bidding.OrderByDescending(b => b.BidAmount).FirstOrDefault();
+            ViewModel.Price = lastBidding.BidAmount;
             DateTime currentTime = DateTime.Now;
             DateTime endTime = auction.StartDate.AddMinutes(auction.EndDate);
             ViewModel.TimeRemaining = endTime - currentTime;

@@ -21,12 +21,17 @@ using System.Diagnostics;
 using CommunityToolkit.WinUI;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
+using CarStore.Contracts.Services;
 
 namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, IDisposable
 {
     private readonly SocketIOClient.SocketIO _socket;
     private readonly DispatcherQueue _dispatcherQueue;
+    private IAuthenticationService AuthenticationService
+    {
+        get; set;
+    }
 
     private Auction auction;
     public Auction Auction
@@ -226,13 +231,14 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
     public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,
-        IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository)
+        IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository, IAuthenticationService authenticationService)
     {
         _carRepository = carRepository;
         _biddingRepository = biddingRepository;
         _bidding = bidding;
         _auction = auctionRepository;
         _user = user;
+        AuthenticationService = authenticationService;
 
         BidAmount = 0;
         PlaceBidCommand = new RelayCommand(PlaceBid);
@@ -337,9 +343,8 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                 var data = response.GetValue<JsonElement>();
                 var bidData = data.GetProperty("bid");
 
-                // Parse time using ISO 8601 format
                 var timeStr = bidData.GetProperty("time").GetString();
-                var time = DateTime.Parse(timeStr).ToLocalTime();
+                var time = DateTime.Parse(timeStr).ToUniversalTime();
 
                 var newBid = new Bidding
                 {
@@ -349,7 +354,11 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                     Time = time.ToUniversalTime().AddHours(7)
                 };
 
-                Price = newBid.BidAmount;
+                // Update the Price property on the UI thread
+                _dispatcherQueue.TryEnqueue(() =>
+                {
+                    Price = newBid.BidAmount;
+                });
 
                 Debug.WriteLine($"Parsed bid data: AuctionId={newBid.AuctionId}, UserId={newBid.UserId}, Amount={newBid.BidAmount}, Time={newBid.Time}");
 
@@ -357,7 +366,8 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                 {
                     try
                     {
-                        if (newBid.UserId != 1) 
+                        Debug.WriteLine(AuthenticationService.GetCurrentUser().Id);
+                        if (newBid.UserId != AuthenticationService.GetCurrentUser().Id)
                         {
                             await _bidding.InsertById(newBid);
 
@@ -376,7 +386,10 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                     catch (Exception ex)
                     {
                         Debug.WriteLine($"Error processing bid: {ex}");
-                        ErrorMessage = $"Error processing bid: {ex.Message}";
+                        _dispatcherQueue.TryEnqueue(() =>
+                        {
+                            ErrorMessage = $"Error processing bid: {ex.Message}";
+                        });
                     }
                 });
             }
@@ -390,6 +403,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             }
         });
     }
+
     private async void PlaceBid()
     {
         if (Auction == null) return;

@@ -68,8 +68,11 @@
                         </TextBlock>
                     </StackPanel>
                     <!--Price-->
+                    <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Foreground="Green">
+                        <Run Text="Giá khởi điểm: "/><Run Text="{x:Bind ViewModel.Auction.Price, Converter={StaticResource currency}, Mode=OneWay}"/>
+                    </TextBlock>                    
                     <TextBlock TextWrapping="Wrap" Style="{StaticResource TitleTextBlockStyle}" Foreground="Red">
-                     <Run Text="Giá hiện tại: "/><Run Text="{x:Bind ViewModel.Price, Converter={StaticResource currency}, Mode=OneWay}"/>
+                         <Run Text="Giá hiện tại: "/><Run Text="{x:Bind ViewModel.Price, Converter={StaticResource currency}, Mode=OneWay}"/>
                     </TextBlock>
 
                     <!--Image With Selected color-->
@@ -87,30 +90,25 @@
                         </GridView.ItemTemplate>
                     </GridView>
 
-
                 </StackPanel>
             </Grid>
             <Grid Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <!-- Header -->
                     <RowDefinition Height="*" />
-                    <!-- Danh sách đấu giá -->
                     <RowDefinition Height="Auto" />
-                    <!-- Input và Button -->
                 </Grid.RowDefinitions>
 
 
-                <StackPanel Grid.Row="0" Width="100" VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1">
+                <StackPanel Grid.Row="0" Width="140" VerticalAlignment="Center" HorizontalAlignment="Right" BorderBrush="Black" BorderThickness="1">
                     <!-- Countdown Timer Display -->
                     <TextBlock Text="{x:Bind ViewModel.TimeRemainingText, Mode=OneWay}" 
-                   FontSize="29" 
+                   FontSize="35" 
                    HorizontalAlignment="Center" 
                     Padding="5"
                      Foreground="{x:Bind ViewModel.TimeRemainingText, Converter={StaticResource ConditionToColorConverter}}"
                    VerticalAlignment="Center" Margin="0, 0,0,0"/>
                 </StackPanel>
-
 
 
                 <!-- Header -->
@@ -124,8 +122,8 @@
                  <!--Danh sách diễn biến đấu giá--> 
                 <ListView Grid.Row="1"
                     x:Name="BidListView" 
-                    ItemsSource="{x:Bind ViewModel.BidHistory, Mode=OneWay}" 
-                    Height="200">
+                    ItemsSource="{x:Bind ViewModel.BidHistory, Mode=OneWay}" HorizontalAlignment="Center" Margin="0 0 0 20"
+                    Height="200" Width="650">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Bidding">
                             <StackPanel Orientation="Horizontal" Margin="0,5">
