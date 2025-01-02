@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -7,11 +9,168 @@
 namespace CarStore.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class addMoreColorAndMoreManufacturer : Migration
+    public partial class addAuctionAndRelative : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "AuctionId",
+                table: "Cars",
+                type: "integer",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<string>(
+                name: "supabaseFolder",
+                table: "Cars",
+                type: "text",
+                nullable: true);
+
+            migrationBuilder.CreateTable(
+                name: "Auctions",
+                columns: table => new
+                {
+                    AuctionId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<int>(type: "integer", nullable: false),
+                    Price = table.Column<long>(type: "bigint", nullable: true),
+                    CarId = table.Column<int>(type: "integer", nullable: false),
+                    condition = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Auctions", x => x.AuctionId);
+                    table.ForeignKey(
+                        name: "FK_Auctions_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "CarId",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RegisterDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegisterDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RegisterDetails_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Biddings",
+                columns: table => new
+                {
+                    BiddingId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    AuctionId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    BidAmount = table.Column<long>(type: "bigint", nullable: false),
+                    Time = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Biddings", x => x.BiddingId);
+                    table.ForeignKey(
+                        name: "FK_Biddings_Auctions_AuctionId",
+                        column: x => x.AuctionId,
+                        principalTable: "Auctions",
+                        principalColumn: "AuctionId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Biddings_users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 1,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 2,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 3,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 4,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 5,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 6,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 7,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 8,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 9,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
+            migrationBuilder.UpdateData(
+                table: "Cars",
+                keyColumn: "CarId",
+                keyValue: 10,
+                columns: new[] { "AuctionId", "supabaseFolder" },
+                values: new object[] { 0, null });
+
             migrationBuilder.InsertData(
                 table: "Manufacturers",
                 columns: new[] { "Id", "Name" },
@@ -176,11 +335,42 @@ namespace CarStore.Core.Migrations
                     { 139, "Yellow" },
                     { 140, "YellowGreen" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Auctions_CarId",
+                table: "Auctions",
+                column: "CarId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Biddings_AuctionId",
+                table: "Biddings",
+                column: "AuctionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Biddings_UserId",
+                table: "Biddings",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RegisterDetails_UserId",
+                table: "RegisterDetails",
+                column: "UserId",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Biddings");
+
+            migrationBuilder.DropTable(
+                name: "RegisterDetails");
+
+            migrationBuilder.DropTable(
+                name: "Auctions");
+
             migrationBuilder.DeleteData(
                 table: "Manufacturers",
                 keyColumn: "Id",
@@ -935,6 +1125,15 @@ namespace CarStore.Core.Migrations
                 table: "variants",
                 keyColumn: "Id",
                 keyValue: 140);
+
+            migrationBuilder.DropColumn(
+                name: "AuctionId",
+                table: "Cars");
+
+            migrationBuilder.DropColumn(
+                name: "supabaseFolder",
+                table: "Cars");
+
         }
     }
 }

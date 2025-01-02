@@ -22,6 +22,53 @@ namespace CarStore.Core.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("CarStore.Core.Models.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ShowroomId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShowroomId");
+
+                    b.ToTable("addresses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Hà Nội",
+                            ShowroomId = 1,
+                            Street = "Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Hồ Chí Minh",
+                            ShowroomId = 1,
+                            Street = "Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            City = "Hồ Chí Minh",
+                            ShowroomId = 2,
+                            Street = "Vành đài ktx B, TP. Thủ Đức, TP Hồ Chí Minh"
+                        });
+                });
+
             modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
                 {
                     b.Property<int>("AuctionId")
@@ -36,8 +83,8 @@ namespace CarStore.Core.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int>("EndDate")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -86,53 +133,6 @@ namespace CarStore.Core.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Biddings");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ShowroomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShowroomId");
-
-                    b.ToTable("addresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Hà Nội",
-                            ShowroomId = 1,
-                            Street = "Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Hồ Chí Minh",
-                            ShowroomId = 1,
-                            Street = "Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "Hồ Chí Minh",
-                            ShowroomId = 2,
-                            Street = "Vành đài ktx B, TP. Thủ Đức, TP Hồ Chí Minh"
-                        });
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
@@ -944,9 +944,6 @@ namespace CarStore.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -1840,36 +1837,6 @@ namespace CarStore.Core.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.Car", "Car")
-                        .WithOne("Auction")
-                        .HasForeignKey("CarStore.Core.Models.Auction", "CarId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.Auction", "Auction")
-                        .WithMany("Biddings")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithMany("Biddings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Wishlist", b =>
                 {
                     b.Property<int>("Id")
@@ -1902,6 +1869,36 @@ namespace CarStore.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Showroom");
+                });
+
+            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
+                {
+                    b.HasOne("CarStore.Core.Models.Car", "Car")
+                        .WithOne("Auction")
+                        .HasForeignKey("CarStore.Core.Models.Auction", "CarId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("CarStore.Core.Models.Bidding", b =>
+                {
+                    b.HasOne("CarStore.Core.Models.Auction", "Auction")
+                        .WithMany("Biddings")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CarStore.Core.Models.User", "User")
+                        .WithMany("Biddings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Auction");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
@@ -2034,11 +2031,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Variant");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
-                {
-                    b.Navigation("Biddings");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Wishlist", b =>
                 {
                     b.HasOne("CarStore.Core.Models.Car", "Car")
@@ -2056,6 +2048,11 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CarStore.Core.Models.Auction", b =>
+                {
+                    b.Navigation("Biddings");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
