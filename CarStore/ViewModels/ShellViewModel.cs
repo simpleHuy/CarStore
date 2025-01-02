@@ -36,7 +36,11 @@ public partial class ShellViewModel : ObservableRecipient, INotifyPropertyChange
             if (_isLogin && AuthenticationService.GetCurrentUser() != null)
             {
                 IsAdmin = AuthenticationService.GetCurrentUser().Id == 1;
-            } 
+            }
+            else
+            {
+                IsAdmin = false;
+            }
         }
     }
 

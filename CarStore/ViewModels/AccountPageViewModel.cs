@@ -44,6 +44,7 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         get; set;
     } = new List<Schedule>();
+    public bool  isAdmin { get; set; }
 
     private User? _currentUser;
     public User? CurrentUser
@@ -55,6 +56,15 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
             {
                 _currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
+            }
+
+            if (value != null && _currentUser.Id == 1)
+            {
+                isAdmin = true;
+            }
+            else
+            {
+                isAdmin = false;
             }
         }
     }

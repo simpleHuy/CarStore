@@ -53,16 +53,6 @@
             TODO: Update item icons by updating FontIcon.Glyph properties.
             https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
             -->
-            <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
-                <NavigationViewItem.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
-            <NavigationViewItem x:Uid="Shell_Auction" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AuctionViewModel">
-                <NavigationViewItem.Icon>
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;"/>
-                </NavigationViewItem.Icon>
-            </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Main" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.MainPageViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE80F;"/>
@@ -79,15 +69,22 @@
 
                 <NavigationViewItem x:Uid="Shell_User" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AccountPageViewModel"
                                     Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
-                        <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE77B;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
 
                 <NavigationViewItem x:Uid="Shell_Chat" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.ChatPageViewModel"
-                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8F2;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="Shell_Auction" helpers:NavigationHelper.NavigateTo="CarStore.ViewModels.AuctionViewModel"
+                                    Visibility="{x:Bind ViewModel.IsLogin, Converter={StaticResource Visibility}, Mode=OneWay}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE8A1;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
