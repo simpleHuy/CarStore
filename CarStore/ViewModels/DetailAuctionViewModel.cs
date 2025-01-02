@@ -22,6 +22,7 @@ using CommunityToolkit.WinUI;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
 using CarStore.Contracts.Services;
+using CarStore.Helpers;
 
 namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, IDisposable
@@ -97,6 +98,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
 
         var path = AppDomain.CurrentDomain.BaseDirectory;
         path += "Assets\\Cars\\" + SelectedCar.Images;
+        path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
 
         if (SelectedCarColor == null)
         {
@@ -114,25 +116,56 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             path += "\\" + variantsCode;
         }
 
-        if (Directory.Exists(path))
+
+        if (!Directory.Exists(path))
         {
-            // Get all jpg files in the directory
-            var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
-                                      .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
-                                      .ToArray();
-
-            // Convert file paths to proper URI format for WinUI
-            var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
-
-
-            SelectedCarPictures = new ObservableCollection<string>(imageUris);
+            var basePathIndex = path.IndexOf("Assets\\Cars");
+            var downloadPath = path.Substring(0, basePathIndex + "Assets\\Cars".Length);
+            downloadPath = downloadPath.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+            downloadPath += "\\" + SelectedCar.Images;
+            Task.Run(() => DownloadImage(downloadPath, SelectedCar.supabaseFolder)).Wait();
         }
-        else
+
+        // Get all jpg files in the directory
+        var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+
+        // Convert file paths to proper URI format for WinUI
+        //var imageUris = imageFiles.Select((file, index) =>
+        //    new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
+
+        SelectedCarPictures = new ObservableCollection<string>(imageFiles);
+    }
+
+    private async Task DownloadImage(string downloadPath, string folder)
+    {
+        try
         {
-            SelectedCarPictures = new ObservableCollection<string>();
+            var items = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).List(folder);
+            foreach (var item in items)
+            {
+                var currentRemotePath = Path.Combine(folder, item.Name).Replace("\\", "/");
+                var currentLocalPath = Path.Combine(downloadPath, item.Name);
+                if (item.Id == null) // This is a folder
+                {
+                    // Create local subfolder
+                    Directory.CreateDirectory(currentLocalPath);
+                    // Recursively download contents of this subfolder
+                    await DownloadImage(currentLocalPath, currentRemotePath);
+                }
+                else
+                {
+                    var img = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).DownloadPublicFile(currentRemotePath);
+                    await File.WriteAllBytesAsync(currentLocalPath, img);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
+
+
     private readonly ICarRepository _carRepository;
     private readonly IBiddingRepository _biddingRepository;
 
@@ -355,9 +388,10 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                 };
 
                 // Update the Price property on the UI thread
-                _dispatcherQueue.TryEnqueue(() =>
+                _dispatcherQueue.TryEnqueue(async () =>
                 {
                     Price = newBid.BidAmount;
+                    await LoadInitialDataAsync();
                 });
 
                 Debug.WriteLine($"Parsed bid data: AuctionId={newBid.AuctionId}, UserId={newBid.UserId}, Amount={newBid.BidAmount}, Time={newBid.Time}");
@@ -369,7 +403,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                         Debug.WriteLine(AuthenticationService.GetCurrentUser().Id);
                         if (newBid.UserId != AuthenticationService.GetCurrentUser().Id)
                         {
-                            await _bidding.InsertById(newBid);
+                            await _bidding.Insert(newBid);
 
                             var user = await _user.GetByIdAsync(newBid.UserId);
                             newBid.User = user;
@@ -427,7 +461,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
                 Time = currentTime.ToUniversalTime().AddHours(7)
             };
 
-            await _bidding.InsertById(newBid);
+            await _bidding.Insert(newBid);
 
             var user = await _user.GetByIdAsync(newBid.UserId);
             newBid.User = user;

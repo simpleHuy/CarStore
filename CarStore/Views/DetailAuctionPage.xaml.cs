@@ -50,9 +50,17 @@ public sealed partial class DetailAuctionPage : Page
         if (e.Parameter is Auction auction)
         {
             ViewModel.Auction = auction;
-            var bidding =await  biddingRepository.GetBidsByAuctionIdAsync(auction.AuctionId);
-            var lastBidding = bidding.OrderByDescending(b => b.BidAmount).FirstOrDefault();
-            ViewModel.Price = lastBidding.BidAmount;
+            var bidding = await  biddingRepository.GetBidsByAuctionIdAsync(auction.AuctionId);
+            if (bidding.Count == 0)
+            {
+                ViewModel.Price = (long)auction.Price;
+            }
+            else
+            {
+                // Get the last bidding (highest price
+                var lastBidding = bidding.OrderByDescending(b => b.BidAmount).FirstOrDefault();
+                ViewModel.Price = lastBidding.BidAmount;
+            }
             DateTime currentTime = DateTime.Now;
             DateTime endTime = auction.StartDate.AddMinutes(auction.EndDate);
             ViewModel.TimeRemaining = endTime - currentTime;
