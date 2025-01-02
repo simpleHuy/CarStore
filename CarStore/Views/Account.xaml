@@ -88,6 +88,9 @@
                         <TextBlock Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" Style="{ThemeResource FlyoutPickerTitleTextBlockStyle}" FontWeight="Normal" Margin="0"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10 10 40 10">
+                        <Button Content="Chỉnh sửa thông tin" HorizontalAlignment="Left" Height="Auto" Width="200"/>
+                        <Button Content="Tạo đấu giá xe" HorizontalAlignment="Left" Height="Auto" Width="200" Margin="5, 0, 5,0" Click="AddAuctionBtn_Click" />
+                        <Button Content="Liên hệ" HorizontalAlignment="Left" Height="Auto" Width="100" Background="{ThemeResource AccentAAFillColorDefaultBrush}" Foreground="{ThemeResource TextBoxBackgroundThemeBrush}"/>
                         <Button Content="Đăng xuất" HorizontalAlignment="Left" Height="Auto" Click="Logout_btn_click"/>
                         <Button Content="Đăng kí uy tín" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
                                 Converter={StaticResource BooleanToVisibilityConverter}}" Click="RegisterReputation_click"/>

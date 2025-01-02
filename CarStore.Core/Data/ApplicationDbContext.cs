@@ -104,6 +104,25 @@ public class ApplicationDbContext : DbContext
                                             .HasForeignKey<RegisterDetail>(rd => rd.UserId)
                                             .OnDelete(DeleteBehavior.SetNull);
 
+        modelBuilder.Entity<Auction>().HasOne<Car>(a => a.Car)
+                                     .WithOne(c => c.Auction)
+                                     .HasForeignKey<Auction>(a => a.CarId)
+                                     .OnDelete(DeleteBehavior.SetNull);
+
+
+        modelBuilder.Entity<Bidding>()
+                .HasOne(b => b.User)                       
+                .WithMany(u => u.Biddings)                 
+                .HasForeignKey(b => b.UserId)              
+                .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Bidding>()
+            .HasOne(b => b.Auction)
+                .WithMany(a => a.Biddings)
+                .HasForeignKey(b => b.AuctionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
         //confuguring unique constraints
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
         modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
@@ -123,6 +142,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Showroom>().Property(s => s.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<Address>().Property(a => a.Id).ValueGeneratedOnAdd();
         modelBuilder.Entity<RegisterDetail>().Property(rd => rd.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Bidding>().Property(b => b.BiddingId).ValueGeneratedOnAdd();
 
         //configuring default values
         modelBuilder.Entity<User>().Property(u => u.IsShowroom).HasDefaultValue(false);
@@ -157,6 +177,15 @@ public class ApplicationDbContext : DbContext
         get; set;
     }
     public DbSet<RegisterDetail> RegisterDetails
+    {
+        get; set;
+    }
+
+    public DbSet<Auction> Auctions
+    {
+        get; set;
+    }
+    public DbSet<Bidding> Biddings
     {
         get; set;
     }

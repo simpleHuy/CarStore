@@ -18,10 +18,14 @@ public class PageService : IPageService
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
         Configure<LoginViewModel, LoginPage>();
+        Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
+        Configure<EditItemPageViewModel, EditItem>();
+        Configure<AuctionViewModel, AuctionPage>();
+        Configure<DetailAuctionViewModel, DetailAuctionPage>();
+        Configure<AddAuctionViewModel, AddAuctionPage>();
         Configure<RegisterDetailViewModel, RegisterDetailPage>();
         Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
     }
-
 
     public Type GetPageType(string key)
     {

@@ -1,0 +1,112 @@
+<Page
+    x:Class="CarStore.Views.AddAuctionPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CarStore.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local1="using:CarStore.Core.Models"
+    mc:Ignorable="d"
+    Background="{ThemeResource GradientPageBackground}">
+    <StackPanel HorizontalAlignment="Center">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="750"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBox Grid.Row="0" 
+                     x:Name="AuctionNameTxt" 
+                     Header="Tên cuộc đấu giá*" 
+                     Margin="16 20 16 16"/>
+
+            <DatePicker Grid.Row="1" 
+                       x:Name="StartDatePicker" 
+                       Header="Ngày bắt đầu*" 
+                       Margin="16 0 16 16"/>
+
+            <TimePicker Grid.Row="2" 
+                       x:Name="StartTimePicker" 
+                       Header="Giờ bắt đầu (24 giờ)*" 
+                       ClockIdentifier="24HourClock" 
+                       Margin="16 0 16 16"/>
+
+            <TextBox Grid.Row="3" 
+                     x:Name="StartingPriceTxt" 
+                     Header="Giá khởi điểm*" 
+                     InputScope="Number" 
+                     Margin="16 0 16 16"/>
+
+            <ComboBox Grid.Row="4" 
+                      x:Name="DurationComboBox" 
+                      Header="Thời gian diễn ra*" 
+                      Margin="16 0 16 16">
+                <ComboBoxItem Content="5 phút" Tag="5"/>
+                <ComboBoxItem Content="10 phút" Tag="10"/>
+                <ComboBoxItem Content="15 phút" Tag="15"/>
+            </ComboBox>
+
+            <DropDownButton Grid.Row="5" 
+                x:Name="CarSelectionButton"
+                Content="{x:Bind ViewModel.SelectedCarName, Mode=OneWay}" 
+                Margin="16 0 16 16">
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <ItemsControl x:Name="ListCarCanChoose" 
+                              ItemsSource="{x:Bind ViewModel.CarOfAuction, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Spacing="10" Tapped="CarItem_Tapped">
+                                            <Image Source="{Binding DefautlImageLocation}" Width="60" Height="60" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+            <TextBox Grid.Row="6" 
+                     x:Name="AuctionDescriptionTxt" 
+                     Header="Mô tả cuộc đấu giá" 
+                     PlaceholderText="Nhập mô tả chi tiết về cuộc đấu giá" 
+                     Margin="16 0 16 16" 
+                     AcceptsReturn="True" 
+                     TextWrapping="Wrap" 
+                     MinHeight="100"/>
+
+            <StackPanel Grid.Row="7" Orientation="Horizontal" HorizontalAlignment="Center" Margin="16 16 16 0">
+                <Button x:Name="AddAuctionBtn" 
+                        Content="Thêm cuộc đấu giá" 
+                        Click="AddAuctionBtn_Click" 
+                        Style="{ThemeResource AccentButtonStyle}" 
+                        Margin="8"/>
+                <Button x:Name="CancelBtn" 
+                        Content="Hủy" 
+                        Click="CancelBtn_Click" 
+                        Margin="8"/>
+            </StackPanel>
+
+            <TextBlock Grid.Row="8" 
+                       x:Name="ErrorTxt" 
+                       Text="" 
+                       Foreground="Red" 
+                       Visibility="Collapsed" 
+                       HorizontalAlignment="Center" 
+                       Margin="16"/>
+        </Grid>
+    </StackPanel>
+</Page>

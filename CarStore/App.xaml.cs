@@ -116,6 +116,12 @@ public partial class App : Application
             services.AddTransient<MockAnyCarPage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
+            services.AddTransient<AuctionViewModel>();
+            services.AddTransient<AuctionPage>();
+            services.AddTransient<DetailAuctionViewModel>();
+            services.AddTransient<DetailAuctionPage>();
+            services.AddTransient<AddAuctionViewModel>();
+            services.AddTransient<AddAuctionPage>();
             services.AddTransient<ChatPageViewModel>();
             services.AddTransient<ChatPage>();
 
@@ -137,15 +143,14 @@ public partial class App : Application
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
             services.AddScoped<IUserRepository, EfCoreUserRepository>();
+            services.AddScoped<IBiddingRepository, EfCoreBiddingRepository>();
             services.AddScoped<IShowroomRepository, EfCoreShowroomRepository>();
             services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
-
         }).
         Build();
 
         UnhandledException += App_UnhandledException;
     }
-
 
     private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
     {

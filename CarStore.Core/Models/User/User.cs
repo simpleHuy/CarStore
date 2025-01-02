@@ -59,6 +59,11 @@ public class User
         get; set;
     }
 
+    public ICollection<Bidding> Biddings
+    {
+        get; set;
+    }
+
     public bool IsShowroom
     {
         get; set;

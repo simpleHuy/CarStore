@@ -73,6 +73,10 @@ public sealed partial class Account : Page
     private void AddItemBtn_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(AddItemPage));
+    }    
+    private void AddAuctionBtn_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(AddAuctionPage));
     }
 
     private void ExploreButton(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@ using System;
 using CarStore.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CarStore.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241218123441_fixDataBase")]
+    partial class fixDataBase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,53 +91,6 @@ namespace CarStore.Core.Migrations
                     b.ToTable("Biddings");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ShowroomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ShowroomId");
-
-                    b.ToTable("addresses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            City = "Hà Nội",
-                            ShowroomId = 1,
-                            Street = "Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Hồ Chí Minh",
-                            ShowroomId = 1,
-                            Street = "Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "Hồ Chí Minh",
-                            ShowroomId = 2,
-                            Street = "Vành đài ktx B, TP. Thủ Đức, TP Hồ Chí Minh"
-                        });
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.Property<int>("CarId")
@@ -164,9 +120,6 @@ namespace CarStore.Core.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("integer");
-
                     b.Property<long?>("Price")
                         .HasColumnType("bigint");
 
@@ -179,16 +132,11 @@ namespace CarStore.Core.Migrations
                     b.Property<string>("UsageStatus")
                         .HasColumnType("text");
 
-                    b.Property<string>("supabaseFolder")
-                        .HasColumnType("text");
-
                     b.HasKey("CarId");
 
                     b.HasIndex("EngineTypeId");
 
                     b.HasIndex("ManufacturerId");
-
-                    b.HasIndex("OwnerId");
 
                     b.HasIndex("PriceOfCarId");
 
@@ -207,7 +155,6 @@ namespace CarStore.Core.Migrations
                             Images = "Honda Accord",
                             ManufacturerId = 1,
                             Name = "Honda Accord",
-                            OwnerId = 2,
                             Price = 1319000000L,
                             PriceOfCarId = 3,
                             TypeOfCarId = 3,
@@ -223,7 +170,6 @@ namespace CarStore.Core.Migrations
                             Images = "Honda Civic City Rs",
                             ManufacturerId = 1,
                             Name = "Honda Civic City Rs",
-                            OwnerId = 2,
                             Price = 889000000L,
                             PriceOfCarId = 2,
                             TypeOfCarId = 1,
@@ -239,7 +185,6 @@ namespace CarStore.Core.Migrations
                             Images = "Honda Type R",
                             ManufacturerId = 1,
                             Name = "Honda Type R",
-                            OwnerId = 3,
                             Price = 2399000000L,
                             PriceOfCarId = 4,
                             TypeOfCarId = 6,
@@ -255,7 +200,6 @@ namespace CarStore.Core.Migrations
                             Images = "Porche 992 Carrera Cabriolet",
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera Cabriolet",
-                            OwnerId = 3,
                             Price = 8910000000L,
                             PriceOfCarId = 5,
                             TypeOfCarId = 7,
@@ -271,7 +215,6 @@ namespace CarStore.Core.Migrations
                             Images = "Porche 718 Cayman S",
                             ManufacturerId = 9,
                             Name = "Porche 718 Cayman S",
-                            OwnerId = 2,
                             Price = 4260000000L,
                             PriceOfCarId = 5,
                             TypeOfCarId = 6,
@@ -287,7 +230,6 @@ namespace CarStore.Core.Migrations
                             Images = "Porche 992 Carrera GTS",
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera GTS",
-                            OwnerId = 2,
                             Price = 9630000000L,
                             PriceOfCarId = 5,
                             TypeOfCarId = 6,
@@ -303,7 +245,6 @@ namespace CarStore.Core.Migrations
                             Images = "Porche 992 Carrera T",
                             ManufacturerId = 9,
                             Name = "Porche 992 Carrera T",
-                            OwnerId = 2,
                             Price = 8310000000L,
                             PriceOfCarId = 5,
                             TypeOfCarId = 6,
@@ -319,7 +260,6 @@ namespace CarStore.Core.Migrations
                             Images = "Porche Taycan J1II",
                             ManufacturerId = 9,
                             Name = "Porche Taycan J1II",
-                            OwnerId = 2,
                             Price = 4620000000L,
                             PriceOfCarId = 5,
                             TypeOfCarId = 6,
@@ -335,7 +275,6 @@ namespace CarStore.Core.Migrations
                             Images = "Toyota Corolla Altis 1.8G",
                             ManufacturerId = 3,
                             Name = "Toyota Corolla Altis 1.8G",
-                            OwnerId = 3,
                             Price = 725000000L,
                             PriceOfCarId = 2,
                             TypeOfCarId = 1,
@@ -351,7 +290,6 @@ namespace CarStore.Core.Migrations
                             Images = "Vinfast VF7",
                             ManufacturerId = 8,
                             Name = "Vinfast VF7",
-                            OwnerId = 2,
                             Price = 850000000L,
                             PriceOfCarId = 2,
                             TypeOfCarId = 2,
@@ -563,91 +501,6 @@ namespace CarStore.Core.Migrations
                         {
                             Id = 9,
                             Name = "Porsche"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Chevrolet"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Name = "Mercedes-Benz"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Name = "Hyundai"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Name = "Isuzu"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Name = "Suzuki"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Name = "Kia"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Name = "Mitsubishi"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Name = "Lexus"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Name = "Mazda"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Name = "BMW"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Name = "Peugeot"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Name = "Audi"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Name = "Land Rover"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Name = "Lamborghini"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Name = "Volvo"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Name = "Jaguar"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Name = "Bentley"
                         });
                 });
 
@@ -732,31 +585,6 @@ namespace CarStore.Core.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.RegisterDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("RegisterDetails");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
@@ -764,9 +592,6 @@ namespace CarStore.Core.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
 
                     b.Property<int>("CarId")
                         .HasColumnType("integer");
@@ -789,72 +614,6 @@ namespace CarStore.Core.Migrations
                     b.HasIndex("MerchantId");
 
                     b.ToTable("schedules");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Showroom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Facebook")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Home")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Hotline")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Img")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsReputation")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("showrooms");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "info@anycar.vn",
-                            Facebook = "https://www.facebook.com/anycar.vn/",
-                            Home = "https://anycar.vn/",
-                            Hotline = "18006216",
-                            Img = "../Assets/ShowRoomAvatar.jpg",
-                            IsReputation = true,
-                            Name = "Anycar.vn",
-                            UserId = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "info@StarupShow.vn",
-                            Hotline = "18006215",
-                            Img = "../Assets/ShowRoom2.png",
-                            IsReputation = false,
-                            Name = "Star-up Show",
-                            UserId = 3
-                        });
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.TypeOfCar", b =>
@@ -940,11 +699,6 @@ namespace CarStore.Core.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsShowroom")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -975,29 +729,6 @@ namespace CarStore.Core.Migrations
                         .IsUnique();
 
                     b.ToTable("users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "admin@gmail.com",
-                            IsShowroom = false,
-                            Username = "admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "anycar@gmail.com",
-                            IsShowroom = true,
-                            Username = "anycar"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "StarupShow@gmail.com",
-                            IsShowroom = true,
-                            Username = "StarupShow"
-                        });
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Variant", b =>
@@ -1045,676 +776,6 @@ namespace CarStore.Core.Migrations
                         {
                             Id = 6,
                             Code = "Red"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Code = "AliceBlue"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Code = "AntiqueWhite"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Code = "Aqua"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Code = "Aquamarine"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            Code = "Azure"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            Code = "Beige"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Code = "Bisque"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Code = "BlanchedAlmond"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Code = "BlueViolet"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Code = "Brown"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Code = "BurlyWood"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Code = "CadetBlue"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Code = "Chartreuse"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Code = "Chocolate"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Code = "Coral"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            Code = "CornflowerBlue"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            Code = "Cornsilk"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            Code = "Crimson"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            Code = "Cyan"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            Code = "DarkBlue"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            Code = "DarkCyan"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            Code = "DarkGoldenrod"
-                        },
-                        new
-                        {
-                            Id = 29,
-                            Code = "DarkGray"
-                        },
-                        new
-                        {
-                            Id = 30,
-                            Code = "DarkGreen"
-                        },
-                        new
-                        {
-                            Id = 31,
-                            Code = "DarkKhaki"
-                        },
-                        new
-                        {
-                            Id = 32,
-                            Code = "DarkMagenta"
-                        },
-                        new
-                        {
-                            Id = 33,
-                            Code = "DarkOliveGreen"
-                        },
-                        new
-                        {
-                            Id = 34,
-                            Code = "DarkOrange"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            Code = "DarkOrchid"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            Code = "DarkRed"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            Code = "DarkSalmon"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            Code = "DarkSeaGreen"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            Code = "DarkSlateBlue"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            Code = "DarkSlateGray"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            Code = "DarkTurquoise"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            Code = "DarkViolet"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            Code = "DeepPink"
-                        },
-                        new
-                        {
-                            Id = 44,
-                            Code = "DeepSkyBlue"
-                        },
-                        new
-                        {
-                            Id = 45,
-                            Code = "DimGray"
-                        },
-                        new
-                        {
-                            Id = 46,
-                            Code = "DodgerBlue"
-                        },
-                        new
-                        {
-                            Id = 47,
-                            Code = "Firebrick"
-                        },
-                        new
-                        {
-                            Id = 48,
-                            Code = "FloralWhite"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            Code = "ForestGreen"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            Code = "Fuchsia"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            Code = "Gainsboro"
-                        },
-                        new
-                        {
-                            Id = 52,
-                            Code = "GhostWhite"
-                        },
-                        new
-                        {
-                            Id = 53,
-                            Code = "Gold"
-                        },
-                        new
-                        {
-                            Id = 54,
-                            Code = "Goldenrod"
-                        },
-                        new
-                        {
-                            Id = 55,
-                            Code = "GreenYellow"
-                        },
-                        new
-                        {
-                            Id = 56,
-                            Code = "Honeydew"
-                        },
-                        new
-                        {
-                            Id = 57,
-                            Code = "HotPink"
-                        },
-                        new
-                        {
-                            Id = 58,
-                            Code = "IndianRed"
-                        },
-                        new
-                        {
-                            Id = 59,
-                            Code = "Indigo"
-                        },
-                        new
-                        {
-                            Id = 60,
-                            Code = "Ivory"
-                        },
-                        new
-                        {
-                            Id = 61,
-                            Code = "Khaki"
-                        },
-                        new
-                        {
-                            Id = 62,
-                            Code = "Lavender"
-                        },
-                        new
-                        {
-                            Id = 63,
-                            Code = "LavenderBlush"
-                        },
-                        new
-                        {
-                            Id = 64,
-                            Code = "LawnGreen"
-                        },
-                        new
-                        {
-                            Id = 65,
-                            Code = "LemonChiffon"
-                        },
-                        new
-                        {
-                            Id = 66,
-                            Code = "LightBlue"
-                        },
-                        new
-                        {
-                            Id = 67,
-                            Code = "LightCoral"
-                        },
-                        new
-                        {
-                            Id = 68,
-                            Code = "LightCyan"
-                        },
-                        new
-                        {
-                            Id = 69,
-                            Code = "LightGoldenrodYellow"
-                        },
-                        new
-                        {
-                            Id = 70,
-                            Code = "LightGray"
-                        },
-                        new
-                        {
-                            Id = 71,
-                            Code = "LightGreen"
-                        },
-                        new
-                        {
-                            Id = 72,
-                            Code = "LightPink"
-                        },
-                        new
-                        {
-                            Id = 73,
-                            Code = "LightSalmon"
-                        },
-                        new
-                        {
-                            Id = 74,
-                            Code = "LightSeaGreen"
-                        },
-                        new
-                        {
-                            Id = 75,
-                            Code = "LightSkyBlue"
-                        },
-                        new
-                        {
-                            Id = 76,
-                            Code = "LightSlateGray"
-                        },
-                        new
-                        {
-                            Id = 77,
-                            Code = "LightSteelBlue"
-                        },
-                        new
-                        {
-                            Id = 78,
-                            Code = "LightYellow"
-                        },
-                        new
-                        {
-                            Id = 79,
-                            Code = "Lime"
-                        },
-                        new
-                        {
-                            Id = 80,
-                            Code = "LimeGreen"
-                        },
-                        new
-                        {
-                            Id = 81,
-                            Code = "Linen"
-                        },
-                        new
-                        {
-                            Id = 82,
-                            Code = "Magenta"
-                        },
-                        new
-                        {
-                            Id = 83,
-                            Code = "Maroon"
-                        },
-                        new
-                        {
-                            Id = 84,
-                            Code = "MediumAquamarine"
-                        },
-                        new
-                        {
-                            Id = 85,
-                            Code = "MediumBlue"
-                        },
-                        new
-                        {
-                            Id = 86,
-                            Code = "MediumOrchid"
-                        },
-                        new
-                        {
-                            Id = 87,
-                            Code = "MediumPurple"
-                        },
-                        new
-                        {
-                            Id = 88,
-                            Code = "MediumSeaGreen"
-                        },
-                        new
-                        {
-                            Id = 89,
-                            Code = "MediumSlateBlue"
-                        },
-                        new
-                        {
-                            Id = 90,
-                            Code = "MediumSpringGreen"
-                        },
-                        new
-                        {
-                            Id = 91,
-                            Code = "MediumTurquoise"
-                        },
-                        new
-                        {
-                            Id = 92,
-                            Code = "MediumVioletRed"
-                        },
-                        new
-                        {
-                            Id = 93,
-                            Code = "MidnightBlue"
-                        },
-                        new
-                        {
-                            Id = 94,
-                            Code = "MintCream"
-                        },
-                        new
-                        {
-                            Id = 95,
-                            Code = "MistyRose"
-                        },
-                        new
-                        {
-                            Id = 96,
-                            Code = "Moccasin"
-                        },
-                        new
-                        {
-                            Id = 97,
-                            Code = "NavajoWhite"
-                        },
-                        new
-                        {
-                            Id = 98,
-                            Code = "Navy"
-                        },
-                        new
-                        {
-                            Id = 99,
-                            Code = "OldLace"
-                        },
-                        new
-                        {
-                            Id = 100,
-                            Code = "Olive"
-                        },
-                        new
-                        {
-                            Id = 101,
-                            Code = "OliveDrab"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            Code = "Orange"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            Code = "OrangeRed"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            Code = "Orchid"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            Code = "PaleGoldenrod"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            Code = "PaleGreen"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            Code = "PaleTurquoise"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            Code = "PaleVioletRed"
-                        },
-                        new
-                        {
-                            Id = 109,
-                            Code = "PapayaWhip"
-                        },
-                        new
-                        {
-                            Id = 110,
-                            Code = "PeachPuff"
-                        },
-                        new
-                        {
-                            Id = 111,
-                            Code = "Peru"
-                        },
-                        new
-                        {
-                            Id = 112,
-                            Code = "Pink"
-                        },
-                        new
-                        {
-                            Id = 113,
-                            Code = "Plum"
-                        },
-                        new
-                        {
-                            Id = 114,
-                            Code = "PowderBlue"
-                        },
-                        new
-                        {
-                            Id = 115,
-                            Code = "Purple"
-                        },
-                        new
-                        {
-                            Id = 116,
-                            Code = "RosyBrown"
-                        },
-                        new
-                        {
-                            Id = 117,
-                            Code = "RoyalBlue"
-                        },
-                        new
-                        {
-                            Id = 118,
-                            Code = "SaddleBrown"
-                        },
-                        new
-                        {
-                            Id = 119,
-                            Code = "Salmon"
-                        },
-                        new
-                        {
-                            Id = 120,
-                            Code = "SandyBrown"
-                        },
-                        new
-                        {
-                            Id = 121,
-                            Code = "SeaGreen"
-                        },
-                        new
-                        {
-                            Id = 122,
-                            Code = "Seashell"
-                        },
-                        new
-                        {
-                            Id = 123,
-                            Code = "Sienna"
-                        },
-                        new
-                        {
-                            Id = 124,
-                            Code = "Silver"
-                        },
-                        new
-                        {
-                            Id = 125,
-                            Code = "SkyBlue"
-                        },
-                        new
-                        {
-                            Id = 126,
-                            Code = "SlateBlue"
-                        },
-                        new
-                        {
-                            Id = 127,
-                            Code = "SlateGray"
-                        },
-                        new
-                        {
-                            Id = 128,
-                            Code = "Snow"
-                        },
-                        new
-                        {
-                            Id = 129,
-                            Code = "SpringGreen"
-                        },
-                        new
-                        {
-                            Id = 130,
-                            Code = "SteelBlue"
-                        },
-                        new
-                        {
-                            Id = 131,
-                            Code = "Tan"
-                        },
-                        new
-                        {
-                            Id = 132,
-                            Code = "Teal"
-                        },
-                        new
-                        {
-                            Id = 133,
-                            Code = "Thistle"
-                        },
-                        new
-                        {
-                            Id = 134,
-                            Code = "Tomato"
-                        },
-                        new
-                        {
-                            Id = 135,
-                            Code = "Turquoise"
-                        },
-                        new
-                        {
-                            Id = 136,
-                            Code = "Violet"
-                        },
-                        new
-                        {
-                            Id = 137,
-                            Code = "Wheat"
-                        },
-                        new
-                        {
-                            Id = 138,
-                            Code = "WhiteSmoke"
-                        },
-                        new
-                        {
-                            Id = 139,
-                            Code = "Yellow"
-                        },
-                        new
-                        {
-                            Id = 140,
-                            Code = "YellowGreen"
                         });
                 });
 
@@ -1870,40 +931,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Wishlist", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("wishlists");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.Address", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.Showroom", "Showroom")
-                        .WithMany("Address")
-                        .HasForeignKey("ShowroomId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Showroom");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.HasOne("CarStore.Core.Models.EngineType", "EngineType")
@@ -1915,12 +942,6 @@ namespace CarStore.Core.Migrations
                     b.HasOne("CarStore.Core.Models.Manufacturer", "Manufacturer")
                         .WithMany("cars")
                         .HasForeignKey("ManufacturerId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("CarStore.Core.Models.User", "owner")
-                        .WithMany("Cars")
-                        .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
@@ -1943,8 +964,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("PriceOfCar");
 
                     b.Navigation("TypeOfCar");
-
-                    b.Navigation("owner");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.CarDetail", b =>
@@ -1964,17 +983,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Car");
 
                     b.Navigation("NumberSeat");
-                });
-
-            modelBuilder.Entity("CarStore.Core.Models.RegisterDetail", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithOne("RegisterDetails")
-                        .HasForeignKey("CarStore.Core.Models.RegisterDetail", "UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Schedule", b =>
@@ -2004,17 +1012,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Merchant");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Showroom", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithOne("Showroom")
-                        .HasForeignKey("CarStore.Core.Models.Showroom", "UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.VariantOfCar", b =>
                 {
                     b.HasOne("CarStore.Core.Models.Car", "Car")
@@ -2039,25 +1036,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Biddings");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Wishlist", b =>
-                {
-                    b.HasOne("CarStore.Core.Models.Car", "Car")
-                        .WithMany("wishlists")
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.HasOne("CarStore.Core.Models.User", "User")
-                        .WithMany("Wishlists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.Car", b =>
                 {
                     b.Navigation("Auction");
@@ -2067,8 +1045,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("VariantOfCars");
 
                     b.Navigation("carDetail");
-
-                    b.Navigation("wishlists");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.EngineType", b =>
@@ -2091,11 +1067,6 @@ namespace CarStore.Core.Migrations
                     b.Navigation("Cars");
                 });
 
-            modelBuilder.Entity("CarStore.Core.Models.Showroom", b =>
-                {
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("CarStore.Core.Models.TypeOfCar", b =>
                 {
                     b.Navigation("cars");
@@ -2105,17 +1076,9 @@ namespace CarStore.Core.Migrations
                 {
                     b.Navigation("Biddings");
 
-                    b.Navigation("Cars");
-
                     b.Navigation("CustommerSchedules");
 
                     b.Navigation("MerchantSchedules");
-
-                    b.Navigation("RegisterDetails");
-
-                    b.Navigation("Showroom");
-
-                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("CarStore.Core.Models.Variant", b =>
