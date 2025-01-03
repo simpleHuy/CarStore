@@ -28,7 +28,8 @@ namespace CarStore.ViewModels;
 public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, IDisposable
 {
     private readonly SocketIOClient.SocketIO _socket;
-    private readonly DispatcherQueue _dispatcherQueue;
+    //private readonly DispatcherQueue _dispatcherQueue;
+    private readonly IDispatcherService _dispatcherQueue;
     private IAuthenticationService AuthenticationService
     {
         get; set;
@@ -180,7 +181,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
 
-    private async Task LeaveCurrentAuction()
+    public async Task LeaveCurrentAuction()
     {
         if (auction != null)
         {
@@ -188,7 +189,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
 
-    private async Task JoinNewAuction()
+    public async Task JoinNewAuction()
     {
         if (auction != null)
         {
@@ -240,9 +241,16 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
     private readonly IDao<Bidding> _bidding;
     private readonly IDao<User> _user;
     private readonly IDao<Auction> _auction;
-    private async Task LoadInitialDataAsync()
+    public async Task LoadInitialDataAsync()
     {
         var allBid = await _biddingRepository.GetBidsByAuctionIdAsync(auction.AuctionId);
+        if(allBid == null)
+        {
+            BidHistory = new ObservableCollection<Bidding>();
+            OnPropertyChanged(nameof(BidHistory));
+            return;
+        }
+
         for (int i = 0; i < allBid.Count; i++)
         {
             var user = await _user.GetByIdAsync(allBid[i].UserId);
@@ -264,7 +272,8 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         }
     }
     public DetailAuctionViewModel(ICarRepository carRepository, IBiddingRepository biddingRepository,
-        IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository, IAuthenticationService authenticationService)
+        IDao<Bidding> bidding, IDao<User> user, IDao<Auction> auctionRepository, IAuthenticationService authenticationService, 
+        IDispatcherService dispatcherQueue)
     {
         _carRepository = carRepository;
         _biddingRepository = biddingRepository;
@@ -276,13 +285,12 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
         BidAmount = 0;
         PlaceBidCommand = new RelayCommand(PlaceBid);
 
-        _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        _dispatcherQueue = dispatcherQueue;
 
         _socket = new SocketIOClient.SocketIO("http://localhost:3000");
 
         SetupSocketEvents();
-        ConnectSocket(); 
-
+        ConnectSocket();
     }
     private DispatcherQueueTimer _timer;
     private TimeSpan _timeRemaining;
@@ -305,7 +313,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
 
     private void InitializeTimer()
     {
-        _timer = DispatcherQueue.GetForCurrentThread().CreateTimer();
+        _timer = _dispatcherQueue.CreateTimer();
         _timer.Interval = TimeSpan.FromSeconds(1);
         _timer.Tick += TimerElapsed;
     }
