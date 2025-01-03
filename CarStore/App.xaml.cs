@@ -79,6 +79,7 @@ public partial class App : Application
             services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
             services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
             services.AddTransient<INavigationViewService, NavigationViewService>();
+            services.AddTransient<IDispatcherService, DispatcherService>();
 
             // Core Services
             services.AddSingleton<IFileService, FileService>();
