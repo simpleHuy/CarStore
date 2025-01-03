@@ -21,6 +21,7 @@ using CarStore.Core.Repository;
 using CarStore.Core.Daos;
 using Microsoft.EntityFrameworkCore;
 using CarStore.Services.Chat;
+using Microsoft.UI.Dispatching;
 
 namespace CarStore.Tests;
 
@@ -423,6 +424,7 @@ public class CompareViewModelTests
     }
 }
 
+
 [TestClass]
 public class ChatPageViewModelTests
 {
@@ -466,20 +468,6 @@ public class ChatPageViewModelTests
         Assert.AreEqual(expected, result);
     }
 
-    //[TestMethod]
-    //public async Task SendMessage_ShouldSendMessageToServer()
-    //{
-    //    // Arrange
-    //    var targetUserId = 2;
-    //    var messageContent = "Hello";
-
-    //    // Act
-    //    await _viewModel.SendMessage(targetUserId, messageContent);
-
-    //    // Assert
-    //    // Verify that the message was sent (this would require more setup to mock the server interaction)
-    //}
-
     [TestMethod]
     [DataRow("user: Hello", "Hello")]
     [DataRow("no colon", "no colon")]
@@ -491,42 +479,205 @@ public class ChatPageViewModelTests
         // Assert
         Assert.AreEqual(expected, result);
     }
+}
 
-    //[TestMethod]
-    //public async Task ListConversations_ShouldUpdateChatItems()
-    //{
-    //    // Arrange
-    //    var userId = "000001";
-    //    var conversations = new List<Conversation>
-    //        {
-    //            new Conversation { OtherUserId = "2", LastMessage = "Hello" }
-    //        };
-    //    var user = new User { Id = 2, firstName = "John", lastName = "Doe" };
-    //    _mockUserDao.Setup(u => u.GetByIdAsync(2)).ReturnsAsync(user);
 
-    //    // Act
-    //    await _viewModel.ListConversations(userId);
+[TestClass]
+public class AuctionViewModelTests
+{
+    private Mock<IDao<Auction>> _mockAuctionDao;
+    private Mock<IDao<Car>> _mockCarDao;
+    private Mock<IDao<User>> _mockUserDao;
+    private Mock<IBiddingRepository> _mockBiddingRepository;
+    private Mock<IAuthenticationService> _mockAuthService;
+    private AuctionViewModel _viewModel;
 
-    //    // Assert
-    //    Assert.AreEqual(1, _viewModel.ChatItems.Count);
-    //    Assert.AreEqual("John Doe", _viewModel.ChatItems[0].personName);
-    //}
+    [TestInitialize]
+    public void Setup()
+    {
+        _mockAuctionDao = new Mock<IDao<Auction>>();
+        _mockCarDao = new Mock<IDao<Car>>();
+        _mockUserDao = new Mock<IDao<User>>();
+        _mockBiddingRepository = new Mock<IBiddingRepository>();
+        _mockAuthService = new Mock<IAuthenticationService>();
+        _viewModel = new AuctionViewModel(_mockAuctionDao.Object, _mockCarDao.Object, _mockUserDao.Object, _mockBiddingRepository.Object, _mockAuthService.Object);
+    }
 
-    //[TestMethod]
-    //public async Task ReadMessages_ShouldUpdateMessages()
-    //{
-    //    // Arrange
-    //    var targetUserId = 2;
-    //    var messages = new List<Dictionary<string, string>>
-    //        {
-    //            new Dictionary<string, string> { { "message", "Hello" }, { "user", "000001" } }
-    //        };
+    [TestMethod]
+    public async Task LoadData_ShouldLoadAuctions()
+    {
+        // Arrange
+        var auctions = new List<Auction>
+            {
+                new Auction { AuctionId = 1, StartDate = DateTime.Now.AddMinutes(-10), EndDate = 20 },
+                new Auction { AuctionId = 2, StartDate = DateTime.Now.AddMinutes(10), EndDate = 20 }
+            };
+        _mockAuctionDao.Setup(a => a.GetAllAsync()).ReturnsAsync(auctions);
 
-    //    // Act
-    //    await _viewModel.ReadMessages(targetUserId);
+        // Act
+        _viewModel.LoadData();
+        await Task.Delay(100); // Wait for async method to complete
 
-    //    // Assert
-    //    Assert.AreEqual(1, _viewModel.Messages.Count);
-    //    Assert.AreEqual("Hello", _viewModel.Messages[0].Text);
-    //}
+        // Assert
+        Assert.AreEqual(2, _viewModel.Source.Count);
+        Assert.AreEqual("Đang diễn ra", _viewModel.Source[0].condition);
+        Assert.AreEqual("Sắp diễn ra", _viewModel.Source[1].condition);
+    }
+
+    [TestMethod]
+    [DataRow(30, "Sắp diễn ra", 60)]
+    [DataRow(-30, "Kết thúc", -30)]
+    [DataRow(30, "Đang diễn ra", 0)]
+    public void GetAuctionCondition_ShouldReturnExpectedCondition(int minutes, string expected, int delta_Minutes)
+    {
+        // Arrange
+        var startDateTime = DateTime.Now;
+        startDateTime = startDateTime.AddMinutes(delta_Minutes);
+
+        // Act
+        var result = _viewModel.GetAuctionCondition(startDateTime, minutes);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    [DataRow(30, true)]
+    [DataRow(-30, false)]
+    public void IsTimeInRange_ShouldReturnExpectedResult(int minutes, bool expected)
+    {
+        // Arrange
+        var startDateTime = DateTime.UtcNow.ToUniversalTime();
+
+        // Act
+        var result = _viewModel.IsTimeInRange(startDateTime, minutes);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    [TestMethod]
+    public async Task DeleteAuction_ShouldDeleteAuctionAndReloadData()
+    {
+        // Arrange
+        var auction = new Auction { AuctionId = 1, CarId = 1 };
+        var car = new Car { CarId = 1, AuctionId = 1 };
+        _mockCarDao.Setup(c => c.GetByIdAsync(auction.CarId)).ReturnsAsync(car);
+        _mockAuctionDao.Setup(a => a.DeleteById(auction.AuctionId)).Returns(Task.CompletedTask);
+
+        // Act
+        await _viewModel.DeleteAuction(auction);
+
+        // Assert
+        _mockCarDao.Verify(c => c.GetByIdAsync(auction.CarId), Times.Once);
+        _mockAuctionDao.Verify(a => a.DeleteById(auction.AuctionId), Times.Once);
+        Assert.AreEqual(0, car.AuctionId);
+    }
+
+    [TestMethod]
+    public async Task GetInfor_ShouldReturnWinnerIfAuctionEnded()
+    {
+        // Arrange
+        var auction = new Auction { AuctionId = 1, condition = "Kết thúc" };
+        var bids = new List<Bidding>
+            {
+                new Bidding { UserId = 1, BidAmount = 100 },
+                new Bidding { UserId = 2, BidAmount = 200 }
+            };
+        var user = new User { Id = 2, firstName = "John", lastName = "Doe" };
+        _mockBiddingRepository.Setup(b => b.GetBidsByAuctionIdAsync(auction.AuctionId)).ReturnsAsync(bids);
+        _mockUserDao.Setup(u => u.GetByIdAsync(2)).ReturnsAsync(user);
+
+        // Act
+        var result = await _viewModel.GetInfor(auction);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(2, result.Id);
+        Assert.AreEqual("John", result.firstName);
+        Assert.AreEqual("Doe", result.lastName);
+    }
+
+    [TestMethod]
+    public async Task GetInfor_ShouldReturnNullIfAuctionNotEnded()
+    {
+        // Arrange
+        var auction = new Auction { AuctionId = 1, condition = "Đang diễn ra" };
+
+        // Act
+        var result = await _viewModel.GetInfor(auction);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+}
+
+
+[TestClass]
+public class DetailAuctionViewModelTests
+{
+    private Mock<ICarRepository> _mockCarRepository;
+    private Mock<IBiddingRepository> _mockBiddingRepository;
+    private Mock<IDao<Bidding>> _mockBiddingDao;
+    private Mock<IDao<User>> _mockUserDao;
+    private Mock<IDao<Auction>> _mockAuctionDao;
+    private Mock<IAuthenticationService> _mockAuthService;
+    private Mock<IDispatcherService> _mockDispatcherService;
+    private DetailAuctionViewModel _viewModel;
+
+    [TestInitialize]
+    public void Setup()
+    {
+        _mockCarRepository = new Mock<ICarRepository>();
+        _mockBiddingRepository = new Mock<IBiddingRepository>();
+        _mockBiddingDao = new Mock<IDao<Bidding>>();
+        _mockUserDao = new Mock<IDao<User>>();
+        _mockAuctionDao = new Mock<IDao<Auction>>();
+        _mockAuthService = new Mock<IAuthenticationService>();
+        _mockDispatcherService = new Mock<IDispatcherService>();
+
+        _viewModel = new DetailAuctionViewModel(
+            _mockCarRepository.Object,
+            _mockBiddingRepository.Object,
+            _mockBiddingDao.Object,
+            _mockUserDao.Object,
+            _mockAuctionDao.Object,
+            _mockAuthService.Object,
+            _mockDispatcherService.Object
+        );
+    }
+
+    [TestMethod]
+    public void Auction_Setter_ShouldLoadInitialDataAndJoinNewAuction()
+    {
+        // Arrange
+        var auction = new Auction { AuctionId = 1 };
+
+        // Act
+        _viewModel.Auction = auction;
+
+        // Assert
+        Assert.AreEqual(auction, _viewModel.Auction);
+        _mockBiddingRepository.Verify(repo => repo.GetBidsByAuctionIdAsync(auction.AuctionId), Times.Once);
+    }
+    [TestMethod]
+    public async Task LoadInitialDataAsync_ShouldLoadBidHistory()
+    {
+        // Arrange
+        var auction = new Auction { AuctionId = 1 };
+        var bids = new List<Bidding> { new Bidding { UserId = 1, AuctionId = 1, BidAmount = 100 } };
+        var user = new User { Id = 1, Name = "Test User" };
+
+        _mockBiddingRepository.Setup(repo => repo.GetBidsByAuctionIdAsync(auction.AuctionId)).ReturnsAsync(bids);
+        _mockUserDao.Setup(dao => dao.GetByIdAsync(1)).ReturnsAsync(user);
+
+        _viewModel.Auction = auction;
+
+        // Act
+        await _viewModel.LoadInitialDataAsync();
+
+        // Assert
+        Assert.AreEqual(1, _viewModel.BidHistory.Count);
+        Assert.AreEqual(user, _viewModel.BidHistory[0].User);
+    }
 }
