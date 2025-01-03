@@ -20,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CarStore.Core.Repository;
 using CarStore.Core.Daos;
 using Microsoft.EntityFrameworkCore;
+using CarStore.Services.Chat;
 
 namespace CarStore.Tests;
 
@@ -422,3 +423,110 @@ public class CompareViewModelTests
     }
 }
 
+[TestClass]
+public class ChatPageViewModelTests
+{
+    private Mock<IAuthenticationService> _mockAuthService;
+    private Mock<IDao<User>> _mockUserDao;
+    private ChatPageViewModel _viewModel;
+
+    [TestInitialize]
+    public void Setup()
+    {
+        _mockAuthService = new Mock<IAuthenticationService>();
+        _mockUserDao = new Mock<IDao<User>>();
+        _viewModel = new ChatPageViewModel(_mockAuthService.Object, _mockUserDao.Object);
+    }
+
+    [TestMethod]
+    public async Task InitializeChatAsync_ShouldInitializeChatItemsAndMessages()
+    {
+        // Arrange
+        var user = new User { Id = 1 };
+        _mockAuthService.Setup(a => a.GetCurrentUser()).Returns(user);
+
+        // Act
+        await _viewModel.InitializeChatAsync();
+
+        // Assert
+        Assert.IsNotNull(_viewModel.ChatItems);
+        Assert.IsNotNull(_viewModel.Messages);
+    }
+
+    [TestMethod]
+    [DataRow("01-01-2023", true)]
+    [DataRow("ngày 01 tháng 01 năm 2023", true)]
+    [DataRow("random text", false)]
+    public void ContainsDate_ShouldReturnExpectedResult(string input, bool expected)
+    {
+        // Act
+        var result = _viewModel.ContainsDate(input);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    //[TestMethod]
+    //public async Task SendMessage_ShouldSendMessageToServer()
+    //{
+    //    // Arrange
+    //    var targetUserId = 2;
+    //    var messageContent = "Hello";
+
+    //    // Act
+    //    await _viewModel.SendMessage(targetUserId, messageContent);
+
+    //    // Assert
+    //    // Verify that the message was sent (this would require more setup to mock the server interaction)
+    //}
+
+    [TestMethod]
+    [DataRow("user: Hello", "Hello")]
+    [DataRow("no colon", "no colon")]
+    public void ExtractMessage_ShouldReturnExpectedResult(string input, string expected)
+    {
+        // Act
+        var result = _viewModel.ExtractMessage(input);
+
+        // Assert
+        Assert.AreEqual(expected, result);
+    }
+
+    //[TestMethod]
+    //public async Task ListConversations_ShouldUpdateChatItems()
+    //{
+    //    // Arrange
+    //    var userId = "000001";
+    //    var conversations = new List<Conversation>
+    //        {
+    //            new Conversation { OtherUserId = "2", LastMessage = "Hello" }
+    //        };
+    //    var user = new User { Id = 2, firstName = "John", lastName = "Doe" };
+    //    _mockUserDao.Setup(u => u.GetByIdAsync(2)).ReturnsAsync(user);
+
+    //    // Act
+    //    await _viewModel.ListConversations(userId);
+
+    //    // Assert
+    //    Assert.AreEqual(1, _viewModel.ChatItems.Count);
+    //    Assert.AreEqual("John Doe", _viewModel.ChatItems[0].personName);
+    //}
+
+    //[TestMethod]
+    //public async Task ReadMessages_ShouldUpdateMessages()
+    //{
+    //    // Arrange
+    //    var targetUserId = 2;
+    //    var messages = new List<Dictionary<string, string>>
+    //        {
+    //            new Dictionary<string, string> { { "message", "Hello" }, { "user", "000001" } }
+    //        };
+
+    //    // Act
+    //    await _viewModel.ReadMessages(targetUserId);
+
+    //    // Assert
+    //    Assert.AreEqual(1, _viewModel.Messages.Count);
+    //    Assert.AreEqual("Hello", _viewModel.Messages[0].Text);
+    //}
+}
