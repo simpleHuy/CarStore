@@ -42,6 +42,7 @@ public partial class AuctionViewModel : ObservableObject
         get; set;
     }
     public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
+    public bool IsAdmin => AuthenticationService.GetCurrentUser()?.Id == 1;
 
     public AuctionViewModel(IDao<Auction> sampleDataService, IDao<Car> car, IDao<User> user , IBiddingRepository biddingRepository ,IAuthenticationService authenticationService)
     {

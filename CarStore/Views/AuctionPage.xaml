@@ -19,6 +19,7 @@
         <helpers:ManufactureConverter x:Key="ManufactureConverter"/>
         <helpers:ConvertPriceToOldPrice x:Key="ConvertPriceToOldPrice"/>
         <helpers:ConditionToColorConverter x:Key="ConditionToColorConverter" />
+        <helpers:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Page.Resources>
     <Grid x:Name="ContentArea">
         <controls:DataGrid
@@ -66,7 +67,8 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>
 
-                <controls:DataGridTemplateColumn Header="Xóa">
+                <controls:DataGridTemplateColumn Header="Xóa"
+                                                 Visibility="{x:Bind ViewModel.IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="DeleteBtn_Click"
@@ -80,7 +82,8 @@
                     </controls:DataGridTemplateColumn.CellTemplate>
                 </controls:DataGridTemplateColumn>                
                 
-                <controls:DataGridTemplateColumn Header="Thông tin">
+                <controls:DataGridTemplateColumn Header="Thông tin"
+                                                 Visibility="{x:Bind ViewModel.IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <controls:DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Click="InforBtn_Click"
