@@ -1,4 +1,4 @@
-using CarStore.ViewModels;
+﻿using CarStore.ViewModels;
 using CarStore.Services.DataAccess;
 using CarStore.Services;
 using CarStore.Models;
@@ -287,6 +287,8 @@ public class GetCarDetailTests
         _mockCarDao = new Mock<IDao<Car>>();
         _mockCarRepository = new Mock<ICarRepository>();
         _mockAuthenticationService = new Mock<IAuthenticationService>();
+        _mockUserRepository = new Mock<IUserRepository>();
+        _mockUserDao = new Mock<IDao<User>>();
 
         //// Setup mock data for GetAllAsync
         var mockCars = new List<Car>
@@ -317,23 +319,32 @@ public class GetCarDetailTests
     public void SelectedCar_WhenSet_ShouldTriggerLoadPictureOfCar()
     {
         // Arrange
+        var testOwner = new User
+        {
+            Id = 1,
+            IsShowroom = false
+        };
         var testCar = new Car
         {
             CarId = 1,
             Name = "Test Car",
-            Images = "TestCarFolder"
+            Images = "Honda Accord",
+            OwnerId = 1
         };
 
         // Setup mock for GetVariantsOfCar
         _mockCarRepository.Setup(x => x.GetVariantsOfCar(It.IsAny<int>()))
             .Returns(Task.FromResult(new List<VariantOfCar>
             {
-                new VariantOfCar { Name = "Default Color" }
+                new VariantOfCar { Name = "Đen huyền bí" }
             }));
 
         // Setup mock for GetVariantsCodeByName
         _mockCarRepository.Setup(x => x.GetVariantsCodeByName(It.IsAny<string>()))
-            .Returns(Task.FromResult("DefaultCode"));
+            .Returns(Task.FromResult("Black"));
+
+        _mockUserRepository.Setup(x => x.GetUserById(It.IsAny<int>()))
+            .Returns(Task.FromResult(testOwner));
 
         // Act
         _viewModel.SelectedCar = testCar;
