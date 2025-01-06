@@ -23,7 +23,7 @@
             AutoGenerateColumns="False"
             GridLinesVisibility="Horizontal"
             ItemsSource="{x:Bind ViewModel.RegisterDetails, Mode=OneWay}"
-            DataContext="{x:Bind ViewModel}">
+            DataContext="{x:Bind ViewModel}" IsReadOnly="True">
             <controls:DataGrid.Resources>
                 <SolidColorBrush x:Key="DataGridColumnHeaderBackgroundColor" Color="Transparent" />
             </controls:DataGrid.Resources>

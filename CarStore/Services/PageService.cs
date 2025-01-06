@@ -24,7 +24,6 @@ public class PageService : IPageService
         Configure<AuctionViewModel, AuctionPage>();
         Configure<DetailAuctionViewModel, DetailAuctionPage>();
         Configure<AddAuctionViewModel, AddAuctionPage>();
-        Configure<RegisterViewModel, RegisterPage>();
         Configure<RegisterDetailViewModel, RegisterDetailPage>();
         Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
         Configure<CompareViewModel, ComparePage>();

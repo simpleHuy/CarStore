@@ -127,7 +127,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local2:Bidding">
                             <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="{x:Bind User.lastName}" FontWeight="Bold" Margin="0,0,10,0" />
+                                <TextBlock Text="{x:Bind User.Name}" FontWeight="Bold" Margin="0,0,10,0" />
                                 <TextBlock Text=":" Margin="0, 0 10, 0"/>
                                 <TextBlock Text="{x:Bind BidAmount, Converter={StaticResource currency}}" />
                                 <TextBlock Text="{x:Bind Time}" Foreground="Gray" Margin="10,0,0,0" />

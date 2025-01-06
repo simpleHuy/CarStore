@@ -109,7 +109,7 @@ namespace CarStore.Views
                 targetName = targetUser.Email;
             }
             NameOfCurrentMessage.Text = targetName;
-
+            ViewModel.Messages.Clear();
             NameOfCurrentMessage.Foreground = App.Current.Resources["GeminiColor"] as LinearGradientBrush;
             var Text = "Xin chào, tôi muốn liên hệ!";
             ViewModel.targetUserID = userID;

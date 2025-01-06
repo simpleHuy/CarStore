@@ -180,7 +180,7 @@
                             <Button x:Name="BtnAccount" Background="Transparent" BorderThickness="0" Margin="20 0 20 0" Click="BtnAccount_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Orientation="Vertical" Margin="0 0 10 0">
-                                        <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.lastName, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
+                                        <TextBlock x:Name="AccountName" Text="{x:Bind ViewModel.CurrentUser.Name, Mode=OneWay}" Style="{ThemeResource SubtitleTextBlockStyle}" HorizontalAlignment="Right"/>
                                         <TextBlock x:Name="UserType" Text="{x:Bind ViewModel.CurrentUser.AccountType, Mode=OneWay}" HorizontalAlignment="Right" Foreground="PaleVioletRed"/>
                                     </StackPanel>
                                     <Image Source="../Assets/Avatars/1.png" Height="50"/>

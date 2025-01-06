@@ -464,7 +464,7 @@ public class DetailAuctionViewModel : ObservableObject, INotifyPropertyChanged, 
             var newBid = new Bidding
             {
                 AuctionId = Auction.AuctionId,
-                UserId = 1,
+                UserId = AuthenticationService.GetCurrentUser().Id,
                 BidAmount = BidAmount,
                 Time = currentTime.ToUniversalTime().AddHours(7)
             };
