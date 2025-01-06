@@ -85,6 +85,7 @@ public sealed partial class AddAuctionPage : Page
             DurationComboBox.SelectedItem == null ||
             ViewModel.SelectedCar == null)
         {
+            ErrorTxt.Text = "Vui lòng điền đầy đủ thông tin.";
             return false;
         }
 
