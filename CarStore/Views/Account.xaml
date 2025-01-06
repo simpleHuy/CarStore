@@ -93,8 +93,7 @@
                         <Button Content="Đăng xuất" HorizontalAlignment="Left" Height="Auto" Click="Logout_btn_click"/>
                         <Button Content="Đăng kí uy tín" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
                                 Converter={StaticResource BooleanToVisibilityConverter}}" Click="RegisterReputation_click"/>
-                        <Button Content="Đăng kí showroom" Visibility="{x:Bind ViewModel.CurrentUser.IsShowroom, 
-                                Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter=Inverse}"
+                        <Button x:Name="RegisterReputation" Content="Đăng kí showroom" 
                                 Click="RegisterShowroom_click"/>
                     </StackPanel>
                 </Grid>

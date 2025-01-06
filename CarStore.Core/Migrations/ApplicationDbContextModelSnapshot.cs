@@ -979,7 +979,8 @@ namespace CarStore.Core.Migrations
                             Id = 1,
                             Email = "admin@gmail.com",
                             IsShowroom = false,
-                            Username = "admin"
+                            Username = "admin",
+                            AccountType = "admin",
                         },
                         new
                         {

@@ -18,6 +18,7 @@ public class PageService : IPageService
         Configure<AccountPageViewModel, Account>();
         Configure<ShellViewModel, ShellPage>();
         Configure<LoginViewModel, LoginPage>();
+        Configure<RegisterViewModel, RegisterPage>();
         Configure<MockAnyCarPageViewModel, MockAnyCarPage>();
         Configure<EditItemPageViewModel, EditItem>();
         Configure<AuctionViewModel, AuctionPage>();
@@ -25,6 +26,7 @@ public class PageService : IPageService
         Configure<AddAuctionViewModel, AddAuctionPage>();
         Configure<RegisterDetailViewModel, RegisterDetailPage>();
         Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
+        Configure<CompareViewModel, ComparePage>();
     }
 
     public Type GetPageType(string key)
