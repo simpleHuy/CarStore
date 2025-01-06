@@ -107,6 +107,10 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         var user = _authenticationService.GetCurrentUser();
         CurrentUser = user;
+        if (CurrentUser.Id == 1)
+        {
+            CurrentUser.IsShowroom = false;
+        }
     }
 
     public bool CheckReputation()

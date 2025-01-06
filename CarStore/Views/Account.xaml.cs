@@ -36,6 +36,21 @@ public sealed partial class Account : Page
         ViewModel = App.GetService<AccountPageViewModel>();
         InitializeComponent();
         DataContext = ViewModel;
+        if (ViewModel.CurrentUser.Id == 1)
+        {
+            RegisterReputation.Visibility = Visibility.Collapsed;
+        }
+        else
+        {
+            if (ViewModel.CurrentUser.IsShowroom)
+            {
+                RegisterReputation.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                RegisterReputation.Visibility = Visibility.Visible;
+            }
+        }
     }
 
     private void ListCompettorCars_ItemClick(object sender, ItemClickEventArgs e)

@@ -39,7 +39,7 @@ public class AuthenticationService : IAuthenticationService
         Id = 1,
         Email = "example@gmail.com",
         Telephone = "0333601234",
-        AccountType = "Hội viên tiềm năng",
+        AccountType = "Quản trị viên",
         firstName = "Admin",
         lastName = "Nguyễn",
     };
