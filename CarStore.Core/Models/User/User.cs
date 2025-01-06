@@ -24,6 +24,10 @@ public class User
         {
             return firstName +" "+ lastName;
         }
+        set
+        {
+            _name = value;
+        }
     }
     public string Email
     {

@@ -26,6 +26,10 @@ public partial class AuctionViewModel : ObservableObject
     {
         Source.Clear();
         var data = await _sampleDataService.GetAllAsync();
+        if (data == null)
+        {
+            return;
+        }
         foreach (var item in data)
         {
             item.condition = GetAuctionCondition(item.StartDate, item.EndDate);
@@ -38,6 +42,7 @@ public partial class AuctionViewModel : ObservableObject
         get; set;
     }
     public bool IsLoggedIn => AuthenticationService.GetCurrentUser() != null;
+    public bool IsAdmin => AuthenticationService.GetCurrentUser()?.Id == 1;
 
     public AuctionViewModel(IDao<Auction> sampleDataService, IDao<Car> car, IDao<User> user , IBiddingRepository biddingRepository ,IAuthenticationService authenticationService)
     {
@@ -49,7 +54,7 @@ public partial class AuctionViewModel : ObservableObject
         LoadData();
     }
 
-    private string GetAuctionCondition(DateTime startTime, int minutes)
+    public string GetAuctionCondition(DateTime startTime, int minutes)
     {
         DateTime currentTime = DateTime.Now;
         Debug.WriteLine("Current time: " + currentTime);

@@ -213,7 +213,7 @@ public class ChatPageViewModel : ObservableRecipient, INotifyPropertyChanged
     }
 
 
-    private async Task ListConversations(string userId)
+    public async Task ListConversations(string userId)
     {
         await ConnectToInitialServer();
         var message = $"LIST {userId}|EOM|";
@@ -289,7 +289,7 @@ public class ChatPageViewModel : ObservableRecipient, INotifyPropertyChanged
         await Exit();
     }
 
-    private async Task ReadMessages(int targetUserId)
+    public async Task ReadMessages(int targetUserId)
     {
         await ConnectToInitialServer();
         var message = $"RECV {userID.ToString("D6")} {targetUserId.ToString("D6")}|EOM|";

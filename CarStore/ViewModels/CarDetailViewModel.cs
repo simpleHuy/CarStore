@@ -40,7 +40,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             LoadPictureOfCar();
             GetTopCompetitorCars();
             Task.Run(async () => Owner = await _userDao.GetByIdAsync(SelectedCar.OwnerId)).Wait();
-            if(Owner.IsShowroom)
+            if (Owner != null &&  Owner.IsShowroom)
             {
                 Task.Run(async () => Showroom = await _carRepository.GetShowroomByCarId(SelectedCar.CarId)).Wait();
             }

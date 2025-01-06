@@ -26,11 +26,6 @@ public class PageService : IPageService
         Configure<RegisterViewModel, RegisterPage>();
         Configure<RegisterDetailViewModel, RegisterDetailPage>();
         Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
-        Configure<AuctionViewModel, AuctionPage>();
-        Configure<DetailAuctionViewModel, DetailAuctionPage>();
-        Configure<AddAuctionViewModel, AddAuctionPage>();
-        Configure<RegisterDetailViewModel, RegisterDetailPage>();
-        Configure<ChatPageViewModel, ChatPage>(); // Ensure this is not commented
     }
 
     public Type GetPageType(string key)
