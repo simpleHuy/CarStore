@@ -37,13 +37,26 @@
     <None Remove="Assets\Cars\Car1\Orange.jpg" />
     <None Remove="Assets\Cars\Car1\White.jpg" />
     <None Remove="Assets\Cars\Car1\Black.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Porche 992 Carrera GTS\Red\1.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Porche 992 Carrera GTS\Red\2.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Porche 992 Carrera GTS\Red\3.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Porche 992 Carrera GTS\Red\4.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Toyota Corolla Altis 1.8G\Black\1.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Toyota Corolla Altis 1.8G\Black\2.png" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Toyota Corolla Altis 1.8G\Black\3.png" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Toyota Corolla Altis 1.8G\Black\4.jpg" />
+    <None Remove="Assets\Cars\Porche 992 Carrera T\Toyota Corolla Altis 1.8G\Black\5.jpg" />
     <None Remove="Assets\CategoryBackground\Car1.jpg" />
     <None Remove="Assets\CategoryBackground\Car2.jpg" />
     <None Remove="Assets\CategoryBackground\Car3.jpg" />
     <None Remove="Assets\CategoryBackground\Car4.jpg" />
     <None Remove="Views\Account - Copy.xaml" />
     <None Remove="Views\Account.xaml" />
+    <None Remove="Views\AddAuctionPage.xaml" />
+    <None Remove="Views\AuctionPage.xaml" />
+    <None Remove="Views\ChatPage.xaml" />
     <None Remove="Views\ComparePage.xaml" />
+    <None Remove="Views\DetailAuctionPage.xaml" />
     <None Remove="Views\EditItem.xaml" />
     <None Remove="Views\MockAnyCarPage.xaml" />
     <None Remove="Views\UserCtrl\Compare.xaml" />
@@ -53,6 +66,18 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Views\AddAuctionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\DetailAuctionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\AuctionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Update="Views\ChatPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\EditItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,7 +106,6 @@
     <None Remove="Views\FilterPage.xaml" />
     <None Remove="Views\ForgotPasswordPage.xaml" />
     <None Remove="Views\LoginPage.xaml" />
-    <None Remove="Views\RegisterPage.xaml" />
     <None Remove="Views\ScheduleForm.xaml" />
     <None Remove="Views\SearchingPage.xaml" />
     <None Remove="Views\ShellPage.xaml" />
@@ -99,11 +123,14 @@
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
 		<PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.0.230907" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.241114003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.18" />
 		<PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+		<PackageReference Include="SocketIOClient" Version="3.1.2" />
+		<PackageReference Include="Supabase" Version="1.1.1" />
 		<PackageReference Include="WinUIEx" Version="2.3.2" />
 		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
 		<PackageReference Include="WinUIEx" Version="2.4.2" />
@@ -229,6 +256,9 @@
     <Content Update="Assets\Banner\sub-banner-2.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+	<Content Update="Assets\Cars\**" Condition="Exists('$(MSBuildThisFileDirectory)Assets\Cars')">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
   </ItemGroup>
   
 
@@ -265,12 +295,6 @@
 
   <ItemGroup>
     <Page Update="Views\ShellPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Views\RegisterPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

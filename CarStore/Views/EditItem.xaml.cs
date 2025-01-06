@@ -34,7 +34,7 @@ namespace CarStore.Views
         {
             ViewModel = App.GetService<EditItemPageViewModel>();
             this.InitializeComponent();
-            ColorPicker.ItemsSource = ViewModel.colors;
+            ColorPicker.ItemsSource = ViewModel.Colors;
             ManufactureCbb.ItemsSource = ViewModel.Manufacturers;
             VariantList.ItemsSource = ViewModel.Variants;
             EngineCbb.ItemsSource = ViewModel.EngineTypes;

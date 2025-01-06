@@ -32,8 +32,10 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
-
-
+    public string supabaseFolder
+    {
+        get; set;
+    }
     public string Images
     {
         get; set;
@@ -70,7 +72,25 @@ public class Car : INotifyPropertyChanged
     {
         get; set;
     }
+    public int OwnerId
+    {
+        get; set;
+    }
+
+    public User owner
+    {
+        get; set;
+    }
+    public int AuctionId
+    {
+        get; set;
+    }
+
     public Manufacturer Manufacturer { get; set; }
+    public Auction Auction
+    {
+        get; set;
+    }
     public EngineType EngineType { get; set; }
     public TypeOfCar TypeOfCar { get; set; }
     public IList<VariantOfCar> VariantOfCars { get; set; }
@@ -85,5 +105,10 @@ public class Car : INotifyPropertyChanged
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public ICollection<Wishlist> wishlists
+    {
+        get; set;
     }
 }

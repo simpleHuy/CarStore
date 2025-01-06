@@ -84,6 +84,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<RegisterDetailViewModel>();
+            services.AddTransient<RegisterDetailPage>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<LoginPage>();
             services.AddTransient<MainPageViewModel>();
@@ -114,6 +116,14 @@ public partial class App : Application
             services.AddTransient<MockAnyCarPage>();
             services.AddTransient<AddItemPageViewModel>();
             services.AddTransient<AddItemPage>();
+            services.AddTransient<AuctionViewModel>();
+            services.AddTransient<AuctionPage>();
+            services.AddTransient<DetailAuctionViewModel>();
+            services.AddTransient<DetailAuctionPage>();
+            services.AddTransient<AddAuctionViewModel>();
+            services.AddTransient<AddAuctionPage>();
+            services.AddTransient<ChatPageViewModel>();
+            services.AddTransient<ChatPage>();
 
             // Configuration
             services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
@@ -133,6 +143,8 @@ public partial class App : Application
             // add repository, dao
             services.AddScoped<ICarRepository, EfCoreCarRepository>();
             services.AddScoped<IUserRepository, EfCoreUserRepository>();
+            services.AddScoped<IBiddingRepository, EfCoreBiddingRepository>();
+            services.AddScoped<IShowroomRepository, EfCoreShowroomRepository>();
             services.AddScoped(typeof(IDao<>), typeof(EfCoreDao<>));
         }).
         Build();

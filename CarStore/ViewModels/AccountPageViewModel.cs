@@ -13,13 +13,18 @@ using CarStore.Core.Models;
 using CarStore.Services.DataAccess;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.EntityFrameworkCore;
+using Windows.Graphics.Printing3D;
 
 namespace CarStore.ViewModels;
 public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
 {
     public readonly ICarRepository _carRepository;
-    private readonly IDao<Car> _carDao;
+    private readonly IUserRepository userRepository;
+    private readonly IShowroomRepository showroomRepository;
     private readonly IDao<Variant> _variantDao;
+    private readonly IDao<Showroom> _showroomDao;
+    private readonly IDao<RegisterDetail> _RegDao;
     public readonly INavigationService _navigateService;
     public readonly IAuthenticationService _authenticationService;
     public IRelayCommand NavigateToLoginCommand
@@ -30,10 +35,16 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         get;
     }
-    public ObservableCollection<Car>? Wishlist
+    public List<Car>? Wishlist
     {
         get; set;
     }
+    public List<Car> OwnCar { get; set; } = new List<Car>();
+    public List<Schedule> Schedules
+    {
+        get; set;
+    } = new List<Schedule>();
+    public bool  isAdmin { get; set; }
 
     private User? _currentUser;
     public User? CurrentUser
@@ -46,28 +57,40 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
                 _currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
             }
+
+            if (value != null && _currentUser.Id == 1)
+            {
+                isAdmin = true;
+            }
+            else
+            {
+                isAdmin = false;
+            }
         }
     }
 
-    public User? ViewedUser
+    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, IUserRepository userRepository, 
+                                ICarRepository carRepository, IDao<Variant> variantdao, IDao<Showroom> showroomDao, 
+                                IShowroomRepository showroomRepository, IDao<RegisterDetail> regDao)
     {
-        get; set;
-    }
-
-    public AccountPageViewModel(INavigationService navigationService, IAuthenticationService authService, ICarRepository carRepository, IDao<Car> carDao, IDao<Variant> variantdao)
-    {
-        _carDao = carDao;
+        this.userRepository = userRepository;
+        this.showroomRepository = showroomRepository;
         _carRepository = carRepository;
         _navigateService = navigationService;
         _authenticationService = authService;
         _variantDao = variantdao;
+        _showroomDao = showroomDao;
+        _RegDao = regDao;
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
         Task.Run(async () =>
         {
-            Wishlist = new ObservableCollection<Car>(await _carDao.GetAllAsync());
-            foreach (var car in Wishlist)
+            var curUserId = _authenticationService.GetCurrentUser().Id;
+            Schedules = await userRepository.GetSchedule(curUserId);
+            Wishlist = await userRepository.GetWishlist(curUserId);
+            OwnCar = await userRepository.GetCarsOfUser(curUserId);
+            foreach (var car in OwnCar)
             {
                 car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
                 foreach (var variant in car.VariantOfCars)
@@ -84,6 +107,34 @@ public class AccountPageViewModel: ObservableObject, INotifyPropertyChanged
     {
         var user = _authenticationService.GetCurrentUser();
         CurrentUser = user;
-        ViewedUser = user;
+    }
+
+    public bool CheckReputation()
+    {
+        var showroom = new Showroom();
+        Task.Run(async () =>
+        {
+            showroom = await showroomRepository.GetShowroomByUserId(CurrentUser!.Id);
+        }).Wait();
+        return showroom.IsReputation;
+    }
+
+    public async void Register(string content)
+    {
+        DateTime utcDateTime = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
+
+        var registerDetail = new RegisterDetail
+        {
+            UserId = CurrentUser!.Id,
+            Content = content,
+            CreatedDate = utcDateTime
+        };
+
+        await _RegDao.Insert(registerDetail);
+    }
+
+    public void Logout()
+    {
+        _authenticationService.Logout();
     }
 }

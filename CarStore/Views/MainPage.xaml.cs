@@ -126,7 +126,17 @@ public sealed partial class MainPage : Page
         {
             // Update ImageLocation based on selected Variant 
             var variantCode = await ViewModel._carRepository.GetVariantsCodeByName(selectedVariant.Name);
-            currentItem.DefautlImageLocation = $"../Assets/Cars/{currentItem.Images}/{variantCode}/1{Path.GetExtension(currentItem.DefautlImageLocation)}";
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            path += "Assets\\Cars\\" + currentItem.Images + "\\" + variantCode;
+            path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+            if (Directory.Exists(path))
+            {
+                var firstImage = Directory.GetFiles(path).FirstOrDefault();
+                if (firstImage != null)
+                {
+                    currentItem.DefautlImageLocation = firstImage;
+                }
+            }
         }
     }
 
@@ -152,5 +162,10 @@ public sealed partial class MainPage : Page
     private void FilterBtn_Click(object sender, RoutedEventArgs e)
     {
         Frame.Navigate(typeof(FilterPage));
+    }
+
+    private void ChatBtn_Click(object sender, RoutedEventArgs e)
+    {
+        Frame.Navigate(typeof(ChatPage));
     }
 }

@@ -89,11 +89,11 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
 
         NavigateToLoginCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(LoginViewModel ).FullName!));
         NavigateToSignupCommand = new RelayCommand(() => _navigateService.NavigateTo(typeof(RegisterViewModel).FullName!));
-        Task.Run(async() =>
+        Task.Run(async () =>
         {
             SuggestCars = await _car.GetAllAsync();
-            foreach (var car in SuggestCars) 
-            { 
+            foreach (var car in SuggestCars)
+            {
                 car.VariantOfCars = await _carRepository.GetVariantsOfCar(car.CarId);
             }
             Categories = await _typeOfCar.GetAllAsync();
@@ -106,6 +106,7 @@ public class MainPageViewModel : ObservableObject, INotifyPropertyChanged
         //});
         CheckAuthenticationState();
     }
+
 
     private void CheckAuthenticationState()
     {

@@ -36,6 +36,7 @@ public class AuthenticationService : IAuthenticationService
 
     private readonly User _userDefault = new()
     {
+        Id = 1,
         Email = "example@gmail.com",
         Telephone = "0333601234",
         AccountType = "Hội viên tiềm năng",
@@ -65,9 +66,8 @@ public class AuthenticationService : IAuthenticationService
 
     public void Logout()
     {
-        IsAuthenticated = false;
-        // Clear the current user
         _currentUser = null;
+        IsAuthenticated = false;
     }
 
     public User GetCurrentUser()
@@ -170,28 +170,32 @@ public class AuthenticationService : IAuthenticationService
 
     public async Task<bool> LoginAsync(string username, string password)
     {
-        IsAuthenticated = true;
-
-        return await Task.Run(async () =>
+        Task.Run(async () =>
         {
-            // For demo purposes - replace with your actual authentication logic
-            //if (username == "admin" && password == "1234")
-            //{
-            //    return true;
-            //}
-
-
-            // Or use the existing user storage system:
             if (username == "admin" && password == "1234")
             {
                 _currentUser = _userDefault;
                 return true;
             }
 
+            if (username == "anycar" && password == "1234")
+            {
+                _currentUser = await userDao.GetByIdAsync(2);
+                return true;
+            }
+
+            if (username == "starupshow" && password == "1234")
+            {
+                _currentUser = await userDao.GetByIdAsync(3);
+                return true;
+            }
+
             var userData = await userRepository.GetUserByUsername(username);
             if (userData == null)
+            {
                 return false;
-           
+            }
+
             var hashedPassword = HashPassword(password, userData.Salt);
             if (hashedPassword == userData.PasswordHash)
             {
@@ -200,7 +204,14 @@ public class AuthenticationService : IAuthenticationService
             }
 
             return false;
-        });
+        }).Wait();
+        if (_currentUser != null)
+        {
+            IsAuthenticated = true;
+            return true;
+        }
+        return false;
+
     }
     public ValidationResult ValidateRegistrationData(
         string firstName,
@@ -356,7 +367,7 @@ public class AuthenticationService : IAuthenticationService
             Telephone = phoneNumber
         };
 
-        await userDao.InsertById(newUser);
+        await userDao.Insert(newUser);
 
         return await Task.FromResult(true);
     }
@@ -387,7 +398,7 @@ public class AuthenticationService : IAuthenticationService
         user.PasswordHash = hashedPassword;
         user.Salt = salt;
 
-        await userDao.UpdateById(user);
+        await userDao.Update(user);
         return true;
     }
 
@@ -432,7 +443,7 @@ public class AuthenticationService : IAuthenticationService
                 user.PasswordHash = hashedPassword;
                 user.Salt = salt;
 
-                await userDao.UpdateById(user);
+                await userDao.Update(user);
 
                 return true;
             });

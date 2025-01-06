@@ -23,6 +23,13 @@
                 <GradientStop Color="#ffe6ee" Offset="0.5" />
                 <GradientStop Color="#d5f8ff" Offset="1" />
             </LinearGradientBrush>
+            <LinearGradientBrush x:Key="GeminiColor" StartPoint="0,1" EndPoint="1,0.1">
+                <GradientStop Color="#439DDF" Offset="0"/>
+                <GradientStop Color="#4F87ED" Offset="0.524"/>
+                <GradientStop Color="#9476C5" Offset="0.781"/>
+                <GradientStop Color="#BC688E" Offset="0.888"/>
+                <GradientStop Color="#D6645D" Offset="1"/>
+            </LinearGradientBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

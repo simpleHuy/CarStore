@@ -18,10 +18,12 @@ using CarStore.Core.Contracts.Repository;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using CarStore.Contracts.Services;
+using Supabase;
 
 namespace CarStore.ViewModels;
 public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChanged
 {
+
     // Car will be binded
     private Car? _selectedCar;
     public List<Car>? Cars
@@ -37,6 +39,11 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             OnPropertyChanged(nameof(SelectedCar));
             LoadPictureOfCar();
             GetTopCompetitorCars();
+            Task.Run(async () => Owner = await _userDao.GetByIdAsync(SelectedCar.OwnerId)).Wait();
+            if(Owner.IsShowroom)
+            {
+                Task.Run(async () => Showroom = await _carRepository.GetShowroomByCarId(SelectedCar.CarId)).Wait();
+            }
         }
     }
 
@@ -65,7 +72,7 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         }
     }
 
-    
+
     // load all images of the car
     private void LoadPictureOfCar()
     {
@@ -73,12 +80,13 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
 
         var path = AppDomain.CurrentDomain.BaseDirectory;
         path += "Assets\\Cars\\" + SelectedCar.Images;
+        path = path.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
 
         if (SelectedCarColor == null)
         {
             List<VariantOfCar> variantOfCars = new List<VariantOfCar>();
             string variantsCode = "";
-            Task.Run(async() => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
+            Task.Run(async () => variantOfCars = await _carRepository.GetVariantsOfCar(SelectedCar.CarId)).Wait();
             Task.Run(async () => variantsCode = await _carRepository.GetVariantsCodeByName(variantOfCars[0].Name)).Wait();
             SelectedCar.VariantOfCars = variantOfCars;
             path += "\\" + variantsCode;
@@ -90,23 +98,52 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             path += "\\" + variantsCode;
         }
 
-        if (Directory.Exists(path))
+
+        if (!Directory.Exists(path))
         {
-            // Get all jpg files in the directory
-            var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.TopDirectoryOnly)
-                                      .Where(file => Regex.IsMatch(file, @"\.(jpg|jpeg|png|gif|bmp|tiff)$", RegexOptions.IgnoreCase))
-                                      .ToArray();
-
-            // Convert file paths to proper URI format for WinUI
-            var imageUris = imageFiles.Select((file, index) =>
-                new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
-
-
-            SelectedCarPictures = new ObservableCollection<string>(imageUris);
+            var basePathIndex = path.IndexOf("Assets\\Cars");
+            var downloadPath = path.Substring(0, basePathIndex + "Assets\\Cars".Length);
+            downloadPath = downloadPath.Replace("\\bin\\x64\\Debug\\net7.0-windows10.0.19041.0\\AppX", "");
+            downloadPath += "\\" + SelectedCar.Images;
+            Task.Run(() => DownloadImage(downloadPath, SelectedCar.supabaseFolder)).Wait();
         }
-        else
+
+        // Get all jpg files in the directory
+        var imageFiles = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+
+        // Convert file paths to proper URI format for WinUI
+        //var imageUris = imageFiles.Select((file, index) =>
+        //    new Uri($"ms-appx:///../{file.Substring(file.IndexOf("Assets"))}").ToString());
+
+        SelectedCarPictures = new ObservableCollection<string>(imageFiles);
+    }
+
+    private async Task DownloadImage(string downloadPath, string folder)
+    {
+        try
         {
-            SelectedCarPictures = new ObservableCollection<string>();
+            var items = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).List(folder);
+            foreach (var item in items)
+            {
+                var currentRemotePath = Path.Combine(folder, item.Name).Replace("\\", "/");
+                var currentLocalPath = Path.Combine(downloadPath, item.Name);
+                if (item.Id == null) // This is a folder
+                {
+                    // Create local subfolder
+                    Directory.CreateDirectory(currentLocalPath);
+                    // Recursively download contents of this subfolder
+                    await DownloadImage(currentLocalPath, currentRemotePath);
+                }
+                else
+                {
+                    var img = await GlobalVariable.Supabase.Storage.From(GlobalVariable.bucket).DownloadPublicFile(currentRemotePath);
+                    await File.WriteAllBytesAsync(currentLocalPath, img);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -123,9 +160,6 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
         CompetitorCars = new List<Car>();
         foreach (var car in Cars)
         {
-            if (CompetitorCars.Count > 9)
-                break;
-
             if (/*(car.Price >= minPrice && car.Price <= maxPrice) && car.CarId != SelectedCar.CarId*/ true)
             {
                 CompetitorCars.Add(car);
@@ -148,6 +182,8 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     private readonly IDao<Car> _carDao;
     private readonly ICarRepository _carRepository;
     private readonly IAuthenticationService authentication;
+    private readonly IUserRepository userRepository;
+    private readonly IDao<User> _userDao;
 
     public bool IsLogin
     {
@@ -157,11 +193,26 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
             return user != null;
         }
     }
-    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication)
+    public Showroom Showroom
     {
+        get; set;
+    }
+    public User Owner
+    {
+        get; set;
+    }
+
+    public CarDetailViewModel(IDao<Car> car, ICarRepository carRepository, IAuthenticationService authentication, 
+        IUserRepository userRepository, IDao<User> userDao)
+    {
+        _userDao = userDao;
+        this.userRepository = userRepository;
         _carDao = car;
         _carRepository = carRepository;
-        Task.Run(async () => await LoadInitialDataAsync()).Wait();
+        Task.Run(async () => 
+        { 
+            await LoadInitialDataAsync();
+        }).Wait();
         this.authentication = authentication;
     }
 
@@ -179,5 +230,17 @@ public partial class CarDetailViewModel : ObservableObject, INotifyPropertyChang
     public IRelayCommand NavigateToScheduleCommand
     {
         get;
+    }
+
+    public void AddToWishlist()
+    {
+        Task.Run(async () =>
+        {
+            var user = authentication.GetCurrentUser();
+            if (user != null)
+            {
+                await userRepository.AddCarToWishlist(user.Id, SelectedCar!.CarId);
+            }
+        }).Wait();
     }
 }

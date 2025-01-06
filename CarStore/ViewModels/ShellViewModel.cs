@@ -30,14 +30,35 @@ public partial class ShellViewModel : ObservableRecipient, INotifyPropertyChange
             if (_isLogin != value)
             {
                 _isLogin = value;
-                OnPropertyChanged(nameof(IsLogin)); // Thông báo UI khi giá trị thay đổi
+                OnPropertyChanged(nameof(IsLogin));
+            }
+
+            if (_isLogin && AuthenticationService.GetCurrentUser() != null)
+            {
+                IsAdmin = AuthenticationService.GetCurrentUser().Id == 1;
+            }
+            else
+            {
+                IsAdmin = false;
             }
         }
     }
 
+    private bool _isAdmin;
+    public bool IsAdmin
+    {
+        get => _isAdmin;
+        set
+        {
+            if (_isAdmin != value)
+            {
+                _isAdmin = value;
+                OnPropertyChanged(nameof(IsAdmin));
+            }
+        }
+    }
     private void OnAuthStateChanged(object sender, AuthStateChangedEventArgs e)
     {
-        // Cập nhật IsLogin khi trạng thái đăng nhập thay đổi
         IsLogin = e.IsAuthenticated;
     }
 
@@ -63,10 +84,10 @@ public partial class ShellViewModel : ObservableRecipient, INotifyPropertyChange
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
         AuthenticationService = authenticationService;
+        AuthenticationService.AuthStateChanged += OnAuthStateChanged;
 
         IsLogin = AuthenticationService.GetCurrentUser() != null;
-
-        AuthenticationService.AuthStateChanged += OnAuthStateChanged;
+        IsAdmin = false;
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)

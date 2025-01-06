@@ -29,5 +29,4 @@ public class EngineType : IFilterItem, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
 }

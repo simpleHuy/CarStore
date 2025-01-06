@@ -16,9 +16,14 @@ public class User
         get;
         set;
     }
+    
+    private string _name;
     public string Name
     {
-        get; set;
+        get
+        {
+            return firstName +" "+ lastName;
+        }
     }
     public string Email
     {
@@ -54,6 +59,32 @@ public class User
         get; set;
     }
 
+    public ICollection<Bidding> Biddings
+    {
+        get; set;
+    }
+
+    public bool IsShowroom
+    {
+        get; set;
+    }
+
+    public Showroom Showroom
+    {
+        get; set;
+    }
     public ICollection<Schedule> CustommerSchedules { get; set; }
     public ICollection<Schedule> MerchantSchedules { get; set; }
+    public ICollection<Wishlist> Wishlists
+    {
+        get; set;
+    }
+    public List<Car> Cars
+    {
+        get; set;
+    }
+    public RegisterDetail RegisterDetails
+    {
+        get; set;
+    }
 }

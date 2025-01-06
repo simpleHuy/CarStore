@@ -79,13 +79,23 @@ public sealed partial class CarDetailPage : Page
 
     private async void ClickHomePageButton(object sender, RoutedEventArgs e)
     {
-        var uri = new Uri("https://anycar.vn/");
+        var homeUrl = ViewModel!.Showroom?.Home;
+        if (homeUrl == null)
+        {
+            return;
+        }
+        var uri = new Uri(homeUrl);
         await Launcher.LaunchUriAsync(uri);
     }
 
     private async void ClickFacebookButton(object sender, RoutedEventArgs e)
     {
-        var uri = new Uri("https://www.facebook.com/anycar.vn/");
+        var facebookUrl = ViewModel!.Showroom?.Facebook;
+        if (facebookUrl == null)
+        {
+            return;
+        }
+        var uri = new Uri(facebookUrl);
         await Launcher.LaunchUriAsync(uri);
     }
 
@@ -98,15 +108,6 @@ public sealed partial class CarDetailPage : Page
             var selectedColor = comboBox.SelectedValue as VariantOfCar;
 
             ViewModel.SelectedCarColor = selectedColor.Name;
-        }
-    }
-
-    private void Color_Loaded(object sender, RoutedEventArgs e)
-    {
-        var comboBox = sender as ComboBox;
-        if (comboBox != null && comboBox.Items.Count > 0)
-        {
-            comboBox.SelectedIndex = 0;
         }
     }
 
@@ -125,45 +126,57 @@ public sealed partial class CarDetailPage : Page
             return;
         }
 
-        Frame.Navigate(typeof(ScheduleForm), ViewModel.SelectedCar);
+        var scheduleData = Tuple.Create(ViewModel.SelectedCar, ViewModel.Showroom);
+
+        Frame.Navigate(typeof(ScheduleForm), scheduleData);
     }
 
     private async void Contact_btn_click(object sender, RoutedEventArgs e)
     {
-        await new ContentDialog()
+        if (!ViewModel.IsLogin)
         {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Bạn chưa đăng nhập",
+                Content = "Vui lòng đăng nhập để thêm vào Wishlist!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
+
+            return;
+        }
+        Frame.Navigate(typeof(ChatPage), ViewModel.Owner.Id);
     }
 
     private async void AddWishlist_btn_click(object sender, RoutedEventArgs e)
     {
-        await new ContentDialog()
+        if(!ViewModel.IsLogin)
         {
-            XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
-            CloseButtonText = "OK",
-        }.ShowAsync();
-    }
+            await new ContentDialog()
+            {
+                XamlRoot = this.Content.XamlRoot,
+                Title = "Bạn chưa đăng nhập",
+                Content = "Vui lòng đăng nhập để thêm vào Wishlist!",
+                CloseButtonText = "OK",
+            }.ShowAsync();
 
-    private async void SeeMoreCompetitor_btn_click(object sender, RoutedEventArgs e)
-    {
+            return;
+        }
+
+        ViewModel.AddToWishlist();
+
         await new ContentDialog()
         {
             XamlRoot = this.Content.XamlRoot,
-            Title = "Tính năng chưa hoàn thiện",
-            Content = "Vui lòng chờ đợi các bản cập nhật kế tiếp để có thể sử dụng!",
+            Title = "Thành công",
+            Content = "Đã thêm vào Wishlist",
             CloseButtonText = "OK",
         }.ShowAsync();
     }
 
     private async void SeeMoreProduct_btn_click(object sender, RoutedEventArgs e)
     {
-        Frame.Navigate(typeof(MockAnyCarPage));
+        Frame.Navigate(typeof(MockAnyCarPage), ViewModel.Owner);
     }
 
     private async void Compare_btn_click(object sender, RoutedEventArgs e)

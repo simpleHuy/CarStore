@@ -11,6 +11,81 @@ public static class ModelBuilderExtension
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = 1,
+                Username = "admin",
+                Email = "admin@gmail.com",
+                IsShowroom = false,
+            },
+
+            new User
+            {
+                Id = 2,
+                Username = "anycar",
+                Email = "anycar@gmail.com",
+                IsShowroom = true,
+            },
+
+            new User
+            {
+                Id = 3,
+                Username = "StarupShow",
+                Email = "StarupShow@gmail.com",
+                IsShowroom = true,
+            }
+        );
+
+        modelBuilder.Entity<Showroom>().HasData(
+            new Showroom
+            {
+                Id = 1,
+                UserId = 2,
+                Hotline = "18006216",
+                Email = "info@anycar.vn",
+                IsReputation = true,
+                Facebook = "https://www.facebook.com/anycar.vn/",
+                Home = "https://anycar.vn/",
+                Name = "Anycar.vn",
+                Img = "../Assets/ShowRoomAvatar.jpg"
+            },
+
+            new Showroom
+            {
+                Id = 2,
+                UserId = 3,
+                Hotline = "18006215",
+                Email = "info@StarupShow.vn",
+                Name = "Star-up Show",
+                Img = "../Assets/ShowRoom2.png"
+            }
+        );
+
+        modelBuilder.Entity<Address>().HasData(
+            new Address
+            {
+                Id=1,
+                ShowroomId = 1,
+                Street = "Số 3-5 Nguyễn Văn Linh, P. Gia Thụy, Q. Long Biên, Hà Nội",
+                City = "Hà Nội"
+            },
+            new Address
+            {
+                Id = 2,
+                ShowroomId = 1,
+                Street = "Số 250 Lương Định Của, P. An Phú, TP. Thủ Đức, TP Hồ Chí Minh",
+                City = "Hồ Chí Minh"
+            },
+            new Address
+            {
+                Id = 3,
+                ShowroomId = 2,
+                Street = "Vành đài ktx B, TP. Thủ Đức, TP Hồ Chí Minh",
+                City = "Hồ Chí Minh"
+            }
+        );
+
         modelBuilder.Entity<EngineType>().HasData(
             new EngineType { Id = 1, Name = "Xăng" },
             new EngineType { Id = 2, Name = "Điện" },
@@ -27,7 +102,24 @@ public static class ModelBuilderExtension
             new Manufacturer { Id = 6, Name = "Tesla" },
             new Manufacturer { Id = 7, Name = "Nissan" },
             new Manufacturer { Id = 8, Name = "Vinfast" },
-            new Manufacturer { Id = 9, Name = "Porsche" }
+            new Manufacturer { Id = 9, Name = "Porsche" },
+            new Manufacturer { Id = 10, Name = "Chevrolet" },
+            new Manufacturer { Id = 11, Name = "Mercedes-Benz" },
+            new Manufacturer { Id = 12, Name = "Hyundai" },
+            new Manufacturer { Id = 13, Name = "Isuzu" },
+            new Manufacturer { Id = 14, Name = "Suzuki" },
+            new Manufacturer { Id = 15, Name = "Kia" },
+            new Manufacturer { Id = 16, Name = "Mitsubishi" },
+            new Manufacturer { Id = 17, Name = "Lexus" },
+            new Manufacturer { Id = 18, Name = "Mazda" },
+            new Manufacturer { Id = 19, Name = "BMW" },
+            new Manufacturer { Id = 20, Name = "Peugeot" },
+            new Manufacturer { Id = 21, Name = "Audi" },
+            new Manufacturer { Id = 22, Name = "Land Rover" },
+            new Manufacturer { Id = 23, Name = "Lamborghini" },
+            new Manufacturer { Id = 24, Name = "Volvo" },
+            new Manufacturer { Id = 25, Name = "Jaguar" },
+            new Manufacturer { Id = 26, Name = "Bentley" }
         );
 
         modelBuilder.Entity<TypeOfCar>().HasData(
@@ -115,7 +207,141 @@ public static class ModelBuilderExtension
             new Variant { Id = 3, Code = "Black" },
             new Variant { Id = 4, Code = "Blue" },
             new Variant { Id = 5, Code = "Green" },
-            new Variant { Id = 6, Code = "Red" }
+            new Variant { Id = 6, Code = "Red" },
+            new Variant { Id = 7, Code = "AliceBlue" },
+            new Variant { Id = 8, Code = "AntiqueWhite" },
+            new Variant { Id = 9, Code = "Aqua" },
+            new Variant { Id = 10, Code = "Aquamarine" },
+            new Variant { Id = 11, Code = "Azure" },
+            new Variant { Id = 12, Code = "Beige" },
+            new Variant { Id = 13, Code = "Bisque" },
+            new Variant { Id = 14, Code = "BlanchedAlmond" },
+            new Variant { Id = 15, Code = "BlueViolet" },
+            new Variant { Id = 16, Code = "Brown" },
+            new Variant { Id = 17, Code = "BurlyWood" },
+            new Variant { Id = 18, Code = "CadetBlue" },
+            new Variant { Id = 19, Code = "Chartreuse" },
+            new Variant { Id = 20, Code = "Chocolate" },
+            new Variant { Id = 21, Code = "Coral" },
+            new Variant { Id = 22, Code = "CornflowerBlue" },
+            new Variant { Id = 23, Code = "Cornsilk" },
+            new Variant { Id = 24, Code = "Crimson" },
+            new Variant { Id = 25, Code = "Cyan" },
+            new Variant { Id = 26, Code = "DarkBlue" },
+            new Variant { Id = 27, Code = "DarkCyan" },
+            new Variant { Id = 28, Code = "DarkGoldenrod" },
+            new Variant { Id = 29, Code = "DarkGray" },
+            new Variant { Id = 30, Code = "DarkGreen" },
+            new Variant { Id = 31, Code = "DarkKhaki" },
+            new Variant { Id = 32, Code = "DarkMagenta" },
+            new Variant { Id = 33, Code = "DarkOliveGreen" },
+            new Variant { Id = 34, Code = "DarkOrange" },
+            new Variant { Id = 35, Code = "DarkOrchid" },
+            new Variant { Id = 36, Code = "DarkRed" },
+            new Variant { Id = 37, Code = "DarkSalmon" },
+            new Variant { Id = 38, Code = "DarkSeaGreen" },
+            new Variant { Id = 39, Code = "DarkSlateBlue" },
+            new Variant { Id = 40, Code = "DarkSlateGray" },
+            new Variant { Id = 41, Code = "DarkTurquoise" },
+            new Variant { Id = 42, Code = "DarkViolet" },
+            new Variant { Id = 43, Code = "DeepPink" },
+            new Variant { Id = 44, Code = "DeepSkyBlue" },
+            new Variant { Id = 45, Code = "DimGray" },
+            new Variant { Id = 46, Code = "DodgerBlue" },
+            new Variant { Id = 47, Code = "Firebrick" },
+            new Variant { Id = 48, Code = "FloralWhite" },
+            new Variant { Id = 49, Code = "ForestGreen" },
+            new Variant { Id = 50, Code = "Fuchsia" },
+            new Variant { Id = 51, Code = "Gainsboro" },
+            new Variant { Id = 52, Code = "GhostWhite" },
+            new Variant { Id = 53, Code = "Gold" },
+            new Variant { Id = 54, Code = "Goldenrod" },
+            new Variant { Id = 55, Code = "GreenYellow" },
+            new Variant { Id = 56, Code = "Honeydew" },
+            new Variant { Id = 57, Code = "HotPink" },
+            new Variant { Id = 58, Code = "IndianRed" },
+            new Variant { Id = 59, Code = "Indigo" },
+            new Variant { Id = 60, Code = "Ivory" },
+            new Variant { Id = 61, Code = "Khaki" },
+            new Variant { Id = 62, Code = "Lavender" },
+            new Variant { Id = 63, Code = "LavenderBlush" },
+            new Variant { Id = 64, Code = "LawnGreen" },
+            new Variant { Id = 65, Code = "LemonChiffon" },
+            new Variant { Id = 66, Code = "LightBlue" },
+            new Variant { Id = 67, Code = "LightCoral" },
+            new Variant { Id = 68, Code = "LightCyan" },
+            new Variant { Id = 69, Code = "LightGoldenrodYellow" },
+            new Variant { Id = 70, Code = "LightGray" },
+            new Variant { Id = 71, Code = "LightGreen" },
+            new Variant { Id = 72, Code = "LightPink" },
+            new Variant { Id = 73, Code = "LightSalmon" },
+            new Variant { Id = 74, Code = "LightSeaGreen" },
+            new Variant { Id = 75, Code = "LightSkyBlue" },
+            new Variant { Id = 76, Code = "LightSlateGray" },
+            new Variant { Id = 77, Code = "LightSteelBlue" },
+            new Variant { Id = 78, Code = "LightYellow" },
+            new Variant { Id = 79, Code = "Lime" },
+            new Variant { Id = 80, Code = "LimeGreen" },
+            new Variant { Id = 81, Code = "Linen" },
+            new Variant { Id = 82, Code = "Magenta" },
+            new Variant { Id = 83, Code = "Maroon" },
+            new Variant { Id = 84, Code = "MediumAquamarine" },
+            new Variant { Id = 85, Code = "MediumBlue" },
+            new Variant { Id = 86, Code = "MediumOrchid" },
+            new Variant { Id = 87, Code = "MediumPurple" },
+            new Variant { Id = 88, Code = "MediumSeaGreen" },
+            new Variant { Id = 89, Code = "MediumSlateBlue" },
+            new Variant { Id = 90, Code = "MediumSpringGreen" },
+            new Variant { Id = 91, Code = "MediumTurquoise" },
+            new Variant { Id = 92, Code = "MediumVioletRed" },
+            new Variant { Id = 93, Code = "MidnightBlue" },
+            new Variant { Id = 94, Code = "MintCream" },
+            new Variant { Id = 95, Code = "MistyRose" },
+            new Variant { Id = 96, Code = "Moccasin" },
+            new Variant { Id = 97, Code = "NavajoWhite" },
+            new Variant { Id = 98, Code = "Navy" },
+            new Variant { Id = 99, Code = "OldLace" },
+            new Variant { Id = 100, Code = "Olive" },
+            new Variant { Id = 101, Code = "OliveDrab" },
+            new Variant { Id = 102, Code = "Orange" },
+            new Variant { Id = 103, Code = "OrangeRed" },
+            new Variant { Id = 104, Code = "Orchid" },
+            new Variant { Id = 105, Code = "PaleGoldenrod" },
+            new Variant { Id = 106, Code = "PaleGreen" },
+            new Variant { Id = 107, Code = "PaleTurquoise" },
+            new Variant { Id = 108, Code = "PaleVioletRed" },
+            new Variant { Id = 109, Code = "PapayaWhip" },
+            new Variant { Id = 110, Code = "PeachPuff" },
+            new Variant { Id = 111, Code = "Peru" },
+            new Variant { Id = 112, Code = "Pink" },
+            new Variant { Id = 113, Code = "Plum" },
+            new Variant { Id = 114, Code = "PowderBlue" },
+            new Variant { Id = 115, Code = "Purple" },
+            new Variant { Id = 116, Code = "RosyBrown" },
+            new Variant { Id = 117, Code = "RoyalBlue" },
+            new Variant { Id = 118, Code = "SaddleBrown" },
+            new Variant { Id = 119, Code = "Salmon" },
+            new Variant { Id = 120, Code = "SandyBrown" },
+            new Variant { Id = 121, Code = "SeaGreen" },
+            new Variant { Id = 122, Code = "Seashell" },
+            new Variant { Id = 123, Code = "Sienna" },
+            new Variant { Id = 124, Code = "Silver" },
+            new Variant { Id = 125, Code = "SkyBlue" },
+            new Variant { Id = 126, Code = "SlateBlue" },
+            new Variant { Id = 127, Code = "SlateGray" },
+            new Variant { Id = 128, Code = "Snow" },
+            new Variant { Id = 129, Code = "SpringGreen" },
+            new Variant { Id = 130, Code = "SteelBlue" },
+            new Variant { Id = 131, Code = "Tan" },
+            new Variant { Id = 132, Code = "Teal" },
+            new Variant { Id = 133, Code = "Thistle" },
+            new Variant { Id = 134, Code = "Tomato" },
+            new Variant { Id = 135, Code = "Turquoise" },
+            new Variant { Id = 136, Code = "Violet" },
+            new Variant { Id = 137, Code = "Wheat" },
+            new Variant { Id = 138, Code = "WhiteSmoke" },
+            new Variant { Id = 139, Code = "Yellow" },
+            new Variant { Id = 140, Code = "YellowGreen" }
         );
 
         modelBuilder.Entity<Car>().HasData(
@@ -132,6 +358,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Accord",
                 DefautlImageLocation = "../Assets/Cars/Honda Accord/White/1.png",
                 PriceOfCarId = 3,
+                OwnerId = 2,
             },
             new()
             {
@@ -146,6 +373,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Civic City Rs",
                 DefautlImageLocation = "../Assets/Cars/Honda Civic City Rs/Black/1.png",
                 PriceOfCarId = 2,
+                OwnerId = 2,
             },
             new()
             {
@@ -160,6 +388,7 @@ public static class ModelBuilderExtension
                 Images = "Honda Type R",
                 DefautlImageLocation = "../Assets/Cars/Honda Type R/Black/2.png",
                 PriceOfCarId = 4,
+                OwnerId = 3,
             },
             new()
             {
@@ -174,6 +403,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera Cabriolet",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera Cabriolet/Red/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 3,
             },
             new()
             {
@@ -188,6 +418,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 718 Cayman S",
                 DefautlImageLocation = "../Assets/Cars/Porche 718 Cayman S/Blue/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -202,6 +433,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera GTS",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera GTS/Red/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -216,6 +448,7 @@ public static class ModelBuilderExtension
                 Images = "Porche 992 Carrera T",
                 DefautlImageLocation = "../Assets/Cars/Porche 992 Carrera T/Green/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -230,6 +463,7 @@ public static class ModelBuilderExtension
                 Images = "Porche Taycan J1II",
                 DefautlImageLocation = "../Assets/Cars/Porche Taycan J1II/Blue/1.jpg",
                 PriceOfCarId = 5,
+                OwnerId = 2,
             },
             new()
             {
@@ -244,6 +478,7 @@ public static class ModelBuilderExtension
                 Images = "Toyota Corolla Altis 1.8G",
                 DefautlImageLocation = "../Assets/Cars/Toyota Corolla Altis 1.8G/Black/1.jpg",
                 PriceOfCarId = 2,
+                OwnerId = 3,
             },
             new()
             {
@@ -258,6 +493,7 @@ public static class ModelBuilderExtension
                 Images = "Vinfast VF7",
                 DefautlImageLocation = "../Assets/Cars/Vinfast VF7/Blue/1.png",
                 PriceOfCarId = 2,
+                OwnerId = 2,
             }
         );
 
