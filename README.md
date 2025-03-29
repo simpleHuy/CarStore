@@ -1,94 +1,72 @@
-<div align="center">
-  
-# ![carstore](https://github.com/user-attachments/assets/318ca008-e92f-4561-b5f8-8f1de04f3466)  Car Store
+# CarStore
 
-  <p>A Windows desktop app for a Car Store using Winui 3</p> 
-  
-</div>
+This is a project for Windows Programming.
 
+## Table of Contents
 
-## 📘 Table of Contents
-1. [Introduction](#introduction) 🌟
-2. [Team Members](#team-members) 🤝
-3. [Technologies](#technologies) 💻
-4. [Features](#features) 🔎
-5. [Development](#development) ✈️
-6. [Contact](#contact) 🌐
+- [CarStore](#carstore)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Dependencies](#dependencies)
+  - [Installation](#installation)
 
-## 🌟 <a name="introduction">Introduction</a>
+## Introduction
 
-**Car Store** is a Windows application for Buying, Selling, Auctioning Cars. It is built using winui3, dotnet and C#. The application allows users to inspect car, sell a car, auction car.
+CarStore is an application developed for managing car sales and inventory. It is built using C# and includes a small amount of JavaScript.
 
-This project is a part of the **Windows Programing** course at **University of Science**. The project is developed by a team of **3 students**.
+## Features
 
-Demo video: 
+- **Home**: Browse available cars, view featured listings, search for specific car models.
+- **Inspect Car Detail**: View detailed specifications, check images and history reports, read customer reviews.
+- **Chat with Merchant**: Communicate directly with sellers, negotiate prices and ask questions.
+- **Auction**: Participate in car auctions, place bids and track auction status, receive updates on winning or losing bids.
 
-## 🤝 <a name="team-members">Team Members</a>
+## Dependencies
+- **Nodejs**
+- **.Net**
+- **Postgresql**
 
-- **Hoang Tien Huy** - 22120134 - [simpleHuy](https://github.com/simpleHuy)
-- **Nguyen Minh Truc** - 22120394 - [mituc24](https://github.com/CatHuyuH24)
-- **Huynh Tran Ty** - 22120418 - [huynhtranty](https://github.com/huynhtranty)
+## Installation
 
-## 💻 <a name="technologies">Technologies</a>
-<div align="center">
-  
-  ![Technologies](https://skillicons.dev/icons?i=cs,dotnet,postgres)
+To install and run this project locally, follow these steps:
 
-</div>
-
-- **C#:** Build all Bussiness logic.
-- **Winui 3:** A modern UI framework for creating high-performance, visually appealing Windows desktop applications.
-- **.Net:** A versatile framework for building scalable, cross-platform applications with rich libraries and seamless integration.
-- **Postgres:** Store and manage data of the application.
-- **EF Core:** Build Table/Schema from model in project.
-
-## 🔎 <a name="features">Features</a>
-
-**🔷 Home:**
-
-**🔷 Inspect Car Detail:** 
-
-**🔷 Compare Car:** 
-
-**🔷 Create Schedule to inspect Car:** 
-
-**🔷 Sell:** 
-
-**🔷 Chat with Merchant:**
-
-**🔷 Auction:**
-
-## ✈️ <a name="development">Development</a>
-
-#### 📌 Note: The application is currently in development and may contain bugs or incomplete features.
-
-### Prerequisites
-- [.Net](https://dotnet.microsoft.com/en-us/download/dotnet-framework)
-- [Postgres](https://www.postgresql.org/)
-
-### Installation
-1. Clone the repository
-   ```bash
-   git clone https://github.com/mituc24/CarStore.git
-   cd CarStore
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/simpleHuy/CarStore.git
    ```
-2. Create a `.env` file in the `CarStore.Core` directory and add the following environment variables in `.env.sample`
-    ```env.sample
-    CONNECTION_STRING=Host=; Database=; Port=; User Id=; Password=
-    ```
 
-3. Run all migration in CarStore.Core:
-   - Open Project in [Visual Studio](https://visualstudio.microsoft.com/vs/)
-   - Open Package Manage Console, [Click to view instructions](https://learn.microsoft.com/en-us/nuget/consume-packages/install-use-packages-powershell)
-   - Choose Default project is CarStore.Core
-   - Use
-     ```bash
-     update-database
-     ```
-4. Now you can run the App.
+2. Open the project in your preferred IDE (e.g., Visual Studio).
 
-## 🌐 <a name="contact">Contact</a>
+3. Restore the required packages:
+   ```sh
+   dotnet restore
+   ```
 
-- **Hoang Tien Huy** - [simpleHuy](https://github.com/simpleHuy)
-- **Nguyen Minh Truc** - [mituc24](https://github.com/CatHuyuH24)
-- **Huynh Tran Ty** - [huynhtranty](https://github.com/huynhtranty)
+4. Create a `.env` file in the CarStore.Core directory and add the following environment variables in `.env.sample`
+   ```sh
+   CONNECTION_STRING=Host=; Database=; Port=; User Id=; Password=
+   ```
+5. Run migration:
+   ```sh
+    dotnet ef database update --project CarStore.Core --startup-project CarStore
+   ``` 
+  
+6. Build the project:
+   ```sh
+   dotnet build
+   ```
+
+7. Run servers:
+   - Auction server:
+       ```sh
+       npm install && npm start
+       ```
+   - Chat server:
+      ```sh
+       ./Server/ChatServer/ChatServer.exe
+      ```
+8. Run the project:
+   ```sh
+   dotnet run
+   ```
